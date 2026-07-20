@@ -17,7 +17,6 @@ export default function App() {
   return (
     <BrowserRouter>
       <div className="app-root">
-        <span className="demo-chip">WEB DEMO</span>
         <div className="phone">
           <Routes>
             <Route path="/" element={<SplashPage />} />

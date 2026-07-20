@@ -10,7 +10,13 @@ import {
 import { IMG } from '../../assets';
 import './CarBodyStack.css';
 
-export function CarBodyStack({ showDivider }: { showDivider: boolean }) {
+export function CarBodyStack({
+  showDivider,
+  rearCarUpOffset = 0,
+}: {
+  showDivider: boolean;
+  rearCarUpOffset?: number;
+}) {
   return (
     <div className="car-stack">
       <div className="car-stack__section">
@@ -39,7 +45,10 @@ export function CarBodyStack({ showDivider }: { showDivider: boolean }) {
           />
         ) : null}
       </div>
-      <div className="car-stack__section">
+      <div
+        className="car-stack__section"
+        style={rearCarUpOffset ? { marginTop: -rearCarUpOffset } : undefined}
+      >
         <img
           src={IMG.rearCar}
           alt=""

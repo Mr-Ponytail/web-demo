@@ -27,7 +27,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 158px 20px 0;
+  padding: 120px 20px 0;
 }
 
 .onboarding__logo {
@@ -52,7 +52,7 @@
   width: 100%;
   height: 228px;
   object-fit: cover;
-  margin-bottom: 54px;
+  margin-bottom: 30px;
 }
 
 .onboarding__footer {
@@ -60,13 +60,13 @@
   padding: 0 20px calc(24px + var(--safe-b));
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 8px;
 }
 
 .onboarding-step {
   min-height: 100%;
   position: relative;
-  padding-bottom: 120px;
+  padding-bottom: 130px;
 }
 
 .ob-top {

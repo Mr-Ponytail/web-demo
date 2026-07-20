@@ -38,11 +38,18 @@ export function TabBar({ onAiPress }: { onAiPress?: () => void }) {
             {({ isActive }) => (
               <>
                 {isActive ? <span className="tabbar-indicator" /> : null}
-                <img
-                  src={isActive ? tab.active : tab.icon}
-                  alt=""
-                  className={isActive ? 'tabbar-icon tabbar-icon--on' : 'tabbar-icon'}
-                />
+                {isActive ? (
+                  <img src={tab.active} alt="" className="tabbar-icon tabbar-icon--on" />
+                ) : (
+                  <span
+                    className="tabbar-icon"
+                    style={{
+                      WebkitMaskImage: `url(${tab.icon})`,
+                      maskImage: `url(${tab.icon})`,
+                    }}
+                    aria-hidden
+                  />
+                )}
                 <span className={isActive ? 'tabbar-label tabbar-label--on' : 'tabbar-label'}>
                   {tab.label}
                 </span>

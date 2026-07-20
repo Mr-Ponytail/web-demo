@@ -21,11 +21,11 @@ export const TIRE_CARD_LABEL_GAP = 8;
 export const TIRE_REAR_OUTER_TIRE_OFFSET = 52;
 export const TIRE_REAR_INNER_TIRE_UP_OFFSET = -32;
 
-export const TIRE_FRONT_LABEL_GAP = 72;
+export const TIRE_FRONT_LABEL_GAP = 52;
 export const TIRE_FRONT_TO_REAR_GAP = 15;
-export const TIRE_REAR_TIRE_DOWN_OFFSET = 42;
+export const TIRE_REAR_TIRE_DOWN_OFFSET = 40;
 export const TIRE_FRONT_TIRE_UP_OFFSET = -48;
-export const TIRE_REAR_CHIP_GAP = 20;
+export const TIRE_REAR_CHIP_GAP = 16;
 export const TIRE_REAR_CHIP_BOTTOM_MIN_GAP = 113;
 
 export const TIRE_DETAIL_LANE_GAP = 16;
@@ -88,13 +88,15 @@ export const TIRE_REAR_CAR_TO_CHIP_GAP =
   TIRE_CARD_HEIGHT -
   TIRE_REAR_CAR_H;
 
-export const TIRE_DETAIL_REAR_CHIP_LIFT = 44;
+export const TIRE_DETAIL_REAR_CHIP_LIFT = 32;
 export const TIRE_DETAIL_REAR_CHIP_GAP =
   TIRE_REAR_CAR_TO_CHIP_GAP - TIRE_DETAIL_REAR_CHIP_LIFT;
 
 export const TIRE_DETAIL_DIVIDER_LINE_H = 1;
 export const TIRE_DETAIL_DIVIDER_Y = TIRE_FRONT_CAR_H + TIRE_FRONT_TO_REAR_GAP;
-export const TIRE_DETAIL_DIVIDER_GAP = 33;
+/** Pull rear car image up in Detail tab (visual tune). */
+export const TIRE_DETAIL_REAR_CAR_UP_OFFSET = 15;
+export const TIRE_DETAIL_DIVIDER_GAP = 20;
 export const TIRE_DETAIL_REAR_ROW_GAP = 10;
 export const TIRE_DETAIL_FRONT_ROW_TOP =
   TIRE_DETAIL_DIVIDER_Y - TIRE_DETAIL_DIVIDER_GAP - TIRE_DETAIL_CARD_H;

@@ -9,12 +9,8 @@ function OnboardingTopBar() {
   return (
     <div className="ob-top">
       <button type="button" className="ob-back" aria-label="Back" onClick={() => navigate(-1)}>
-        <img src={IMG.chevron} alt="" style={{ transform: 'rotate(90deg)' }} width={20} height={20} />
+        <img src={IMG.back} alt="" width={40} height={40} />
       </button>
-      <div className="chrome__actions">
-        <span className="icon-btn"><img src={IMG.bluetooth} alt="" /></span>
-        <span className="icon-btn"><img src={IMG.notification} alt="" /></span>
-      </div>
     </div>
   );
 }

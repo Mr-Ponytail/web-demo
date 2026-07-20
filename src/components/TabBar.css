@@ -1,14 +1,14 @@
 .tabbar-wrap {
   position: fixed;
   left: 50%;
-  bottom: calc(var(--safe-b) + 4px);
+  bottom: calc(var(--safe-b) + 10px);
   transform: translateX(-50%);
   z-index: 40;
   display: flex;
   align-items: center;
   gap: 12px;
   width: min(var(--phone-max), 100%);
-  padding: 6px 25px 0;
+  padding: 6px 24px 0;
   pointer-events: none;
 }
 
@@ -54,7 +54,22 @@
 .tabbar-icon {
   width: 24px;
   height: 24px;
+  display: block;
+  flex-shrink: 0;
+  background-color: var(--text-40);
+  -webkit-mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-size: contain;
+  mask-repeat: no-repeat;
+  mask-position: center;
+}
+
+img.tabbar-icon {
+  background: none;
   object-fit: contain;
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
 .tabbar-icon--on {

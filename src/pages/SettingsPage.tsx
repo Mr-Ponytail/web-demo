@@ -18,7 +18,9 @@ export function SettingsPage() {
   return (
     <div className="screen screen--pad-tabs">
       <div className="chrome settings-chrome">
-        <h1 className="chrome__title">Settings</h1>
+        <div className="chrome__title-row">
+          <h1 className="chrome__title">Settings</h1>
+        </div>
       </div>
 
       <div className="content-pane settings-pane">
@@ -46,15 +48,6 @@ export function SettingsPage() {
               <img src={IMG.chevron} alt="" width={20} height={20} />
             </button>
           ))}
-        </div>
-
-        <p className="settings-section-title">Device</p>
-        <div className="token-card">
-          <p className="token-card__label">Device Token</p>
-          <p className="token-card__value">demo-web-token-0000</p>
-          <button type="button" className="token-card__btn">
-            Share / Copy
-          </button>
         </div>
 
         <Link className="btn-secondary-text" to="/onboarding" style={{ marginTop: 24 }}>

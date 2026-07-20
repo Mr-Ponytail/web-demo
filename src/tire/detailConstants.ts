@@ -172,9 +172,9 @@ export function getTireStatusDotColor(status: TireStatus): string | null {
   return null;
 }
 
-/** Approximate RN spring (tension -10, friction 20). */
+/** Approximate RN spring (tension -10, friction 20), slowed for web. */
 export const VIEWPORT_TRANSITION =
-  'transform 1800ms cubic-bezier(0.22, 1.15, 0.32, 1)';
+  'transform 2000ms cubic-bezier(0.22, 1.05, 0.32, 1)';
 
 /** Metric card / pressure gauge — from iSensorApp detailConstants. */
 export const TIRE_DETAIL_METRIC_CARD_W = 80;

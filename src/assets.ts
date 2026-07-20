@@ -17,6 +17,7 @@ export const IMG = {
   lock: '/assets/icons/lock.svg',
   star: '/assets/icons/star.svg',
   insightsInfo: '/assets/icons/insights-info.svg',
+  back: '/assets/icons/back.svg',
   statusInsights: {
     good: '/assets/icons/good-insights.svg',
     caution: '/assets/icons/caution-insights.svg',

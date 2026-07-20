@@ -6,6 +6,7 @@ import {
   TIRE_DETAIL_CARD_CONFIGS,
   TIRE_DETAIL_CARD_INSET,
   TIRE_DETAIL_OUTER_CARD_OFFSET,
+  TIRE_DETAIL_REAR_CAR_UP_OFFSET,
   TIRE_DETAIL_REAR_CHIP_GAP,
   TIRE_FRONT_LABEL_GAP,
   detailCardWidth,
@@ -53,7 +54,10 @@ export function DetailTabView() {
         style={{ minHeight: TIRE_DETAIL_BODY_MIN_HEIGHT }}
       >
         <div className="detail-tab__cars" aria-hidden>
-          <CarBodyStack showDivider />
+          <CarBodyStack
+            showDivider
+            rearCarUpOffset={TIRE_DETAIL_REAR_CAR_UP_OFFSET}
+          />
         </div>
 
         {TIRE_DETAIL_CARD_CONFIGS.map(({ key, metric, row, side }) => {
