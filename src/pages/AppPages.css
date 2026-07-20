@@ -1,0 +1,77 @@
+.settings-chrome {
+  padding-bottom: 16px;
+}
+
+.settings-pane {
+  padding: 8px 16px 40px;
+  background: var(--blue0);
+}
+
+.settings-section-title {
+  margin: 22px 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-60);
+}
+
+.settings-section-title:first-child {
+  margin-top: 8px;
+}
+
+.settings-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.settings-row {
+  width: 100%;
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--border-10);
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-95);
+}
+
+.settings-row:last-child {
+  border-bottom: none;
+}
+
+.settings-row__left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.token-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.token-card__label {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--text-50);
+}
+
+.token-card__value {
+  margin: 0 0 12px;
+  font-size: 14px;
+  font-weight: 500;
+  word-break: break-all;
+}
+
+.token-card__btn {
+  padding: 10px 14px;
+  border-radius: 8px;
+  background: var(--grey5);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-80);
+}

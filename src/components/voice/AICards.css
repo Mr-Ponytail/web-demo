@@ -1,0 +1,166 @@
+.ai-report {
+  position: relative;
+  border: 1px solid #005ead;
+  border-radius: 18px;
+  padding: 14px 16px 24px;
+  overflow: hidden;
+  background: rgba(0, 66, 97, 0.72);
+  backdrop-filter: blur(20px);
+}
+
+.ai-report__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.ai-report__header h3 {
+  margin: 0;
+  flex: 1;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.2px;
+}
+
+.ai-report__divider {
+  margin: 10px 0 20px;
+  border: none;
+  height: 1px;
+  background: #005ead;
+}
+
+.ai-report__primary {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 27px;
+}
+
+.ai-report__secondary {
+  margin: 8px 0 0;
+  font-size: 16px;
+  font-weight: 500;
+  color: #c2c4c8;
+  line-height: 24px;
+}
+
+.ai-advice {
+  margin-top: 20px;
+}
+
+.ai-advice__text {
+  margin: 10px 0 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 26px;
+  min-height: 72px;
+}
+
+.ai-advice__btns {
+  margin-top: 18px;
+  display: flex;
+  gap: 16px;
+  animation: aiFadeIn 240ms ease-out;
+}
+
+.ai-advice__map {
+  height: 44px;
+  border-radius: 22px;
+  border: 1px solid #69a5ff;
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #69a5ff;
+  background: transparent;
+}
+
+.ai-advice__got {
+  height: 44px;
+  border-radius: 22px;
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #69a5ff;
+  background: #004261;
+}
+
+.ai-report-footer {
+  margin-top: 20px;
+}
+
+.ai-report-footer__confirm {
+  margin: 10px 0 0;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 26px;
+  min-height: 26px;
+}
+
+.ai-report-footer__hint {
+  margin: 8px 0 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.55);
+  line-height: 22px;
+}
+
+.ai-report-footer__undo {
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  animation: aiFadeIn 240ms ease-out;
+}
+
+.ai-report-footer__pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px 6px 8px;
+  border-radius: 999px;
+  border: 1px solid #69a5ff;
+  font-size: 16px;
+  font-weight: 500;
+  color: #69a5ff;
+  background: transparent;
+}
+
+.ai-report-footer__ring {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+}
+
+.ai-report-footer__ring svg {
+  position: absolute;
+  inset: 0;
+}
+
+.ai-report-footer__ring span {
+  position: relative;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.ai-report-footer__x {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  padding: 0 4px;
+}
+
+@keyframes aiFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}

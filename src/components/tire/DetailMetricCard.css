@@ -1,0 +1,89 @@
+.detail-metric-pos {
+  position: absolute;
+  z-index: 2;
+}
+
+.detail-metric-card {
+  position: relative;
+  border-radius: 12px;
+  border: 1px solid;
+  padding-top: 10px;
+  padding-bottom: 14px;
+  overflow: visible;
+  text-align: left;
+  box-shadow: 0 2px 8px rgba(15, 15, 16, 0.06);
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.detail-metric-card .detail-gauge {
+  margin-top: auto;
+  flex-shrink: 0;
+  overflow: visible;
+}
+
+.detail-metric-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.detail-metric-card__key {
+  font-size: 16px;
+  font-weight: 500;
+  color: #989ba2;
+}
+
+.detail-metric-card__header-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.detail-metric-card__badge {
+  border-radius: 10px;
+  padding: 2px 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.detail-metric-card__label-row {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.detail-metric-card__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 3px;
+  flex-shrink: 0;
+}
+
+.detail-metric-card__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: #70737c;
+}
+
+.detail-metric-card__value-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: flex-end;
+  align-self: stretch;
+  gap: 4px;
+}
+
+.detail-metric-card__value {
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 28px;
+}
+
+.detail-metric-card__unit {
+  font-size: 12px;
+  font-weight: 500;
+  color: #878a93;
+}

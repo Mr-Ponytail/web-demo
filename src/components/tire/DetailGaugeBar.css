@@ -1,0 +1,22 @@
+.detail-gauge {
+  position: relative;
+  overflow: visible;
+}
+
+.detail-gauge__track {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  object-fit: contain;
+  display: block;
+}
+
+.detail-gauge__indicator {
+  position: absolute;
+  object-fit: contain;
+  display: block;
+}
+
+.detail-gauge .is-offline {
+  opacity: 0.35;
+}

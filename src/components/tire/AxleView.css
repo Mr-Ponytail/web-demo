@@ -1,0 +1,47 @@
+.axle-view {
+  padding: 30px 16px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.axle-view__chip-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.axle-view__body {
+  position: relative;
+  width: 100%;
+}
+
+.axle-view__cars {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.axle-view__front {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+}
+
+.axle-view__front-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.axle-view__rear {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  height: 1px;
+}
+
+.axle-view__rear-slot {
+  position: absolute;
+  top: 0;
+}

@@ -1,0 +1,68 @@
+.home-screen {
+  background: #f7fbff;
+}
+
+.home-fixed-top {
+  background: #f7fbff;
+  padding-top: calc(var(--safe-t) + 0px);
+}
+
+.home-header-pad {
+  padding: 0 16px;
+}
+
+.home-content {
+  flex: 1;
+  background: #ffffff;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  min-height: 0;
+}
+
+.home-content__layer {
+  position: relative;
+  background: #ffffff;
+  min-height: 100%;
+}
+
+.home-content__tire-pad {
+  position: relative;
+  z-index: 1;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.view-tabs {
+  display: flex;
+  background: #f7fbff;
+  border-bottom: 1px solid #e1e2e4;
+}
+
+.view-tab {
+  flex: 1;
+  position: relative;
+  padding: 16px 0;
+  font-size: 20px;
+  font-weight: 600;
+  color: #989ba2;
+}
+
+.view-tab--on {
+  font-weight: 700;
+  color: #005ead;
+}
+
+.view-tab__bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2.5px;
+  background: #005ead;
+}
+
+.view-tabs__divider {
+  width: 1px;
+  margin: 12px 0;
+  background: #aeb0b6;
+}

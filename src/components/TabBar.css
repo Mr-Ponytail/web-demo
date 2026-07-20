@@ -1,0 +1,88 @@
+.tabbar-wrap {
+  position: fixed;
+  left: 50%;
+  bottom: calc(var(--safe-b) + 4px);
+  transform: translateX(-50%);
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: min(var(--phone-max), 100%);
+  padding: 6px 25px 0;
+  pointer-events: none;
+}
+
+.tabbar-pill,
+.tabbar-ai {
+  pointer-events: auto;
+}
+
+.tabbar-pill {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  height: 66px;
+  padding: 3px;
+  border-radius: 999px;
+  background: rgba(243, 245, 247, 0.92);
+  border: 1px solid rgba(225, 226, 228, 0.8);
+  box-shadow: 0 8px 28px rgba(0, 21, 54, 0.1);
+  backdrop-filter: blur(16px);
+  position: relative;
+}
+
+.tabbar-item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  z-index: 1;
+  border-radius: 999px;
+}
+
+.tabbar-indicator {
+  position: absolute;
+  inset: 0;
+  border-radius: 999px;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  z-index: -1;
+}
+
+.tabbar-icon {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+}
+
+.tabbar-icon--on {
+  width: 26px;
+  height: 26px;
+}
+
+.tabbar-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-40);
+}
+
+.tabbar-label--on {
+  font-weight: 600;
+  color: var(--brand-70);
+}
+
+.tabbar-ai {
+  width: 54px;
+  height: 54px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+}
+
+.tabbar-ai img {
+  width: 54px;
+  height: 54px;
+}

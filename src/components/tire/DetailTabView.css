@@ -1,0 +1,21 @@
+.detail-tab {
+  padding: 30px 16px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.detail-tab__chip-wrap {
+  display: flex;
+  justify-content: center;
+}
+
+.detail-tab__body {
+  position: relative;
+  width: 100%;
+}
+
+.detail-tab__cars {
+  position: relative;
+  z-index: 0;
+  pointer-events: none;
+}

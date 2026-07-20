@@ -1,0 +1,67 @@
+.td-pressure-card {
+  margin-bottom: 14px;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 2px 3.85px rgba(15, 15, 16, 0.08);
+  overflow: hidden;
+}
+
+.td-pressure-card__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  padding: 10px 12px 6px;
+}
+
+.td-pressure-card__label {
+  font-size: 15px;
+  font-weight: 600;
+  color: #5a5c63;
+}
+
+.td-pressure-card__val {
+  font-size: 18px;
+  font-weight: 600;
+  color: #0f0f10;
+  line-height: 20px;
+}
+
+.td-pressure-card__gauge {
+  width: 100%;
+}
+
+.td-pressure-card__track {
+  position: relative;
+  width: 100%;
+}
+
+.td-pressure-card__img {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  object-fit: fill;
+  display: block;
+}
+
+.td-pressure-card__tick {
+  position: absolute;
+  width: 1px;
+  height: 14px;
+  background: rgba(0, 0, 0, 0.35);
+  margin-left: -0.5px;
+  z-index: 2;
+}
+
+.td-pressure-card__pin {
+  position: absolute;
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.td-pressure-card__pin img {
+  display: block;
+}

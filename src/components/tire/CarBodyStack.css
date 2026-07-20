@@ -1,0 +1,24 @@
+.car-stack {
+  width: 100%;
+}
+
+.car-stack__section {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  opacity: 0.5;
+}
+
+.car-stack__section img {
+  display: block;
+  object-fit: contain;
+}
+
+.car-stack__between {
+  width: 100%;
+}
+
+.car-stack__line {
+  height: 1px;
+  background: #eaf3ff;
+}

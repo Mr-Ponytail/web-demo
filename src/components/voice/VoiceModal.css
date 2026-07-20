@@ -1,0 +1,260 @@
+.vm {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: min(100vw, var(--phone-max));
+  transform: translateX(-50%);
+  height: 100dvh;
+  max-height: 100%;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: #002130;
+  pointer-events: auto;
+}
+
+.vm__bg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    0deg,
+    #002130 0%,
+    rgba(0, 33, 48, 0.95) 80%,
+    rgba(0, 33, 48, 0.9) 100%
+  );
+  pointer-events: none;
+}
+
+.vm__glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    ellipse 55% 30% at 28% 14%,
+    rgba(158, 197, 255, 0.3) 0%,
+    rgba(51, 133, 255, 0.1) 55%,
+    transparent 100%
+  );
+  pointer-events: none;
+}
+
+.vm__content {
+  position: absolute;
+  top: calc(var(--safe-t) + 40px);
+  left: 24px;
+  right: 24px;
+  bottom: calc(var(--safe-b) + 112px);
+  z-index: 1;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.vm__panel h2,
+.vm__listen-header h2 {
+  margin: 6px 0 0;
+  font-size: 30px;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: -0.3px;
+}
+
+.vm__prompts {
+  margin-top: 23px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.vm__prompt {
+  text-align: left;
+  font-size: 18px;
+  font-weight: 500;
+  color: #fff;
+  line-height: 24px;
+  opacity: 0.6;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.vm__prompt:active {
+  opacity: 0.9;
+}
+
+.vm__listen-scroll {
+  min-height: 100%;
+  padding-bottom: 24px;
+  position: relative;
+}
+
+.vm__listen-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  opacity: 1;
+  transition: opacity cubic-bezier(0.33, 1, 0.68, 1);
+  pointer-events: none;
+}
+
+.vm__listen-header.is-hidden {
+  opacity: 0;
+}
+
+.vm__listening-hint {
+  display: none;
+}
+
+.vm__transcript-wrap {
+  transition: transform cubic-bezier(0.33, 1, 0.68, 1);
+  transform: translateY(0);
+}
+
+.vm__transcript-wrap.is-rise {
+  transform: translateY(var(--vm-rise, -89px));
+}
+
+.vm__transcript {
+  margin: 0;
+  font-weight: 600;
+  color: #fff;
+  line-height: 24px;
+}
+
+.vm__transcript--history {
+  font-weight: 500;
+}
+
+.vm__insight {
+  opacity: 0;
+  transform: translateY(12px);
+  transition:
+    opacity 400ms cubic-bezier(0.33, 1, 0.68, 1),
+    transform 550ms cubic-bezier(0.33, 1, 0.68, 1);
+}
+
+.vm__insight.is-in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vm__generic-card {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  border: 1px solid #005ead;
+  border-radius: 18px;
+  padding: 16px;
+  background: rgba(0, 66, 97, 0.72);
+  backdrop-filter: blur(20px);
+}
+
+.vm__generic-card strong {
+  display: block;
+  font-size: 18px;
+  font-weight: 700;
+  color: #fff;
+  margin-bottom: 8px;
+}
+
+.vm__generic-card p {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.75);
+  line-height: 22px;
+}
+
+.vm__generic-actions {
+  margin-top: 18px;
+}
+
+.vm__got-it {
+  height: 44px;
+  border-radius: 22px;
+  padding: 0 18px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #69a5ff;
+  background: #004261;
+}
+
+.vm__controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: calc(80px + var(--safe-b) + 16px);
+  padding-bottom: calc(var(--safe-b) + 16px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  pointer-events: none;
+  overflow: visible;
+}
+
+.vm__ai-slot {
+  width: 80px;
+  height: 80px;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+  position: relative;
+  overflow: visible;
+}
+
+.vm__mic {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: visible;
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}
+
+.vm__mic img {
+  position: relative;
+  z-index: 1;
+  display: block;
+}
+
+.vm__mic-ring {
+  position: absolute;
+  inset: -12px;
+  border-radius: 50%;
+  border: 2px solid rgba(110, 200, 255, 0.45);
+  animation: vmPulse 1.4s ease-out infinite;
+  pointer-events: none;
+}
+
+.vm__mic-ring--b {
+  inset: -24px;
+  animation-delay: 0.35s;
+  border-color: rgba(110, 200, 255, 0.25);
+}
+
+@keyframes vmPulse {
+  0% {
+    transform: scale(0.85);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(1.15);
+    opacity: 0;
+  }
+}
+
+.vm__cancel {
+  position: absolute;
+  right: 25px;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  pointer-events: auto;
+}

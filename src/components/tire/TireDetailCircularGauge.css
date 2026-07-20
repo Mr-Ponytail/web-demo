@@ -1,0 +1,18 @@
+.td-circ-gauge {
+  position: relative;
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+}
+
+.td-circ-gauge__svg {
+  position: absolute;
+  inset: 0;
+}
+
+.td-circ-gauge__icon {
+  position: relative;
+  z-index: 1;
+  display: block;
+}

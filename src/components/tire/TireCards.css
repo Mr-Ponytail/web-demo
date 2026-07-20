@@ -1,0 +1,92 @@
+.tire-card {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid transparent;
+  box-shadow: 0 2px 8px rgba(15, 15, 16, 0.06);
+  padding: 0;
+  text-align: left;
+  z-index: 2;
+  box-sizing: border-box;
+  flex-shrink: 0;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.tire-card--unconnected {
+  border: none;
+  box-shadow: 0 2px 8px rgba(0, 94, 173, 0.08);
+}
+
+.tire-card__dash {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tire-card__label-row {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  z-index: 2;
+}
+
+.tire-card__label-row--solo {
+  gap: 0;
+}
+
+.tire-card__label {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.tire-card__chevron {
+  display: grid;
+  place-items: center;
+  width: 20px;
+}
+
+.tire-card__shape {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  z-index: 2;
+}
+
+.tire-card__shape img {
+  object-fit: contain;
+  display: block;
+}
+
+.tire-card__bt {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 1;
+}
+
+.tire-card__scan-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  z-index: 2;
+}
+
+.tire-card__scan {
+  padding: 3px 10px;
+  border-radius: 14px;
+  border: 1px solid #0e73c8;
+  background: #fff;
+  font-size: 14px;
+  font-weight: 500;
+  color: #0e73c8;
+  line-height: 1;
+}
