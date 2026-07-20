@@ -168,6 +168,12 @@ export function getTireImageKey(
   return 'normal';
 }
 
+export function getLightImageKey(
+  status: TireStatus,
+): 'normal' | 'caution' | 'danger' {
+  return getTireImageKey(status);
+}
+
 export function getTireStatusDotColor(status: TireStatus): string | null {
   if (status === 'danger') return '#E52222';
   if (status === 'caution') return '#F48200';

@@ -1,3 +1,8 @@
+import type {
+  HazardDetailEvent,
+  HazardDetailSheetContent,
+} from './hazardLocationMocks';
+
 export type EventSeverity = 'danger' | 'caution' | 'good';
 export type EventCategory =
   | 'Impact'
@@ -7,6 +12,34 @@ export type EventCategory =
   | 'Wear'
   | 'Temp'
   | 'Load';
+
+const DETAIL_TAG_LABEL: Record<EventCategory, string> = {
+  Impact: 'Impact',
+  Pressure: 'Low Pressure',
+  Leak: 'Slow Leak',
+  Nut: 'Lug Nut Loose',
+  Wear: 'Uneven Wear',
+  Temp: 'Temp rise',
+  Load: 'Overload',
+};
+
+const DETAIL_TITLE: Record<EventCategory, string> = {
+  Impact: 'Unexpected Shock',
+  Pressure: '50.2 PSI',
+  Leak: 'Slow Leak Detected',
+  Nut: 'Loose Nut',
+  Wear: 'Uneven Wear',
+  Temp: '49.2 PSI',
+  Load: 'Overload',
+};
+
+const DETAIL_POSITIONS = ['RLO', 'FR', 'RRI', 'FL', 'RRO', 'RLI'] as const;
+
+const SESSION_ACCENT_COLOR: Record<EventSeverity, string> = {
+  danger: '#FF6363',
+  caution: '#F48200',
+  good: '#1ED45A',
+};
 
 export const TIRELOG_CATEGORY_FILTERS: EventCategory[] = [
   'Impact',
@@ -30,6 +63,8 @@ export type TireLogSession = {
   severity: EventSeverity;
   tags: TireLogTag[];
   hazardSummary?: string;
+  detailEvents?: HazardDetailEvent[];
+  accentColor?: string;
 };
 
 export type TireLogDayGroup = {
@@ -47,6 +82,25 @@ export const TIRE_LOG_DAY_GROUPS: TireLogDayGroup[] = [
         location: 'Gangnam-daero',
         severity: 'danger',
         hazardSummary: 'Same impact zone detected 3 times this month',
+        accentColor: '#28D6B9',
+        detailEvents: [
+          {
+            id: 's1-detail-0',
+            time: 'AM 08:24',
+            tagLabel: 'Impact',
+            severity: 'danger',
+            title: 'Sharp impact detected',
+            position: 'FL',
+          },
+          {
+            id: 's1-detail-1',
+            time: 'AM 08:24',
+            tagLabel: 'Pressure',
+            severity: 'caution',
+            title: 'Pressure drop after impact',
+            position: 'FL',
+          },
+        ],
         tags: [
           { category: 'Impact', severity: 'danger' },
           { category: 'Pressure', severity: 'caution' },
@@ -157,4 +211,31 @@ export function formatMonthYear(year: number, month: number) {
 export function formatDateBadge(dateKey: string) {
   const date = new Date(`${dateKey}T00:00:00`);
   return `${date.getDate()} ${DAY_NAMES[date.getDay()]}`;
+}
+
+export function getSessionDetailEvents(session: TireLogSession): HazardDetailEvent[] {
+  if (session.detailEvents?.length) {
+    return session.detailEvents;
+  }
+
+  return session.tags.map((tag, index) => ({
+    id: `${session.id}-detail-${index}`,
+    time: session.time,
+    tagLabel: DETAIL_TAG_LABEL[tag.category],
+    title: DETAIL_TITLE[tag.category],
+    position: DETAIL_POSITIONS[index % DETAIL_POSITIONS.length],
+    severity: tag.severity,
+  }));
+}
+
+export function buildSessionDetailSheetContent(
+  session: TireLogSession,
+  dayDate: string,
+): HazardDetailSheetContent {
+  return {
+    date: dayDate,
+    location: session.location,
+    events: getSessionDetailEvents(session),
+    accentColor: session.accentColor ?? SESSION_ACCENT_COLOR[session.severity],
+  };
 }

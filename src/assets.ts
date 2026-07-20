@@ -7,8 +7,10 @@ export const IMG = {
   frontCar: '/assets/images/front-car.png',
   rearCar: '/assets/images/rear-car.png',
   tireNormal: '/assets/images/normal-tire.png',
-  tireCaution: '/assets/images/caution-tire.png',
-  tireDanger: '/assets/images/danger-tire.png',
+  tireCaution: '/assets/images/tire-caution.png',
+  tireDanger: '/assets/images/tire-danger.png',
+  axleTireCaution: '/assets/images/caution-tire.png',
+  axleTireDanger: '/assets/images/danger-tire.png',
   insightsGood: '/assets/images/insights-goodtire.png',
   insightsCaution: '/assets/images/insights-cautiontire.png',
   insightsDanger: '/assets/images/insights-dangertire.png',
@@ -47,7 +49,12 @@ export const IMG = {
   },
   bluetooth: '/assets/icons/bluetooth.svg',
   notification: '/assets/icons/notification.svg',
+  complete: '/assets/icons/complete.svg',
   chevron: '/assets/icons/chevron.svg',
+  dangerLog: '/assets/icons/danger-log.svg',
+  locationSub: '/assets/icons/location-sub.svg',
+  send: '/assets/icons/send.svg',
+  aiInsight: '/assets/icons/ai-insight.svg',
   ai: '/assets/icons/ai.svg',
   aiSpark: '/assets/icons/ai-spark.svg',
   aiReport: '/assets/icons/ai-report.svg',
@@ -61,6 +68,16 @@ export const IMG = {
   safety: '/assets/icons/safety.svg',
   warning: '/assets/icons/warning.svg',
   pressureGauge: '/assets/images/pressure-gauge.png',
+  leftLight: {
+    normal: '/assets/images/leftlight-good.png',
+    caution: '/assets/images/leftlight-caution.png',
+    danger: '/assets/images/leftlight-danger.png',
+  },
+  rightLight: {
+    normal: '/assets/images/rightlight-good.png',
+    caution: '/assets/images/rightlight-caution.png',
+    danger: '/assets/images/rightlight-danger.png',
+  },
   pressurePin: {
     normal: '/assets/icons/good-pressure.svg',
     caution: '/assets/icons/caution-pressure.svg',
@@ -102,7 +119,13 @@ export const IMG = {
 
 export const TIRE_IMG = {
   normal: IMG.tireNormal,
+  caution: IMG.axleTireCaution,
+  danger: IMG.axleTireDanger,
+  offline: IMG.tireNormal,
+} as const;
+
+/** Small tire graphics for impact event cards (hazard / log detail sheets). */
+export const TIRE_IMPACT_IMG = {
   caution: IMG.tireCaution,
   danger: IMG.tireDanger,
-  offline: IMG.tireNormal,
 } as const;

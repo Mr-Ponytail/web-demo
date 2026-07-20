@@ -35,9 +35,9 @@ function formatDamageDeltaPct(deltaPct: number) {
 }
 
 function getDamageStatusIcon(level: number) {
-  if (level <= 30) return IMG.statusInsights.good;
-  if (level <= 75) return IMG.statusInsights.caution;
-  return IMG.statusInsights.danger;
+  if (level <= 30) return IMG.statusLog.good;
+  if (level <= 75) return IMG.statusLog.caution;
+  return IMG.statusLog.danger;
 }
 
 function getDamageStatusHeadline(level: number) {
@@ -172,9 +172,9 @@ function WatchWeekMetricCard({ card }: { card: WatchWeekCardData }) {
   const [primary, secondary] = card.trendLabel.split(' | ');
   const alertIcon =
     card.alert === 'danger'
-      ? IMG.statusInsights.danger
+      ? IMG.statusLog.danger
       : card.alert === 'caution'
-        ? IMG.statusInsights.caution
+        ? IMG.statusLog.caution
         : null;
 
   return (

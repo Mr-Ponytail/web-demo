@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IMG } from '../assets';
-import { DEMO_STORAGE_KEYS, DEMO_VEHICLE, generateRandomVin } from '../data/vehicleMock';
+import { DEMO_DEFAULT_NICKNAME, DEMO_STORAGE_KEYS, DEMO_VEHICLE, generateRandomVin } from '../data/vehicleMock';
 import './OnboardingPages.css';
 
 function OnboardingTopBar() {
@@ -17,9 +17,12 @@ function OnboardingTopBar() {
 
 export function NicknamePage() {
   const navigate = useNavigate();
-  const [name, setName] = useState(
-    () => sessionStorage.getItem(DEMO_STORAGE_KEYS.nickname) ?? '',
-  );
+  const [name, setName] = useState(() => {
+    const stored = sessionStorage.getItem(DEMO_STORAGE_KEYS.nickname)?.trim();
+    if (stored) return stored;
+    sessionStorage.setItem(DEMO_STORAGE_KEYS.nickname, DEMO_DEFAULT_NICKNAME);
+    return DEMO_DEFAULT_NICKNAME;
+  });
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();

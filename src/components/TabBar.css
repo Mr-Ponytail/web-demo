@@ -61,6 +61,9 @@
   height: 24px;
   display: block;
   flex-shrink: 0;
+}
+
+.tabbar-icon--off {
   background-color: var(--text-40);
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
@@ -71,10 +74,7 @@
 }
 
 img.tabbar-icon {
-  background: none;
   object-fit: contain;
-  -webkit-mask-image: none;
-  mask-image: none;
 }
 
 .tabbar-icon--on {

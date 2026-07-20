@@ -8,6 +8,9 @@ export const DEMO_VEHICLE = {
   axle: '6-wheel dual rear',
 };
 
+/** Pre-filled nickname on the onboarding name step. */
+export const DEMO_DEFAULT_NICKNAME = 'Trak';
+
 export const DEMO_STORAGE_KEYS = {
   nickname: 'web-demo-nickname',
   onboarded: 'web-demo-onboarded',

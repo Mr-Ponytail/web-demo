@@ -1,0 +1,60 @@
+.report-to-dot-toast {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: calc(52px - 20px);
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-height: 57px;
+  padding: 0 14px;
+  border-radius: 8px;
+  background: var(--text-95);
+  box-shadow: 0 2px 8px rgba(15, 15, 16, 0.18);
+}
+
+.report-to-dot-toast__message {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 700;
+  color: #fff;
+}
+
+.report-to-dot-toast__undo {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--blue30);
+  background: transparent;
+  color: var(--blue30);
+}
+
+.report-to-dot-toast__countdown {
+  position: relative;
+  width: 24px;
+  height: 24px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.report-to-dot-toast__countdown svg {
+  position: absolute;
+  inset: 0;
+}
+
+.report-to-dot-toast__countdown > span {
+  position: relative;
+  font-size: 12px;
+  font-weight: 600;
+  color: #fff;
+}
+
+.report-to-dot-toast__undo-text {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--blue30);
+}

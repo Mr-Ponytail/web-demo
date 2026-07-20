@@ -11,6 +11,7 @@ import { OnboardingPage } from './pages/OnboardingPage';
 import { SettingsPage } from './pages/SettingsPage';
 import { SplashPage } from './pages/SplashPage';
 import { TireDetailPage } from './pages/TireDetailPage';
+import { HazardLocationPage } from './pages/HazardLocationPage';
 import { TireLogPage } from './pages/TireLogPage';
 
 export default function App() {
@@ -25,6 +26,7 @@ export default function App() {
             <Route path="/onboarding/vin" element={<VinPage />} />
             <Route path="/onboarding/confirm" element={<ConfirmPage />} />
             <Route path="/app/tire/:tireKey" element={<TireDetailPage />} />
+            <Route path="/app/tire-log/hazard-map" element={<HazardLocationPage />} />
             <Route path="/app" element={<AppShell />}>
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<HomePage />} />

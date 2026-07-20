@@ -1,6 +1,9 @@
 import { useMemo, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { IMG } from '../assets';
+import { HazardMarkerDetailSheet } from '../components/hazard/HazardMarkerDetailSheet';
 import {
+  buildSessionDetailSheetContent,
   formatDateBadge,
   formatMonthYear,
   HAZARD_BANNER_DESCRIPTION,
@@ -13,6 +16,7 @@ import {
   type TireLogDayGroup,
   type TireLogSession,
 } from '../data/tireLogMocks';
+import type { HazardDetailSheetContent } from '../data/hazardLocationMocks';
 import './TireLogPage.css';
 
 const CHECKPOINT_SIZE = 16;
@@ -40,15 +44,19 @@ function statusLogIcon(severity: EventSeverity) {
 function SessionCard({
   session,
   noMarginBottom,
+  onPress,
 }: {
   session: TireLogSession;
   noMarginBottom?: boolean;
+  onPress: () => void;
 }) {
   return (
-    <article
+    <button
+      type="button"
       className={
         noMarginBottom ? 'tl-session tl-session--last' : 'tl-session'
       }
+      onClick={onPress}
     >
       <div className="tl-session__top">
         <span className="tl-session__time">{session.time}</span>
@@ -82,16 +90,20 @@ function SessionCard({
       ) : (
         <p className="tl-session__none">No Event</p>
       )}
-    </article>
+    </button>
   );
 }
 
 function TimelineDay({
   group,
   isLastDay,
+  onHazardChipPress,
+  onSessionPress,
 }: {
   group: TireLogDayGroup;
   isLastDay: boolean;
+  onHazardChipPress: () => void;
+  onSessionPress: (session: TireLogSession) => void;
 }) {
   const lastIdx = group.sessions.length - 1;
   let hazardShown = false;
@@ -122,7 +134,11 @@ function TimelineDay({
           return (
             <div key={session.id}>
               {showHazard && session.hazardSummary ? (
-                <button type="button" className="tl-hazard-chip">
+                <button
+                  type="button"
+                  className="tl-hazard-chip"
+                  onClick={onHazardChipPress}
+                >
                   <span>{session.hazardSummary}</span>
                   <img src={IMG.chevron} alt="" width={20} height={20} />
                 </button>
@@ -130,6 +146,7 @@ function TimelineDay({
               <SessionCard
                 session={session}
                 noMarginBottom={isLastDay && index === lastIdx}
+                onPress={() => onSessionPress(session)}
               />
             </div>
           );
@@ -140,6 +157,7 @@ function TimelineDay({
 }
 
 export function TireLogPage() {
+  const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
     year: 2026,
@@ -151,6 +169,9 @@ export function TireLogPage() {
   );
   const [hazardVisible, setHazardVisible] = useState(true);
   const [reported, setReported] = useState(false);
+  const [detailSheetVisible, setDetailSheetVisible] = useState(false);
+  const [detailSheetContent, setDetailSheetContent] =
+    useState<HazardDetailSheetContent | null>(null);
 
   const prevMonth = prevMonthOf(dateFilter);
 
@@ -183,6 +204,15 @@ export function TireLogPage() {
     setDateFilter(next);
     setHazardVisible(true);
     scrollRef.current?.scrollTo({ top: 0 });
+  };
+
+  const handleSessionPress = (session: TireLogSession, dayDate: string) => {
+    setDetailSheetContent(buildSessionDetailSheetContent(session, dayDate));
+    setDetailSheetVisible(true);
+  };
+
+  const handleCloseDetailSheet = () => {
+    setDetailSheetVisible(false);
   };
 
   return (
@@ -246,7 +276,11 @@ export function TireLogPage() {
                   <h2>Recurring Road Hazard</h2>
                   <p>{HAZARD_BANNER_DESCRIPTION}.</p>
                   <div className="tirelog__hazard-actions">
-                    <button type="button" className="tirelog__map-btn">
+                    <button
+                      type="button"
+                      className="tirelog__map-btn"
+                      onClick={() => navigate('/app/tire-log/hazard-map')}
+                    >
                       View on map
                     </button>
                     <button
@@ -332,6 +366,8 @@ export function TireLogPage() {
                 key={group.date}
                 group={group}
                 isLastDay={index === visibleDays.length - 1}
+                onHazardChipPress={() => navigate('/app/tire-log/hazard-map')}
+                onSessionPress={session => handleSessionPress(session, group.date)}
               />
             ))}
           </div>
@@ -361,6 +397,13 @@ export function TireLogPage() {
           </button>
         </div>
       </div>
+
+      <HazardMarkerDetailSheet
+        visible={detailSheetVisible}
+        content={detailSheetContent}
+        onClose={handleCloseDetailSheet}
+        overlayTabBar
+      />
     </div>
   );
 }

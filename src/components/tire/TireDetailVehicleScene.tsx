@@ -1,7 +1,8 @@
 import { useMemo } from 'react';
-import { TIRE_IMG } from '../../assets';
+import { IMG, TIRE_IMG } from '../../assets';
 import type { TireKey, TireStatus } from '../../data/tireMocks';
 import {
+  getLightImageKey,
   getTireImageKey,
   isRearInnerTire,
   type DetailLayout,
@@ -48,6 +49,8 @@ export function TireDetailVehicleScene({
     ri.x - layout.rightLightW / 2 + layout.rightLightOffsetX;
   const riLightTop =
     ri.y - layout.rightLightH / 2 + layout.rightLightOffsetY;
+  const liLightKey = getLightImageKey(tireStatusByKey.LI);
+  const riLightKey = getLightImageKey(tireStatusByKey.RI);
 
   return (
     <div className="td-viewport" aria-hidden>
@@ -115,7 +118,7 @@ export function TireDetailVehicleScene({
 
       <div className="td-scene td-scene--lights" style={sceneStyle}>
         <img
-          src="/assets/images/leftlight-good.png"
+          src={IMG.leftLight[liLightKey]}
           alt=""
           className="td-light"
           style={{
@@ -128,7 +131,7 @@ export function TireDetailVehicleScene({
           }}
         />
         <img
-          src="/assets/images/rightlight-good.png"
+          src={IMG.rightLight[riLightKey]}
           alt=""
           className="td-light"
           style={{

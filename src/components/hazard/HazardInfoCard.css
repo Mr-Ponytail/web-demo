@@ -1,0 +1,85 @@
+.hazard-info-card {
+  position: relative;
+  min-height: 48px;
+  border-radius: 12px;
+  border: 1.5px solid var(--blue30);
+  overflow: hidden;
+  background: rgba(255, 247, 247, 0.5);
+  backdrop-filter: blur(2px);
+  box-sizing: border-box;
+  transition:
+    width var(--hazard-info-expand-duration, 280ms) cubic-bezier(0.4, 0, 0.2, 1),
+    height var(--hazard-info-expand-duration, 280ms) cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hazard-info-card__inner {
+  padding: 12px 14px;
+}
+
+.hazard-info-card__header {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.hazard-info-card:not(.hazard-info-card--expanded) .hazard-info-card__header {
+  width: max-content;
+}
+
+.hazard-info-card__title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--brand-60);
+  letter-spacing: 0.08px;
+}
+
+.hazard-info-card--expanded .hazard-info-card__title {
+  flex: 1;
+}
+
+.hazard-info-card__chevron {
+  display: inline-flex;
+  transform: rotate(90deg);
+  transition: transform var(--hazard-info-fade-duration, 220ms) ease;
+}
+
+.hazard-info-card__chevron--expanded {
+  transform: rotate(-90deg);
+}
+
+.hazard-info-card__expanded-measure {
+  position: absolute;
+  visibility: hidden;
+  pointer-events: none;
+  left: 0;
+  top: 0;
+  z-index: -1;
+}
+
+.hazard-info-card__header--measure .hazard-info-card__title {
+  flex: 1;
+}
+
+.hazard-info-card__chevron-spacer {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.hazard-info-card__expanded-measure .hazard-info-card__detail {
+  opacity: 1;
+}
+
+.hazard-info-card__detail {
+  margin: 8px 0 0;
+  font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  color: var(--text-80);
+  opacity: 0;
+  transition: opacity var(--hazard-info-fade-duration, 220ms) ease;
+}
+
+.hazard-info-card--expanded .hazard-info-card__detail {
+  opacity: 1;
+}
