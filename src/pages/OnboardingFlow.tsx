@@ -159,15 +159,28 @@ export function ConfirmPage() {
         <label className="field-label">VIN</label>
         <div className="input input--readonly">{vin}</div>
 
-        <label className="field-label" style={{ marginTop: 16 }}>
+        <label className="field-label" style={{ marginTop: 12 }}>
           VEHICLE MODEL
         </label>
         <div className="input input--readonly">{DEMO_VEHICLE.displayModel}</div>
 
-        <label className="field-label" style={{ marginTop: 16 }}>
-          WHEEL COUNT
-        </label>
-        <div className="input input--readonly">{DEMO_VEHICLE.wheelCount}</div>
+        <div className="ob-wheel-card">
+          <div className="ob-wheel-card__image-wrap">
+            <img
+              src={IMG.sixWheelCar}
+              alt=""
+              width={137}
+              height={93}
+              className="ob-wheel-card__image"
+            />
+          </div>
+          <div className="ob-wheel-card__footer">
+            <span className="ob-wheel-card__total">Total</span>
+            <p className="ob-wheel-card__count">
+              <strong>{DEMO_VEHICLE.wheelCount}</strong> tires
+            </p>
+          </div>
+        </div>
 
         <div className="ob-footer-abs ob-footer-abs--stack">
           <button

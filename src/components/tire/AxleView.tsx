@@ -21,6 +21,7 @@ import './AxleView.css';
 
 type Props = {
   connected?: ReadonlySet<TireKey>;
+  onScanTire?: (tireKey: TireKey) => void;
 };
 
 function AxleTire({
@@ -28,15 +29,23 @@ function AxleTire({
   offsetTop = 0,
   connected,
   onPress,
+  onScan,
 }: {
   tireKey: TireKey;
   offsetTop?: number;
   connected: boolean;
   onPress: (key: TireKey) => void;
+  onScan?: (key: TireKey) => void;
 }) {
   const status: TireStatus = MOCK_BY_TIRE[tireKey].status;
   if (!connected) {
-    return <UnconnectedTireCard tireKey={tireKey} offsetTop={offsetTop} />;
+    return (
+      <UnconnectedTireCard
+        tireKey={tireKey}
+        offsetTop={offsetTop}
+        onScan={onScan}
+      />
+    );
   }
   return (
     <ConnectedTireCard
@@ -48,7 +57,7 @@ function AxleTire({
   );
 }
 
-export function AxleView({ connected }: Props) {
+export function AxleView({ connected, onScanTire }: Props) {
   const navigate = useNavigate();
   const connectedSet =
     connected ?? new Set<TireKey>(['FL', 'FR', 'LI', 'RI', 'LO', 'RO']);
@@ -83,11 +92,13 @@ export function AxleView({ connected }: Props) {
               tireKey="FL"
               connected={connectedSet.has('FL')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
             <AxleTire
               tireKey="FR"
               connected={connectedSet.has('FR')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
           </div>
         </div>
@@ -105,6 +116,7 @@ export function AxleView({ connected }: Props) {
               offsetTop={TIRE_REAR_OUTER_TIRE_OFFSET}
               connected={connectedSet.has('LO')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
           </div>
           <div
@@ -116,6 +128,7 @@ export function AxleView({ connected }: Props) {
               offsetTop={TIRE_REAR_INNER_TIRE_UP_OFFSET}
               connected={connectedSet.has('LI')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
           </div>
           <div
@@ -127,6 +140,7 @@ export function AxleView({ connected }: Props) {
               offsetTop={TIRE_REAR_INNER_TIRE_UP_OFFSET}
               connected={connectedSet.has('RI')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
           </div>
           <div
@@ -138,6 +152,7 @@ export function AxleView({ connected }: Props) {
               offsetTop={TIRE_REAR_OUTER_TIRE_OFFSET}
               connected={connectedSet.has('RO')}
               onPress={openDetail}
+              onScan={onScanTire}
             />
           </div>
         </div>

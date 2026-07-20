@@ -5,3 +5,22 @@
   min-height: 0;
   overflow: hidden;
 }
+
+.app-shell__main {
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Tab inset on scroll bodies so each screen's background shows under the tab bar. */
+.app-shell__main > .screen {
+  padding-bottom: 0;
+}
+
+.app-shell__main .insights__scroll,
+.app-shell__main .settings-sub__body {
+  padding-bottom: calc(var(--tab-h) + var(--safe-b));
+}

@@ -296,7 +296,7 @@ export function InsightsPage() {
   }, []);
 
   return (
-    <div className="screen insights screen--pad-tabs">
+    <div className="screen insights">
       <div
         className="insights__sticky"
         style={{

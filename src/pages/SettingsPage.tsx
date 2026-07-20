@@ -67,7 +67,7 @@ function SettingsSection({
 
 function HelpNoticesSubScreen({ onBack }: { onBack: () => void }) {
   return (
-    <div className="screen settings-sub screen--pad-tabs">
+    <div className="screen settings-sub">
       <SettingsSubNavBar title="Help & Notices" onBack={onBack} />
       <div className="settings-sub__body" />
     </div>
@@ -79,7 +79,7 @@ function AlertPreferencesSubScreen({ onBack }: { onBack: () => void }) {
     useState<AlertPreferenceLevel>('standard');
 
   return (
-    <div className="screen settings-sub settings-sub--alert screen--pad-tabs">
+    <div className="screen settings-sub settings-sub--alert">
       <SettingsSubNavBar
         title="Alert Preferences"
         onBack={onBack}
@@ -169,7 +169,7 @@ export function SettingsPage() {
   }
 
   return (
-    <div className="screen settings screen--pad-tabs">
+    <div className="screen settings">
       <h1 className="settings__title">Settings</h1>
 
       <div className="settings__scroll">

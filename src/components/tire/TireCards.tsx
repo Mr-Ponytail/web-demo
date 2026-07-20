@@ -85,9 +85,10 @@ export function ConnectedTireCard({
 type UnconnectedProps = {
   tireKey: TireKey;
   offsetTop?: number;
+  onScan?: (tireKey: TireKey) => void;
 };
 
-export function UnconnectedTireCard({ tireKey, offsetTop = 0 }: UnconnectedProps) {
+export function UnconnectedTireCard({ tireKey, offsetTop = 0, onScan }: UnconnectedProps) {
   const label = TIRE_POSITION_LABELS[tireKey];
   return (
     <div
@@ -161,6 +162,7 @@ export function UnconnectedTireCard({ tireKey, offsetTop = 0 }: UnconnectedProps
           type="button"
           className="tire-card__scan"
           style={{ height: TIRE_UNCONNECTED_SCAN_BTN_H }}
+          onClick={() => onScan?.(tireKey)}
         >
           Scan
         </button>

@@ -10,6 +10,14 @@ export type TireMock = {
 
 export const TIRE_ORDER: TireKey[] = ['FL', 'FR', 'LI', 'RI', 'LO', 'RO'];
 
+/** Tires with an active Bluetooth sensor in the home-screen demo. */
+export const DEMO_CONNECTED_TIRES: ReadonlySet<TireKey> = new Set([
+  'FL',
+  'FR',
+  'LI',
+  'LO',
+]);
+
 export const MOCK_BY_TIRE: Record<TireKey, TireMock> = {
   FL: { status: 'danger', pressure: 300, temp: 85, label: 'Front Left' },
   FR: { status: 'danger', pressure: 300, temp: 85, label: 'Front Right' },

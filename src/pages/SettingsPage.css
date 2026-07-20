@@ -22,7 +22,11 @@
   overflow-y: auto;
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
-  padding: 0 16px 24px;
+  padding: 0 16px;
+}
+
+.app-shell__main .settings__scroll {
+  padding-bottom: calc(var(--tab-h) + var(--safe-b) + 24px);
 }
 
 .settings-section__title {
@@ -110,8 +114,12 @@
   -webkit-overflow-scrolling: touch;
   display: flex;
   flex-direction: column;
-  padding: 16px 16px 24px;
+  padding: 16px 16px 0;
   background: #fffcf7;
+}
+
+.app-shell__main .settings-alert-scroll {
+  padding-bottom: calc(var(--tab-h) + var(--safe-b) + 24px);
 }
 
 .settings-alert-list {

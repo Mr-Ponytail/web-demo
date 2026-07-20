@@ -1,5 +1,5 @@
 .home-screen {
-  background: #f7fbff;
+  background: #ffffff;
 }
 
 .home-fixed-top {
@@ -17,6 +17,10 @@
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   min-height: 0;
+}
+
+.app-shell__main .home-content {
+  padding-bottom: calc(var(--tab-h) + var(--safe-b) + 20px);
 }
 
 .home-content__layer {

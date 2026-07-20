@@ -264,7 +264,10 @@
   overscroll-behavior: none;
   -webkit-overflow-scrolling: touch;
   background: #fff;
-  padding-bottom: 16px;
+}
+
+.app-shell__main .tirelog__scroll {
+  padding-bottom: calc(var(--tab-h) + var(--safe-b) + 16px);
 }
 
 .tirelog__empty {

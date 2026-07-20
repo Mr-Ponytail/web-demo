@@ -9,7 +9,9 @@ export function AppShell() {
 
   return (
     <div className="app-shell">
-      <Outlet />
+      <div className="app-shell__main">
+        <Outlet />
+      </div>
       {!voiceOpen ? (
         <TabBar onAiPress={() => setVoiceOpen(true)} />
       ) : null}

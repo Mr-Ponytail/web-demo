@@ -3,6 +3,7 @@ export const IMG = {
   splashLogo: '/assets/images/splash-logo.png',
   mainLogo: '/assets/images/main-logo.png',
   mainTire: '/assets/images/main-tire.png',
+  sixWheelCar: '/assets/images/6-wheel-car.png',
   frontCar: '/assets/images/front-car.png',
   rearCar: '/assets/images/rear-car.png',
   tireNormal: '/assets/images/normal-tire.png',

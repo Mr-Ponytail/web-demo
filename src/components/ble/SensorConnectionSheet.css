@@ -1,0 +1,255 @@
+.ble-sheet-root {
+  position: fixed;
+  inset: 0;
+  left: 50%;
+  width: min(100vw, var(--phone-max));
+  transform: translateX(-50%);
+  z-index: 100;
+  background: transparent;
+  display: flex;
+  align-items: flex-end;
+}
+
+.ble-sheet {
+  width: 100%;
+  max-height: 72vh;
+  background: var(--grey0);
+  border-top-left-radius: 16px;
+  border-top-right-radius: 16px;
+  padding: 12px 20px calc(max(var(--safe-b), 16px) + 8px);
+  transform: translateY(100%);
+  transition: transform 250ms cubic-bezier(0.33, 1, 0.68, 1);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.ble-sheet--open {
+  transform: translateY(0);
+}
+
+.ble-sheet__handle {
+  width: 36px;
+  height: 4px;
+  border-radius: 2px;
+  background: var(--border-20);
+  margin: 0 auto 20px;
+  flex-shrink: 0;
+}
+
+.ble-sheet__title {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text-95);
+}
+
+.ble-sheet__badge {
+  align-self: flex-start;
+  border: 1px solid var(--brand-70);
+  border-radius: 20px;
+  padding: 6px 10px;
+  margin-bottom: 24px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--brand-70);
+  letter-spacing: 0.5px;
+  flex-shrink: 0;
+}
+
+.ble-sheet__section {
+  margin-bottom: 24px;
+  flex-shrink: 0;
+}
+
+.ble-sheet__section-label {
+  margin: 0 0 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-50);
+}
+
+.ble-sheet__connected-card {
+  border: 1px solid rgba(234, 243, 255, 0.6);
+  border-radius: 12px;
+  background: rgba(234, 243, 255, 0.1);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ble-sheet__connected-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.ble-sheet__connected-main {
+  flex: 1;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ble-sheet__device-info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ble-sheet__device-name-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.ble-sheet__device-name {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-95);
+}
+
+.ble-sheet__device-id {
+  font-size: 12px;
+  color: var(--text-50);
+  word-break: break-all;
+}
+
+.ble-sheet__signal {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+  color: var(--text-50);
+  flex-shrink: 0;
+}
+
+.ble-sheet__signal--good {
+  background: var(--good-bg);
+}
+
+.ble-sheet__signal--caution {
+  background: var(--caution-bg);
+}
+
+.ble-sheet__signal--danger {
+  background: var(--danger-bg);
+}
+
+.ble-sheet__connected-actions {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 8px;
+}
+
+.ble-sheet__refresh-outline,
+.ble-sheet__disconnect {
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.ble-sheet__refresh-outline {
+  border: 1px solid var(--border-20);
+  background: var(--grey0);
+  color: var(--text-50);
+}
+
+.ble-sheet__disconnect {
+  background: var(--text-50);
+  color: var(--grey0);
+}
+
+.ble-sheet__list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+  flex-shrink: 0;
+}
+
+.ble-sheet__list-header-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ble-sheet__refresh-icon {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.ble-sheet__list {
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+  min-height: 0;
+}
+
+.ble-sheet__list-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 0;
+}
+
+.ble-sheet__divider {
+  height: 1px;
+  background: var(--border-10);
+}
+
+.ble-sheet__connect-btn {
+  min-width: 88px;
+  height: 37px;
+  padding: 0 10px;
+  border-radius: 8px;
+  background: var(--blue5);
+  color: var(--brand-70);
+  font-size: 14px;
+  font-weight: 500;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.ble-sheet__connect-btn:disabled {
+  opacity: 0.7;
+}
+
+.ble-sheet__empty {
+  margin: 0;
+  padding: 24px 0;
+  text-align: center;
+  font-size: 14px;
+  color: var(--text-50);
+}
+
+.ble-sheet__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--border-20);
+  border-top-color: var(--text-50);
+  border-radius: 50%;
+  animation: ble-sheet-spin 0.8s linear infinite;
+}
+
+.ble-sheet__spinner--btn {
+  border-top-color: var(--brand-70);
+}
+
+@keyframes ble-sheet-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

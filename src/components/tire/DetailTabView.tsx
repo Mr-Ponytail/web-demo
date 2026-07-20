@@ -19,6 +19,10 @@ import { CarBodyStack } from './CarBodyStack';
 import { DetailMetricCard } from './DetailMetricCard';
 import './DetailTabView.css';
 
+type Props = {
+  connected: ReadonlySet<TireKey>;
+};
+
 function positionStyle(
   row: 'front' | 'rearMid' | 'rearOuter',
   side: 'left' | 'right',
@@ -34,7 +38,7 @@ function positionStyle(
     : { right: TIRE_DETAIL_CARD_INSET, top };
 }
 
-export function DetailTabView() {
+export function DetailTabView({ connected }: Props) {
   const navigate = useNavigate();
   const screenW = usePhoneWidth();
   const cardW = detailCardWidth(screenW);
@@ -62,14 +66,15 @@ export function DetailTabView() {
 
         {TIRE_DETAIL_CARD_CONFIGS.map(({ key, metric, row, side }) => {
           const tire = MOCK_BY_TIRE[key as TireKey];
+          const isConnected = connected.has(key as TireKey);
           const value = metric === 'pressure' ? tire.pressure : tire.temp;
           return (
             <DetailMetricCard
               key={`${key}-${metric}`}
               tireKey={key}
               metric={metric}
-              status={tire.status}
-              connected
+              status={isConnected ? tire.status : 'offline'}
+              connected={isConnected}
               value={value}
               cardWidth={cardW}
               gaugeWidth={gaugeW}

@@ -12,6 +12,7 @@ export const DEMO_STORAGE_KEYS = {
   nickname: 'web-demo-nickname',
   onboarded: 'web-demo-onboarded',
   vin: 'web-demo-vin',
+  sensorConnection: 'web-demo-sensor-connection',
 } as const;
 
 const VIN_CHARS = 'ABCDEFGHJKLMNPRSTUVWXYZ0123456789';
