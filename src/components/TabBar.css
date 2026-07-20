@@ -8,8 +8,13 @@
   align-items: center;
   gap: 12px;
   width: min(var(--phone-max), 100%);
-  padding: 6px 24px 0;
+  padding: 6px 16px 0;
   pointer-events: none;
+  transition: opacity 250ms ease;
+}
+
+.tabbar-wrap--dimmed {
+  opacity: 0.4;
 }
 
 .tabbar-pill,

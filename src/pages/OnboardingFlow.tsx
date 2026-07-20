@@ -1,7 +1,7 @@
 import { useState, type FormEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IMG } from '../assets';
-import { DEMO_STORAGE_KEYS } from '../data/vehicleMock';
+import { DEMO_STORAGE_KEYS, DEMO_VEHICLE, generateRandomVin } from '../data/vehicleMock';
 import './OnboardingPages.css';
 
 function OnboardingTopBar() {
@@ -54,9 +54,13 @@ export function NicknamePage() {
 
 export function VinPage() {
   const navigate = useNavigate();
-  const [vin, setVin] = useState(
-    () => sessionStorage.getItem(DEMO_STORAGE_KEYS.vin) ?? '',
-  );
+  const [vin, setVin] = useState(() => {
+    const stored = sessionStorage.getItem(DEMO_STORAGE_KEYS.vin)?.trim().toUpperCase();
+    if (stored && stored.length === 17) return stored;
+    const generated = generateRandomVin();
+    sessionStorage.setItem(DEMO_STORAGE_KEYS.vin, generated);
+    return generated;
+  });
   const [tab, setTab] = useState<'scan' | 'manual'>('manual');
 
   const onSubmit = (e: FormEvent) => {
@@ -128,8 +132,19 @@ export function VinPage() {
 
 export function ConfirmPage() {
   const navigate = useNavigate();
-  const vin =
-    sessionStorage.getItem(DEMO_STORAGE_KEYS.vin) ?? '1HGCM82633A004352';
+  const [vin] = useState(() => {
+    const stored = sessionStorage.getItem(DEMO_STORAGE_KEYS.vin);
+    if (stored) return stored;
+    const generated = generateRandomVin();
+    sessionStorage.setItem(DEMO_STORAGE_KEYS.vin, generated);
+    return generated;
+  });
+
+  const rescanVin = () => {
+    const next = generateRandomVin();
+    sessionStorage.setItem(DEMO_STORAGE_KEYS.vin, next);
+    navigate('/onboarding/vin');
+  };
 
   return (
     <div className="screen screen--white onboarding-step">
@@ -147,12 +162,12 @@ export function ConfirmPage() {
         <label className="field-label" style={{ marginTop: 16 }}>
           VEHICLE MODEL
         </label>
-        <div className="input input--readonly">2022 Hyundai Porter II</div>
+        <div className="input input--readonly">{DEMO_VEHICLE.displayModel}</div>
 
         <label className="field-label" style={{ marginTop: 16 }}>
           WHEEL COUNT
         </label>
-        <div className="input input--readonly">6</div>
+        <div className="input input--readonly">{DEMO_VEHICLE.wheelCount}</div>
 
         <div className="ob-footer-abs ob-footer-abs--stack">
           <button
@@ -165,11 +180,7 @@ export function ConfirmPage() {
           >
             Go to Dashboard
           </button>
-          <button
-            className="btn-outline"
-            type="button"
-            onClick={() => navigate('/onboarding/vin')}
-          >
+          <button className="btn-outline" type="button" onClick={rescanVin}>
             Rescan VIN
           </button>
         </div>

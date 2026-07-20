@@ -1,13 +1,14 @@
 .axle-chip {
+  height: 32px;
   background: #fff;
   border: 1px solid #e1e2e4;
   border-radius: 9px;
-  padding: 8px 12px;
+  padding: 3px 12px;
 }
 
 .axle-chip span {
   font-size: 12px;
   font-weight: 500;
   color: #878a93;
-  letter-spacing: 0.8px;
+  letter-spacing: 0px;
 }

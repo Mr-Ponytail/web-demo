@@ -26,7 +26,7 @@ export const TIRE_FRONT_TO_REAR_GAP = 15;
 export const TIRE_REAR_TIRE_DOWN_OFFSET = 40;
 export const TIRE_FRONT_TIRE_UP_OFFSET = -48;
 export const TIRE_REAR_CHIP_GAP = 16;
-export const TIRE_REAR_CHIP_BOTTOM_MIN_GAP = 113;
+export const TIRE_REAR_CHIP_BOTTOM_MIN_GAP = 20;
 
 export const TIRE_DETAIL_LANE_GAP = 16;
 export const TIRE_DETAIL_CARD_PAD_H = 12;

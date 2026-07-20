@@ -1,5 +1,6 @@
 import { IMG } from '../../assets';
 import {
+  TIRE_DETAIL_GAUGE_SIZE,
   TIRE_DETAIL_METRIC_CARD_H,
   TIRE_DETAIL_METRIC_CARD_W,
   TIRE_DETAIL_METRIC_ICON_SIZE,
@@ -17,6 +18,7 @@ type Props = {
   unit: string;
   progress: number;
   iconType: MetricIconType;
+  animationKey?: string;
 };
 
 function iconFor(type: MetricIconType, level: MetricLevel): string {
@@ -29,6 +31,7 @@ export function TireDetailMetricCard({
   unit,
   progress,
   iconType,
+  animationKey,
 }: Props) {
   const level = getMetricLevel(progress);
   return (
@@ -40,11 +43,15 @@ export function TireDetailMetricCard({
       }}
     >
       <div className="td-metric-card__title">{title}</div>
-      <div className="td-metric-card__gauge">
+      <div
+        className="td-metric-card__gauge"
+        style={{ height: TIRE_DETAIL_GAUGE_SIZE }}
+      >
         <TireDetailCircularGauge
           progress={progress}
           iconSrc={iconFor(iconType, level)}
           iconSize={TIRE_DETAIL_METRIC_ICON_SIZE}
+          animationKey={animationKey}
         />
       </div>
       <div className="td-metric-card__value">

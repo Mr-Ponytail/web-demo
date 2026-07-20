@@ -186,7 +186,7 @@ export function TireLogPage() {
   };
 
   return (
-    <div className="tirelog screen--pad-tabs">
+    <div className="screen tirelog screen--pad-tabs">
       <div className="tirelog__fixed">
         <header className="tirelog__header">
           <h1>Tire Log</h1>

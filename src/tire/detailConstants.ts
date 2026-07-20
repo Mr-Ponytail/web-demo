@@ -111,8 +111,10 @@ export function buildDetailLayout(sw: number) {
     rightLightOffsetY,
     sceneTireAnchors,
     viewportPan,
-    fadeOutMs: 180,
+    fadeOutMs: 40,
     fadeInMs: 280,
+    /** Extra delay before showing cards after left/right tire switch. */
+    cardRevealDelayMs: 80,
     lightShowDelayMs: 400,
     selectorH: 100,
   };
@@ -177,15 +179,15 @@ export const VIEWPORT_TRANSITION =
   'transform 2000ms cubic-bezier(0.22, 1.05, 0.32, 1)';
 
 /** Metric card / pressure gauge — from iSensorApp detailConstants. */
-export const TIRE_DETAIL_METRIC_CARD_W = 80;
+export const TIRE_DETAIL_METRIC_CARD_W = 68;
 export const TIRE_DETAIL_METRIC_GAP = 7;
 export const TIRE_DETAIL_PRESSURE_CARD_W =
   TIRE_DETAIL_METRIC_CARD_W * 2 + TIRE_DETAIL_METRIC_GAP;
-export const TIRE_DETAIL_METRIC_CARD_H = 140;
-export const TIRE_DETAIL_GAUGE_SIZE = 54;
-export const TIRE_DETAIL_METRIC_ICON_SIZE = 32;
-export const TIRE_DETAIL_GAUGE_R = 23;
-export const TIRE_DETAIL_GAUGE_SW = 7;
+export const TIRE_DETAIL_METRIC_CARD_H = 118;
+export const TIRE_DETAIL_GAUGE_SIZE = 44;
+export const TIRE_DETAIL_METRIC_ICON_SIZE = 26;
+export const TIRE_DETAIL_GAUGE_R = 18;
+export const TIRE_DETAIL_GAUGE_SW = 5;
 export const TIRE_DETAIL_GAUGE_C = 2 * Math.PI * TIRE_DETAIL_GAUGE_R;
 export const TIRE_DETAIL_GAUGE_ROT = -90;
 export const TIRE_DETAIL_PRESSURE_GAUGE_H = 10;

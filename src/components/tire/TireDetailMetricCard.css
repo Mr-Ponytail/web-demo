@@ -1,6 +1,6 @@
 .td-metric-card {
   background: #fff;
-  border-radius: 10px;
+  border-radius: 8px;
   border: 2px solid #f7fbff;
   display: flex;
   flex-direction: column;
@@ -11,27 +11,26 @@
 }
 
 .td-metric-card__title {
-  height: 23px;
+  height: 17px;
   width: 100%;
   display: grid;
   place-items: center;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 500;
   color: #5a5c63;
 }
 
 .td-metric-card__gauge {
-  height: 54px;
   display: grid;
   place-items: center;
 }
 
 .td-metric-card__value {
-  height: 27px;
+  height: 20px;
   width: 100%;
   display: grid;
   place-items: center;
-  font-size: 18px;
+  font-size: 14px;
   font-weight: 600;
   color: #0f0f10;
 }

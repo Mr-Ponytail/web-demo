@@ -55,6 +55,10 @@ export const IMG = {
   notifSetting: '/assets/icons/notification-setting.svg',
   helpSetting: '/assets/icons/help-setting.svg',
   supportSetting: '/assets/icons/support-setting.svg',
+  checked: '/assets/icons/checked.svg',
+  checkedNot: '/assets/icons/checked-not.svg',
+  safety: '/assets/icons/safety.svg',
+  warning: '/assets/icons/warning.svg',
   pressureGauge: '/assets/images/pressure-gauge.png',
   pressurePin: {
     normal: '/assets/icons/good-pressure.svg',

@@ -1,5 +1,10 @@
-import { useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState, useSyncExternalStore } from 'react';
+import { TirePositionGrid } from '../components/insights/TirePositionGrid';
 import { IMG } from '../assets';
+import {
+  INSIGHTS_CHIP_TO_SLOT,
+  INSIGHTS_SLOT_TO_CHIP,
+} from '../data/tireSlotGrid';
 import {
   DEFAULT_INSIGHTS_TIRE_VIEW,
   INSIGHTS_CHIP_KEYS,
@@ -9,6 +14,13 @@ import {
   type TireLifeThresholds,
   type WatchWeekCardData,
 } from '../data/insightsMocks';
+import { insightsChipGridStore } from '../state/insightsChipGridStore';
+import {
+  INSIGHTS_CHIP_GRID_EXPAND_HEIGHT,
+  INSIGHTS_SCROLL_BOTTOM_SPACER,
+  INSIGHTS_SCROLL_PADDING_BOTTOM,
+} from './insightsScrollConstants';
+import { useInsightsStickyScroll } from './useInsightsStickyScroll';
 import './InsightsPage.css';
 
 const DAMAGE_CARD_H = 152;
@@ -213,8 +225,57 @@ function WatchWeekMetricCard({ card }: { card: WatchWeekCardData }) {
   );
 }
 
+function InsightsGapWash({
+  height,
+  gaugeWidthPct,
+  opacity,
+  className,
+}: {
+  height: number | string;
+  gaugeWidthPct: number;
+  opacity: number;
+  className?: string;
+}) {
+  if (height === 0) return null;
+  return (
+    <div
+      className={className ? `insights__gap-wash ${className}` : 'insights__gap-wash'}
+      style={{ height }}
+      aria-hidden
+    >
+      <div
+        className="insights__gauge-fill"
+        style={{ width: `${gaugeWidthPct}%`, opacity }}
+      />
+    </div>
+  );
+}
+
 export function InsightsPage() {
   const [selectedChip, setSelectedChip] = useState<InsightsChipKey>('FL');
+  const chipGridExpanded = useSyncExternalStore(
+    insightsChipGridStore.subscribe,
+    insightsChipGridStore.getExpanded,
+  );
+  const sticky = useInsightsStickyScroll();
+
+  const setChipGridOpen = useCallback((next: boolean) => {
+    insightsChipGridStore.setExpanded(next);
+  }, []);
+
+  const toggleChipGrid = useCallback(() => {
+    setChipGridOpen(!insightsChipGridStore.getExpanded());
+  }, [setChipGridOpen]);
+
+  useEffect(() => {
+    return () => {
+      insightsChipGridStore.setExpanded(false);
+    };
+  }, []);
+
+  const chipGridTop = sticky.stickyMeasured
+    ? `calc(var(--safe-t) + ${sticky.stickyClipHeight}px)`
+    : 'var(--safe-t)';
   const tire = DEFAULT_INSIGHTS_TIRE_VIEW;
   const damageLevel = Math.round(tire.damageLevel);
   const damageTheme = getDamageLevelTheme(damageLevel);
@@ -235,253 +296,360 @@ export function InsightsPage() {
   }, []);
 
   return (
-    <div className="insights screen--pad-tabs">
-      <div className="insights__top">
+    <div className="screen insights screen--pad-tabs">
+      <div
+        className="insights__sticky"
+        style={{
+          height: sticky.stickyMeasured
+            ? `calc(var(--safe-t) + ${sticky.stickyClipHeight}px)`
+            : undefined,
+        }}
+      >
         <div
           className="insights__gauge-fill"
-          style={{ width: `${damageLevel}%` }}
+          style={{ width: `${damageLevel}%`, opacity: sticky.gaugeFillOpacity }}
           aria-hidden
         />
-        <div className="insights__header">
-          <div className="insights__title-row">
-            <h1>Insights</h1>
-            <div className="insights__actions">
-              <button
-                type="button"
-                className="insights__icon-btn"
-                aria-label="Add tire"
+
+        <div
+          className="insights__sticky-clip"
+          style={
+            sticky.stickyMeasured
+              ? { height: sticky.stickyClipHeight }
+              : undefined
+          }
+        >
+          <div
+            ref={sticky.stickyBodyRef}
+            className="insights__sticky-body"
+            style={{ transform: `translateY(${sticky.stickyShiftY}px)` }}
+          >
+            <div className="insights__header">
+              <div
+                ref={sticky.titleRowRef}
+                className="insights__title-row"
+                style={{ opacity: sticky.titleOpacity }}
               >
-                <img src={IMG.addTire} alt="" width={42} height={42} />
-              </button>
-              <button
-                type="button"
-                className="insights__icon-btn"
-                aria-label="CSV"
-              >
-                <img src={IMG.csv} alt="" width={42} height={42} />
-              </button>
+                <h1>Insights</h1>
+                <div className="insights__actions">
+                  <button
+                    type="button"
+                    className="insights__icon-btn"
+                    aria-label="Add tire"
+                  >
+                    <img src={IMG.addTire} alt="" width={42} height={42} />
+                  </button>
+                  <button
+                    type="button"
+                    className="insights__icon-btn"
+                    aria-label="CSV"
+                  >
+                    <img src={IMG.csv} alt="" width={42} height={42} />
+                  </button>
+                </div>
+              </div>
+
+              <div className="insights__date-nav">
+                <button
+                  type="button"
+                  className="insights__chevron"
+                  aria-label="Previous week"
+                >
+                  ‹
+                </button>
+                <button type="button" className="insights__date-center">
+                  <span className="insights__date-text">
+                    <strong>{weekLabel.month}</strong>
+                    <small>{weekLabel.range}</small>
+                  </span>
+                  <i className="insights__caret" />
+                </button>
+                <button
+                  type="button"
+                  className="insights__chevron"
+                  aria-label="Next week"
+                >
+                  ›
+                </button>
+              </div>
             </div>
-          </div>
 
-          <div className="insights__date-nav">
-            <button
-              type="button"
-              className="insights__chevron"
-              aria-label="Previous week"
-            >
-              ‹
-            </button>
-            <button type="button" className="insights__date-center">
-              <span className="insights__date-text">
-                <strong>{weekLabel.month}</strong>
-                <small>{weekLabel.range}</small>
-              </span>
-              <i className="insights__caret" />
-            </button>
-            <button
-              type="button"
-              className="insights__chevron"
-              aria-label="Next week"
-            >
-              ›
-            </button>
-          </div>
-        </div>
-
-        <div className="insights__chips">
-          <div className="insights__chip-scroll">
-            {INSIGHTS_CHIP_KEYS.map(key => (
+            <div className="insights__chips">
+              <div className="insights__chip-scroll">
+                {INSIGHTS_CHIP_KEYS.map(key => (
+                  <button
+                    key={key}
+                    type="button"
+                    className={
+                      key === selectedChip
+                        ? 'insights__chip insights__chip--on'
+                        : 'insights__chip'
+                    }
+                    onClick={() => setSelectedChip(key)}
+                  >
+                    {key}
+                  </button>
+                ))}
+              </div>
+              <span className="insights__chip-divider" />
               <button
-                key={key}
                 type="button"
                 className={
-                  key === selectedChip
-                    ? 'insights__chip insights__chip--on'
-                    : 'insights__chip'
+                  chipGridExpanded
+                    ? 'insights__chip-arrow insights__chip-arrow--open'
+                    : 'insights__chip-arrow'
                 }
-                onClick={() => setSelectedChip(key)}
+                aria-label={chipGridExpanded ? 'Collapse tire grid' : 'Expand tire grid'}
+                aria-expanded={chipGridExpanded}
+                onClick={toggleChipGrid}
               >
-                {key}
+                <img src={IMG.arrowDown} alt="" width={24} height={24} />
               </button>
-            ))}
-          </div>
-          <span className="insights__chip-divider" />
-          <button
-            type="button"
-            className="insights__chip-arrow"
-            aria-label="Expand"
-          >
-            <img src={IMG.arrowDown} alt="" width={24} height={24} />
-          </button>
-        </div>
-      </div>
-
-      <div className="insights__body">
-        <div className="insights__scroll-gauge">
-          <div
-            className="insights__gauge-fill"
-            style={{ width: `${damageLevel}%` }}
-            aria-hidden
-          />
-          <div className="insights__status">
-            <div className="insights__status-wash" />
-            <div className="insights__status-content">
-              <span className="insights__badge">
-                {INSIGHTS_CHIP_LABELS[selectedChip]}
-              </span>
-              <div className="insights__headline">
-                <h2>{getDamageStatusHeadline(damageLevel)}</h2>
-                <img src={statusIcon} alt="" width={32} height={22} />
-              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <section
-          className="insights__damage"
-          style={{ height: DAMAGE_CARD_H }}
+      <div
+        className="insights__body"
+        style={{ paddingTop: sticky.bodyPaddingTop }}
+      >
+        <InsightsGapWash
+          height={
+            sticky.stickyMeasured
+              ? `calc(var(--safe-t) + ${sticky.stickyBodyHeight}px)`
+              : 0
+          }
+          gaugeWidthPct={damageLevel}
+          opacity={sticky.gaugeFillOpacity}
+          className="insights__gap-wash--under-header"
+        />
+
+        <div
+          ref={sticky.scrollRef}
+          className={
+            chipGridExpanded
+              ? 'insights__scroll insights__scroll--locked'
+              : 'insights__scroll'
+          }
+          onScroll={sticky.onScroll}
+          style={{ paddingBottom: INSIGHTS_SCROLL_PADDING_BOTTOM }}
         >
-          <div className="insights__damage-wash" />
-          <img
-            className="insights__damage-tire"
-            src={damageTheme.tireImage}
-            alt=""
-            style={{ width: DAMAGE_TIRE_W, height: DAMAGE_CARD_H }}
+          <InsightsGapWash
+            height={sticky.titleRowHeight}
+            gaugeWidthPct={damageLevel}
+            opacity={sticky.gaugeFillOpacity}
           />
-          <div
-            className="insights__damage-gauge"
-            style={{
-              width: `${damageLevel}%`,
-              background: `linear-gradient(90deg, ${damageTheme.gaugeColors[0]}, ${damageTheme.gaugeColors[1]})`,
-            }}
-          />
-          <div className="insights__damage-content">
-            <div className="insights__damage-label">
-              <span>Damage Level</span>
+
+          <div className="insights__scroll-gauge">
+            <div
+              className="insights__gauge-fill"
+              style={{
+                width: `${damageLevel}%`,
+                opacity: sticky.gaugeFillOpacity,
+              }}
+              aria-hidden
+            />
+            <div className="insights__status">
+              <div className="insights__status-wash" />
+              <div className="insights__status-content">
+                <span className="insights__badge">
+                  {INSIGHTS_CHIP_LABELS[selectedChip]}
+                </span>
+                <div className="insights__headline">
+                  <h2>{getDamageStatusHeadline(damageLevel)}</h2>
+                  <img src={statusIcon} alt="" width={32} height={22} />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <section
+            className="insights__damage"
+            style={{ height: DAMAGE_CARD_H }}
+          >
+            <div className="insights__damage-wash" />
+            <img
+              className="insights__damage-tire"
+              src={damageTheme.tireImage}
+              alt=""
+              style={{ width: DAMAGE_TIRE_W, height: DAMAGE_CARD_H }}
+            />
+            <div
+              className="insights__damage-gauge"
+              style={{
+                width: `${damageLevel}%`,
+                background: `linear-gradient(90deg, ${damageTheme.gaugeColors[0]}, ${damageTheme.gaugeColors[1]})`,
+              }}
+            />
+            <div className="insights__damage-content">
+              <div className="insights__damage-label">
+                <span>Damage Level</span>
+                <img src={IMG.insightsInfo} alt="" width={16} height={16} />
+              </div>
+              <div className="insights__damage-value-row">
+                <strong>{damageLevel}%</strong>
+                <div className="insights__damage-compare">
+                  <div className="insights__damage-compare-top">
+                    <span>{isUp ? '▲' : '▼'}</span>
+                    <span>
+                      {formatDamageDeltaPct(tire.damageLevelDeltaPct)} %
+                    </span>
+                  </div>
+                  <small>vs Last week</small>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="insights__life">
+            <div className="insights__life-wash" />
+            <div className="insights__life-header">
+              <h3>Tire Life Summary</h3>
               <img src={IMG.insightsInfo} alt="" width={16} height={16} />
             </div>
-            <div className="insights__damage-value-row">
-              <strong>{damageLevel}%</strong>
-              <div className="insights__damage-compare">
-                <div className="insights__damage-compare-top">
-                  <span>{isUp ? '▲' : '▼'}</span>
-                  <span>
-                    {formatDamageDeltaPct(tire.damageLevelDeltaPct)} %
-                  </span>
-                </div>
-                <small>vs Last week</small>
-              </div>
-            </div>
-          </div>
-        </section>
 
-        <section className="insights__life">
-          <div className="insights__life-wash" />
-          <div className="insights__life-header">
-            <h3>Tire Life Summary</h3>
-            <img src={IMG.insightsInfo} alt="" width={16} height={16} />
-          </div>
-
-          <div className="insights__life-card">
-            <div
-              className={
-                alignDistanceEnd
-                  ? 'insights__life-top insights__life-top--end'
-                  : 'insights__life-top'
-              }
-            >
-              <div>
-                <p className="insights__life-est">(Est.)</p>
-                <p
-                  className="insights__life-km"
-                  style={{ color: lifeTheme.color }}
-                >
-                  {Math.round(tire.cumulativeKm).toLocaleString('en-US')} KM
-                </p>
-              </div>
-            </div>
-
-            <div className="insights__life-progress">
+            <div className="insights__life-card">
               <div
-                className="insights__life-badge-wrap"
-                style={{ left: badgeLeft }}
+                className={
+                  alignDistanceEnd
+                    ? 'insights__life-top insights__life-top--end'
+                    : 'insights__life-top'
+                }
               >
-                <span
-                  className="insights__life-badge"
-                  style={{ background: lifeTheme.badgeBg }}
+                <div>
+                  <p className="insights__life-est">(Est.)</p>
+                  <p
+                    className="insights__life-km"
+                    style={{ color: lifeTheme.color }}
+                  >
+                    {Math.round(tire.cumulativeKm).toLocaleString('en-US')} KM
+                  </p>
+                </div>
+              </div>
+
+              <div className="insights__life-progress">
+                <div
+                  className="insights__life-badge-wrap"
+                  style={{ left: badgeLeft }}
                 >
-                  <img
-                    src={lifeTheme.truckIcon}
-                    alt=""
-                    width={32}
-                    height={32}
-                  />
-                  <span style={{ color: lifeTheme.badgeTextColor }}>
-                    {lifeTheme.badgeLabel}
+                  <span
+                    className="insights__life-badge"
+                    style={{ background: lifeTheme.badgeBg }}
+                  >
+                    <img
+                      src={lifeTheme.truckIcon}
+                      alt=""
+                      width={32}
+                      height={32}
+                    />
+                    <span style={{ color: lifeTheme.badgeTextColor }}>
+                      {lifeTheme.badgeLabel}
+                    </span>
                   </span>
+                  <i
+                    className="insights__life-badge-tail"
+                    style={{ borderTopColor: lifeTheme.badgeBg }}
+                  />
+                </div>
+                <div className="insights__life-track">
+                  <span
+                    className="insights__life-fill"
+                    style={{
+                      width: `${fillRatio * 100}%`,
+                      background: `linear-gradient(90deg, ${lifeTheme.fillColors[0]}, ${lifeTheme.fillColors[1]})`,
+                    }}
+                  />
+                  <i className="insights__life-mid" />
+                </div>
+              </div>
+
+              <div className="insights__life-scale">
+                <span>0KM</span>
+                <span className="insights__life-scale-center">
+                  {midScaleKm.toLocaleString('en-US')}KM
                 </span>
-                <i
-                  className="insights__life-badge-tail"
-                  style={{ borderTopColor: lifeTheme.badgeBg }}
-                />
-              </div>
-              <div className="insights__life-track">
-                <span
-                  className="insights__life-fill"
-                  style={{
-                    width: `${fillRatio * 100}%`,
-                    background: `linear-gradient(90deg, ${lifeTheme.fillColors[0]}, ${lifeTheme.fillColors[1]})`,
-                  }}
-                />
-                <i className="insights__life-mid" />
+                <span className="insights__life-scale-right">
+                  {tire.expectedTireLifeKm.toLocaleString('en-US')}KM +
+                </span>
               </div>
             </div>
 
-            <div className="insights__life-scale">
-              <span>0KM</span>
-              <span className="insights__life-scale-center">
-                {midScaleKm.toLocaleString('en-US')}KM
-              </span>
-              <span className="insights__life-scale-right">
-                {tire.expectedTireLifeKm.toLocaleString('en-US')}KM +
-              </span>
-            </div>
-          </div>
-
-          <div className="insights__life-sub">
-            <div className="insights__life-sub-card">
-              <p>Alerts This Week</p>
-              <strong>{tire.alertCount}</strong>
-            </div>
-            <div className="insights__life-sub-card insights__life-sub-card--locked">
-              <div className="insights__life-lock">
-                <p>Next Replace (Est.)</p>
-                <img src={IMG.lock} alt="" width={28} height={28} />
+            <div className="insights__life-sub">
+              <div className="insights__life-sub-card">
+                <p>Alerts This Week</p>
+                <strong>{tire.alertCount}</strong>
+              </div>
+              <div className="insights__life-sub-card insights__life-sub-card--locked">
+                <div className="insights__life-lock">
+                  <p>Next Replace (Est.)</p>
+                  <img src={IMG.lock} alt="" width={28} height={28} />
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="insights__unlock">
-            <img src={IMG.star} alt="" width={20} height={20} />
-            <div>
-              <p>Unlock estimated replace date</p>
-              <p>by adding tire info</p>
+            <div className="insights__unlock">
+              <img src={IMG.star} alt="" width={20} height={20} />
+              <div>
+                <p>Unlock estimated replace date</p>
+                <p>by adding tire info</p>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
 
-        <section className="insights__watch">
-          <div className="insights__watch-header">
-            <h3>Watch This Week</h3>
-            <img src={IMG.insightsInfo} alt="" width={16} height={16} />
-          </div>
-          <div className="insights__watch-list">
-            {WATCH_WEEK_CARDS.map(card => (
-              <WatchWeekMetricCard key={card.title} card={card} />
-            ))}
-          </div>
-        </section>
+          <section className="insights__watch">
+            <div className="insights__watch-header">
+              <h3>Watch This Week</h3>
+              <img src={IMG.insightsInfo} alt="" width={16} height={16} />
+            </div>
+            <div className="insights__watch-list">
+              {WATCH_WEEK_CARDS.map(card => (
+                <WatchWeekMetricCard key={card.title} card={card} />
+              ))}
+            </div>
+          </section>
+
+          <div
+            className="insights__scroll-spacer"
+            style={{ height: INSIGHTS_SCROLL_BOTTOM_SPACER }}
+            aria-hidden
+          />
+        </div>
       </div>
+
+      {sticky.stickyMeasured ? (
+        <>
+          <button
+            type="button"
+            className={
+              chipGridExpanded
+                ? 'insights__chip-grid-backdrop insights__chip-grid-backdrop--open'
+                : 'insights__chip-grid-backdrop'
+            }
+            style={{ top: chipGridTop }}
+            aria-label="Close tire grid"
+            onClick={() => setChipGridOpen(false)}
+          />
+
+          <div
+            className={
+              chipGridExpanded
+                ? 'insights__chip-grid-panel insights__chip-grid-panel--open'
+                : 'insights__chip-grid-panel'
+            }
+            style={{ top: chipGridTop, height: INSIGHTS_CHIP_GRID_EXPAND_HEIGHT }}
+            aria-hidden={!chipGridExpanded}
+          >
+            <div className="insights__chip-grid-panel-inner">
+              <TirePositionGrid
+                className="insights__chip-tire-grid"
+                selectedKey={INSIGHTS_CHIP_TO_SLOT[selectedChip]}
+                onSelect={key => setSelectedChip(INSIGHTS_SLOT_TO_CHIP[key])}
+              />
+            </div>
+          </div>
+        </>
+      ) : null}
     </div>
   );
 }

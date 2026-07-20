@@ -1,16 +1,35 @@
 .insights {
+  position: relative;
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   background: #eaf3ff;
+  --insights-gauge-track: #7fb8e9;
+  --insights-gauge-fill: rgba(62, 148, 220, 1);
 }
 
-.insights__top {
-  position: relative;
-  z-index: 2;
-  background: rgba(62, 148, 220, 0.7);
-  padding-bottom: 0;
+.insights__sticky {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  padding-top: var(--safe-t);
   overflow: hidden;
+  background: var(--insights-gauge-track);
+  pointer-events: none;
+}
+
+.insights__sticky-clip {
+  overflow: hidden;
+}
+
+.insights__sticky-body {
+  pointer-events: auto;
+  will-change: transform;
+  padding-bottom: 16px;
 }
 
 .insights__gauge-fill {
@@ -18,7 +37,7 @@
   left: 0;
   top: 0;
   bottom: 0;
-  background: rgba(62, 148, 220, 1);
+  background: var(--insights-gauge-fill);
   pointer-events: none;
   z-index: 0;
 }
@@ -26,7 +45,7 @@
 .insights__header {
   position: relative;
   z-index: 1;
-  padding: calc(var(--safe-t) + 8px) 20px 16px;
+  padding: 8px 20px 16px;
 }
 
 .insights__title-row {
@@ -111,7 +130,6 @@
   z-index: 1;
   display: flex;
   align-items: center;
-  margin-bottom: 8px;
 }
 
 .insights__chip-scroll {
@@ -162,15 +180,115 @@
   flex-shrink: 0;
 }
 
+.insights__chip-arrow img {
+  transition: transform 250ms ease;
+}
+
+.insights__chip-arrow--open img {
+  transform: rotate(180deg);
+}
+
+.insights__scroll--locked {
+  overflow: hidden;
+  touch-action: none;
+}
+
+.insights__chip-grid-backdrop {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 14;
+  border: none;
+  padding: 0;
+  margin: 0;
+  background: rgba(0, 0, 0, 0.55);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 250ms ease;
+  cursor: default;
+}
+
+.insights__chip-grid-backdrop--open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.insights__chip-grid-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  z-index: 16;
+  overflow: hidden;
+  background: #fff;
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-12px);
+  transition:
+    opacity 250ms ease,
+    transform 250ms ease;
+}
+
+.insights__chip-grid-panel--open {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.insights__chip-grid-panel-inner {
+  height: 100%;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.insights__chip-tire-grid {
+  margin-block: 10px;
+  background: #f3f5f7;
+}
+
 .insights__body {
+  position: relative;
   flex: 1;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
   background: #eaf3ff;
-  padding-bottom: calc(40px + var(--safe-b));
+}
+
+.insights__gap-wash {
+  position: relative;
+  overflow: hidden;
+  background: var(--insights-gauge-track);
+  flex-shrink: 0;
+}
+
+.insights__gap-wash--under-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.insights__scroll {
+  position: relative;
+  z-index: 1;
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  background: #eaf3ff;
 }
 
 .insights__scroll-gauge {
   position: relative;
-  background: rgba(62, 148, 220, 0.7);
+  background: var(--insights-gauge-track);
   overflow: hidden;
 }
 

@@ -1,0 +1,130 @@
+.settings {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: var(--blue0);
+}
+
+.settings__title {
+  margin: 0;
+  padding: calc(var(--safe-t) + 10px) 16px 38px;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-95);
+  flex-shrink: 0;
+}
+
+.settings__scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 16px 24px;
+}
+
+.settings-section__title {
+  margin: 0 0 16px;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text-60);
+}
+
+.settings-card {
+  background: #fff;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 38px;
+}
+
+.settings-section:last-child .settings-card {
+  margin-bottom: 0;
+}
+
+.settings-card__divider {
+  margin: 0 20px;
+  border: none;
+  height: 1px;
+  background: var(--border-10);
+}
+
+.settings-row {
+  width: 100%;
+  min-height: 64px;
+  display: grid;
+  grid-template-columns: 24px 1fr 20px;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 500;
+  letter-spacing: 0.096px;
+  color: var(--text-95);
+}
+
+.settings-row--static {
+  cursor: default;
+}
+
+.settings-row__icon {
+  display: block;
+}
+
+.settings-row__label {
+  min-width: 0;
+}
+
+.settings-row img:last-child {
+  justify-self: end;
+  opacity: 0.55;
+}
+
+/* Sub-screens */
+.settings-sub {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #fff;
+}
+
+.settings-sub--alert {
+  background: var(--blue0);
+}
+
+.settings-sub__body {
+  flex: 1;
+  min-height: 0;
+  background: #fff;
+}
+
+.settings-alert-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 16px 24px;
+  background: #fffcf7;
+}
+
+.settings-alert-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.settings-alert-disclaimer {
+  margin: 28px 24px 0;
+  text-align: center;
+  font-size: 14px;
+  line-height: 18px;
+  font-weight: 500;
+  color: var(--text-60);
+}

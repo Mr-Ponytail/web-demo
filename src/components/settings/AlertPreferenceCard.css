@@ -1,0 +1,157 @@
+.alert-pref-card {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1.5px solid transparent;
+  background: var(--grey5);
+}
+
+.alert-pref-card--selected {
+  background: var(--blue5);
+  border-color: #99c2ff;
+}
+
+.alert-pref-card__top {
+  padding: 16px;
+}
+
+.alert-pref-card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+}
+
+.alert-pref-card__title-block {
+  flex: 1;
+  min-width: 0;
+}
+
+.alert-pref-card__title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.alert-pref-card__title-row strong {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text-95);
+}
+
+.alert-pref-card__badge {
+  border-radius: 999px;
+  padding: 6px 8px;
+  background: #fff;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.alert-pref-card__badge--green {
+  color: #00bf40;
+}
+
+.alert-pref-card__badge--blue {
+  color: var(--brand-60);
+}
+
+.alert-pref-card__badge--red {
+  color: #ff4242;
+}
+
+.alert-pref-card__desc {
+  margin: 8px 0 0;
+  font-size: 14px;
+  line-height: 16px;
+  color: var(--text-60);
+}
+
+.alert-pref-card__detail {
+  animation: alert-pref-expand 280ms ease;
+}
+
+@keyframes alert-pref-expand {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.alert-pref-card__divider {
+  margin: 0;
+  border: none;
+  height: 1px;
+  background: var(--border-10);
+}
+
+.alert-pref-card__thresholds {
+  background: #fffcf7;
+  padding: 12px 16px 16px;
+}
+
+.alert-pref-card__threshold-label {
+  display: block;
+  margin-bottom: 12px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-60);
+}
+
+.alert-pref-card__threshold-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.alert-pref-card__threshold-row:last-of-type {
+  margin-bottom: 0;
+}
+
+.alert-pref-card__threshold-key {
+  width: 78px;
+  flex-shrink: 0;
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--brand-70);
+}
+
+.alert-pref-card__threshold-value {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-95);
+  text-align: right;
+}
+
+.alert-pref-card__footer-div {
+  margin: 6px 0 12px;
+  border: none;
+  height: 1px;
+  background: var(--border-10);
+}
+
+.alert-pref-card__footer {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+}
+
+.alert-pref-card__footer-text {
+  margin: 0;
+  flex: 1;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
+}
+
+.alert-pref-card__footer-text--green {
+  color: #00a838;
+}
+
+.alert-pref-card__footer-text--red {
+  color: #e52222;
+}

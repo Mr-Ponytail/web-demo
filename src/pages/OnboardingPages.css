@@ -89,8 +89,8 @@
 
 .ob-hello {
   margin: 0 0 8px;
-  font-size: 15px;
-  font-weight: 400;
+  font-size: 18px;
+  font-weight: 600;
   color: var(--text-50);
 }
 
@@ -136,7 +136,6 @@
   justify-content: center;
   gap: 30px;
   padding: 16px 20px 8px;
-  border-bottom: 1px solid var(--border-10);
 }
 
 .vin-tab {
@@ -148,17 +147,21 @@
   position: relative;
 }
 
+.vin-tab::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4px;
+  background: var(--icon-30);
+}
+
 .vin-tab--on {
   color: var(--brand-70);
 }
 
 .vin-tab--on::after {
-  content: '';
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: 4px;
   background: var(--brand-70);
 }
 

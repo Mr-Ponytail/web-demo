@@ -1,0 +1,37 @@
+.settings-subnav {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-10);
+  flex-shrink: 0;
+}
+
+.settings-subnav--plain {
+  border-bottom: none;
+}
+
+.settings-subnav__back {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  flex-shrink: 0;
+}
+
+.settings-subnav__title {
+  flex: 1;
+  margin: 0;
+  text-align: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-95);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.settings-subnav__spacer {
+  width: 24px;
+  flex-shrink: 0;
+}

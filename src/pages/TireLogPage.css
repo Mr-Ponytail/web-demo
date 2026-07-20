@@ -1,7 +1,9 @@
 .tirelog {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
   background: #f7fbff;
 }
 
@@ -259,8 +261,10 @@
   flex: 1;
   min-height: 0;
   overflow-y: auto;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
   background: #fff;
-  padding-bottom: calc(24px + var(--safe-b));
+  padding-bottom: 16px;
 }
 
 .tirelog__empty {

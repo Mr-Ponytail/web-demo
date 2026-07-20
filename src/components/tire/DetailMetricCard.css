@@ -63,7 +63,7 @@
 }
 
 .detail-metric-card__label {
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 500;
   color: #70737c;
 }
@@ -77,7 +77,7 @@
 }
 
 .detail-metric-card__value {
-  font-size: 24px;
+  font-size: 20px;
   font-weight: 700;
   line-height: 28px;
 }

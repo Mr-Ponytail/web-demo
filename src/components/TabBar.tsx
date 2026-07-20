@@ -1,5 +1,7 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
+import { useSyncExternalStore } from 'react';
 import { IMG } from '../assets';
+import { insightsChipGridStore } from '../state/insightsChipGridStore';
 import './TabBar.css';
 
 const TABS = [
@@ -30,11 +32,28 @@ const TABS = [
 ] as const;
 
 export function TabBar({ onAiPress }: { onAiPress?: () => void }) {
+  const location = useLocation();
+  const chipGridExpanded = useSyncExternalStore(
+    insightsChipGridStore.subscribe,
+    insightsChipGridStore.getExpanded,
+  );
+  const onInsightsTab = location.pathname.startsWith('/app/insights');
+  const dimTabBar = onInsightsTab && chipGridExpanded;
+
+  const closeChipGrid = () => {
+    insightsChipGridStore.setExpanded(false);
+  };
+
   return (
-    <div className="tabbar-wrap">
+    <div className={dimTabBar ? 'tabbar-wrap tabbar-wrap--dimmed' : 'tabbar-wrap'}>
       <nav className="tabbar-pill" aria-label="Main">
         {TABS.map(tab => (
-          <NavLink key={tab.to} to={tab.to} className="tabbar-item">
+          <NavLink
+            key={tab.to}
+            to={tab.to}
+            className="tabbar-item"
+            onClick={closeChipGrid}
+          >
             {({ isActive }) => (
               <>
                 {isActive ? <span className="tabbar-indicator" /> : null}

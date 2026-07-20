@@ -45,8 +45,17 @@ export function TireDetailPage() {
   const initKey: TireKey = isTireKey(paramKey) ? paramKey : 'FL';
   const [focusedKey, setFocusedKey] = useState<TireKey>(initKey);
   const [selectedKey, setSelectedKey] = useState<TireKey>(initKey);
-  const [contentOpacity, setContentOpacity] = useState(1);
+  const [showLabels, setShowLabels] = useState(true);
+  const [showCards, setShowCards] = useState(true);
   const fadeTimer = useRef<number | null>(null);
+  const cardTimer = useRef<number | null>(null);
+
+  const clearTransitionTimers = () => {
+    if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
+    if (cardTimer.current) window.clearTimeout(cardTimer.current);
+    fadeTimer.current = null;
+    cardTimer.current = null;
+  };
 
   const tireStatusByKey = useMemo(() => {
     const map = {} as Record<TireKey, TireStatus>;
@@ -71,20 +80,24 @@ export function TireDetailPage() {
   const handleSelectTire = (key: TireKey) => {
     if (key === focusedKey) return;
     setFocusedKey(key);
-    if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
-    setContentOpacity(0);
+    clearTransitionTimers();
+    setShowLabels(false);
+    setShowCards(false);
+
+    const sideChanged = isLeftTire(key) !== isLeftTire(selectedKey);
+
     fadeTimer.current = window.setTimeout(() => {
       setSelectedKey(key);
-      setContentOpacity(1);
+      setShowLabels(true);
       navigate(`/app/tire/${key}`, { replace: true });
+
+      cardTimer.current = window.setTimeout(() => {
+        setShowCards(true);
+      }, sideChanged ? layout.cardRevealDelayMs : 0);
     }, layout.fadeOutMs);
   };
 
-  useEffect(() => {
-    return () => {
-      if (fadeTimer.current) window.clearTimeout(fadeTimer.current);
-    };
-  }, []);
+  useEffect(() => () => clearTransitionTimers(), []);
 
   // Swipe between tires
   const touchStartX = useRef<number | null>(null);
@@ -156,55 +169,58 @@ export function TireDetailPage() {
 
         <div
           className={left ? 'td-content td-content--left' : 'td-content td-content--right'}
-          style={{
-            opacity: contentOpacity,
-            transition: `opacity ${contentOpacity === 0 ? layout.fadeOutMs : layout.fadeInMs}ms ease`,
-          }}
         >
-          <p className="td-axle">{pos.axle}</p>
-          <h1 className="td-side">{pos.side}</h1>
+          {showLabels ? (
+            <>
+              <p className="td-axle">{pos.axle}</p>
+              <h1 className="td-side">{pos.side}</h1>
 
-          <div
-            className="td-chip"
-            style={{ color: chip.color, borderColor: `${chip.color}55` }}
-          >
-            {chip.label}
-          </div>
+              <div
+                className="td-chip"
+                style={{ color: chip.color, borderColor: `${chip.color}55` }}
+              >
+                {chip.label}
+              </div>
+            </>
+          ) : null}
 
-          <div
-            className="td-cards"
-            style={{ width: TIRE_DETAIL_PRESSURE_CARD_W }}
-          >
-            <TireDetailPressureCard
-              value={pressure.value}
-              gaugeMin={pressure.min}
-              gaugeMax={pressure.max}
-              unit={pressure.unit}
-            />
+          {showCards ? (
             <div
-              className="td-metric-grid"
-              style={{ gap: TIRE_DETAIL_METRIC_GAP }}
+              className="td-cards"
+              style={{ width: TIRE_DETAIL_PRESSURE_CARD_W }}
             >
-              {metricRows.map(row => (
-                <div
-                  key={row.map(r => r.title).join('-')}
-                  className="td-metric-row"
-                  style={{ gap: TIRE_DETAIL_METRIC_GAP }}
-                >
-                  {row.map(({ title, m, iconType }) => (
-                    <TireDetailMetricCard
-                      key={title}
-                      title={title}
-                      value={m.value}
-                      unit={m.unit}
-                      progress={m.value / m.max}
-                      iconType={iconType}
-                    />
-                  ))}
-                </div>
-              ))}
+              <TireDetailPressureCard
+                value={pressure.value}
+                gaugeMin={pressure.min}
+                gaugeMax={pressure.max}
+                unit={pressure.unit}
+              />
+              <div
+                className="td-metric-grid"
+                style={{ gap: TIRE_DETAIL_METRIC_GAP }}
+              >
+                {metricRows.map(row => (
+                  <div
+                    key={row.map(r => r.title).join('-')}
+                    className="td-metric-row"
+                    style={{ gap: TIRE_DETAIL_METRIC_GAP }}
+                  >
+                    {row.map(({ title, m, iconType }) => (
+                      <TireDetailMetricCard
+                        key={title}
+                        title={title}
+                        value={m.value}
+                        unit={m.unit}
+                        progress={m.value / m.max}
+                        iconType={iconType}
+                        animationKey={selectedKey}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
         </div>
       </div>
 

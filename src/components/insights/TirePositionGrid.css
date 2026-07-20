@@ -1,0 +1,119 @@
+.tire-pos-grid {
+  position: relative;
+  width: calc(100% - 32px);
+  max-width: calc(var(--phone-max, 430px) - 32px);
+  margin-inline: auto;
+  border-radius: 12px;
+  border: 1px solid #e1e2e4;
+  background: #f3f5f7;
+  overflow: hidden;
+  container-type: inline-size;
+  --grid-h: 153px;
+}
+
+.tire-pos-grid__front-car,
+.tire-pos-grid__rear-car {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* FL / FR column (left third, both rows) */
+.tire-pos-grid__front-car {
+  left: 0;
+  width: 33.333%;
+  opacity: 0.5;
+}
+
+/* RRI, RRO, RLI, RLO area (right two-thirds) */
+.tire-pos-grid__rear-car {
+  left: 33.333%;
+  width: 66.666%;
+  opacity: 0.5;
+}
+
+.tire-pos-grid__front-car img,
+.tire-pos-grid__rear-car img {
+  transform: rotate(-90deg);
+  transform-origin: center center;
+  object-fit: contain;
+}
+
+.tire-pos-grid__front-car img {
+  width: calc(var(--grid-h) * 0.75);
+  height: calc(100cqw / 3 * 0.85);
+}
+
+.tire-pos-grid__rear-car img {
+  width: calc(var(--grid-h) * 0.75);
+  height: calc(100cqw * 2 / 3 * 0.85);
+}
+
+.tire-pos-grid__row {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  height: 50%;
+}
+
+.tire-pos-grid__cell {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  border: none;
+  background: rgba(70, 71, 76, 0.03);
+  font-size: 18px;
+  font-weight: 500;
+  color: #46474c;
+  cursor: pointer;
+}
+
+.tire-pos-grid__cell--front {
+  flex: 0 0 33.333%;
+  max-width: 33.333%;
+}
+
+.tire-pos-grid__cell--selected {
+  background: rgba(0, 94, 173, 0.4);
+  color: #005ead;
+  font-weight: 600;
+}
+
+.tire-pos-grid__col-div,
+.tire-pos-grid__row-div {
+  position: absolute;
+  background: #e1e2e4;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.tire-pos-grid__col-div--front {
+  left: 33.333%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.tire-pos-grid__col-div--rear {
+  left: 66.666%;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+}
+
+.tire-pos-grid__row-div {
+  left: 33.333%;
+  right: 0;
+  height: 1px;
+  top: 50%;
+}
+
+.tire-pos-grid__row-div--front {
+  left: 0;
+  width: 33.333%;
+  right: auto;
+}
