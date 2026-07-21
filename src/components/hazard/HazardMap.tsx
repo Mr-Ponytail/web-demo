@@ -29,6 +29,7 @@ import {
   HAZARD_MAP_FOCUS_DURATION_MS,
   HAZARD_MAP_RESET_DURATION_MS,
   HAZARD_MAP_PIN_SELECTION_TRANSITION_MS,
+  HAZARD_MAP_ZOOM_FOCUS_LIFT,
   HAZARD_MARKER_FOCUS_PADDING_TOP,
   HAZARD_MARKER_SHEET_MAX_HEIGHT_RATIO,
 } from '../../hazard/constants';
@@ -49,6 +50,19 @@ function easeInOutCubic(t: number) {
 
 function lerp(start: number, end: number, t: number) {
   return start + (end - start) * t;
+}
+
+function computeZoomFocusBottomPadding(
+  zoom: number,
+  baseBottomPadding: number,
+): number {
+  const zoomSpan = HAZARD_MARKER_FOCUS_ZOOM - HAZARD_DEFAULT_MAP_ZOOM;
+  if (zoomSpan <= 0 || zoom <= HAZARD_DEFAULT_MAP_ZOOM) {
+    return baseBottomPadding;
+  }
+
+  const t = Math.min(1, (zoom - HAZARD_DEFAULT_MAP_ZOOM) / zoomSpan);
+  return Math.round(baseBottomPadding + HAZARD_MAP_ZOOM_FOCUS_LIFT * t);
 }
 
 type MapCameraPadding = {
@@ -221,7 +235,12 @@ function HazardMapComponent({
   onZoomChangeRef.current = onZoomChange;
 
   const applyMapPadding = useCallback((map: maplibregl.Map, paddingBottom: number) => {
-    map.setPadding({ top: 0, bottom: paddingBottom, left: 0, right: 0 });
+    map.setPadding({
+      top: 0,
+      bottom: computeZoomFocusBottomPadding(map.getZoom(), paddingBottom),
+      left: 0,
+      right: 0,
+    });
   }, []);
 
   const syncHtmlMarkers = useCallback((map: maplibregl.Map, zoom: number) => {
@@ -449,13 +468,20 @@ function HazardMapComponent({
         const source = map.getSource(CLUSTER_SOURCE_ID) as maplibregl.GeoJSONSource;
         const expansionZoom = await source.getClusterExpansionZoom(Number(clusterId));
         const [longitude, latitude] = feature.geometry.coordinates as [number, number];
+        const targetBottom = computeZoomFocusBottomPadding(
+          expansionZoom,
+          previousBottomPaddingRef.current,
+        );
 
-        map.easeTo({
-          center: [longitude, latitude],
-          zoom: expansionZoom,
-          duration: HAZARD_MAP_FOCUS_DURATION_MS,
-          easing: easeInOutCubic,
-        });
+        animateMapCamera(
+          map,
+          {
+            center: [longitude, latitude],
+            zoom: expansionZoom,
+            padding: { top: 0, bottom: targetBottom, left: 0, right: 0 },
+          },
+          HAZARD_MAP_FOCUS_DURATION_MS,
+        );
       });
 
       map.on('mouseenter', 'hazard-marker-clusters', () => {
@@ -478,6 +504,22 @@ function HazardMapComponent({
       isZoomingOutRef.current = zoom < previousZoomRef.current - 0.001;
       previousZoomRef.current = zoom;
       onZoomChangeRef.current(zoom);
+
+      if (
+        !cameraTransitionRef.current &&
+        !selectedMarkerIdRef.current
+      ) {
+        map.setPadding({
+          top: 0,
+          bottom: computeZoomFocusBottomPadding(
+            zoom,
+            previousBottomPaddingRef.current,
+          ),
+          left: 0,
+          right: 0,
+        });
+      }
+
       syncHtmlMarkers(map, zoom);
     });
 
@@ -627,7 +669,7 @@ export function focusMarkerOnMap(
         zoom: HAZARD_MARKER_FOCUS_ZOOM,
         padding: {
           top: HAZARD_MARKER_FOCUS_PADDING_TOP,
-          bottom: markerFocusPaddingBottom(),
+          bottom: markerFocusPaddingBottom() + HAZARD_MAP_ZOOM_FOCUS_LIFT,
           left: 32,
           right: 32,
         },

@@ -18,7 +18,6 @@ export const HAZARD_REPORT_UNDO_RING_STROKE = 2.5;
 
 export const PULL_OVER_PROMPT = 'Should I pull over?';
 export const POTHOLE_PROMPT = 'Report the pothole I just hit.';
-export const TIRE_OKAY_PROMPT = '타이어 괜찮아?';
 
 export const GUIDE_PROMPTS = [
   'Which tire needs attention first?',

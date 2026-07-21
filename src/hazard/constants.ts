@@ -16,6 +16,9 @@ export const HAZARD_INITIAL_MAP_PADDING_BOTTOM = 140;
 /** Extra lift so pins sit clearly above the summary card carousel. */
 export const HAZARD_MAP_PADDING_EXTRA = 28;
 
+/** Extra bottom padding at max zoom-in to lift map focus above bottom UI. */
+export const HAZARD_MAP_ZOOM_FOCUS_LIFT = 140;
+
 /** Lowers the initial map focus slightly on screen (subtract from bottom padding). */
 export const HAZARD_MAP_FOCUS_SHIFT_DOWN = 120;
 

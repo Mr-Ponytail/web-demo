@@ -18,7 +18,6 @@ import {
   isPullOverPrompt,
   LIVE_FONT_SIZE,
   SPARK_ICON_SIZE,
-  TIRE_OKAY_PROMPT,
   TRANSCRIPT_BASE_MARGIN,
 } from './constants';
 import {
@@ -118,7 +117,6 @@ export function VoiceModal({
     showTranscript &&
     isHistoryTranscript &&
     isPullOverPrompt(displayTranscript);
-  const showCompactAnswer = displayTranscript === TIRE_OKAY_PROMPT;
   const showGenericInsight =
     showTranscript &&
     isHistoryTranscript &&
@@ -274,7 +272,6 @@ export function VoiceModal({
                       style={{ marginTop: INSIGHT_CARD_GAP }}
                     >
                       <AIAnswerCard
-                        showChart={!showCompactAnswer}
                         onGraphComplete={() => setShowAdvice(true)}
                       />
                       <AIAdviceFooter

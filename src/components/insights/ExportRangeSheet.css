@@ -3,9 +3,15 @@
   inset: 0;
   left: 50%;
   width: min(100vw, var(--phone-max));
+  height: 100dvh;
+  max-height: 100%;
   transform: translateX(-50%);
-  z-index: 120;
+  z-index: 130;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
   pointer-events: none;
+  isolation: isolate;
 }
 
 .export-sheet__overlay {
@@ -26,10 +32,8 @@
 }
 
 .export-sheet {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  position: relative;
+  width: 100%;
   max-height: 90%;
   background: #fff;
   border-radius: 24px 24px 0 0;
@@ -40,6 +44,7 @@
   flex-direction: column;
   touch-action: none;
   will-change: transform;
+  flex-shrink: 0;
 }
 
 .export-sheet--open {
@@ -371,7 +376,7 @@
 
 .export-sheet__banner {
   position: absolute;
-  top: calc(var(--safe-t) + 20px);
+  top: calc(var(--safe-t) + 30px);
   left: 16px;
   right: 16px;
   z-index: 130;

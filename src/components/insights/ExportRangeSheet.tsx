@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { IMG } from '../../assets';
 import {
   DEMO_EXPORT_SENSOR_ID,
@@ -151,9 +152,41 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
     setPrepareError(null);
     setSavedPath(null);
     setSaveError(null);
-    const frame = requestAnimationFrame(() => setEntered(true));
-    return () => cancelAnimationFrame(frame);
+    let openFrame = 0;
+    const frame = requestAnimationFrame(() => {
+      openFrame = requestAnimationFrame(() => setEntered(true));
+    });
+    return () => {
+      cancelAnimationFrame(frame);
+      if (openFrame) cancelAnimationFrame(openFrame);
+    };
   }, [visible]);
+
+  useEffect(() => {
+    if (!visible) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [visible]);
+
+  const handleClose = useCallback(() => {
+    sessionIdRef.current += 1;
+    setPreparing(false);
+    setSaving(false);
+    setSavedPath(null);
+    setSaveError(null);
+    setPrepareError(null);
+    onClose();
+  }, [onClose]);
+
+  const { panelStyle, dragBindings, stopScrollDragPropagation } =
+    useBottomSheetDragDismiss({
+      enabled: visible && entered,
+      onClose: handleClose,
+      openTransition: 'transform 280ms cubic-bezier(0.33, 1, 0.68, 1)',
+    });
 
   if (!visible) return null;
 
@@ -264,28 +297,12 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
     setStep('range');
   };
 
-  const handleClose = () => {
-    sessionIdRef.current += 1;
-    setPreparing(false);
-    setSaving(false);
-    clearSaveState();
-    setPrepareError(null);
-    onClose();
-  };
-
-  const { panelStyle, dragBindings, stopScrollDragPropagation } =
-    useBottomSheetDragDismiss({
-      enabled: entered,
-      onClose: handleClose,
-      openTransition: 'transform 280ms cubic-bezier(0.33, 1, 0.68, 1)',
-    });
-
   const hasFullRange =
     startDate != null &&
     endDate != null &&
     startDate.getTime() !== endDate.getTime();
 
-  return (
+  return createPortal(
     <div className="export-sheet-root" role="presentation">
       <button
         type="button"
@@ -595,6 +612,7 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
           </>
         )}
       </div>
+      </div>
 
       {preparing ? (
         <div className="export-sheet__banner" aria-live="polite">
@@ -640,7 +658,7 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
           </button>
         </div>
       ) : null}
-      </div>
-    </div>
+    </div>,
+    document.body,
   );
 }
