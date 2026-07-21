@@ -28,9 +28,10 @@ import './VoiceModal.css';
 type Props = {
   visible: boolean;
   onClose: () => void;
+  startListening?: boolean;
 };
 
-export function VoiceModal({ visible, onClose }: Props) {
+export function VoiceModal({ visible, onClose, startListening = false }: Props) {
   const [phase, setPhase] = useState<VoicePhase>('panel');
   const [isListening, setIsListening] = useState(false);
   const [demoTranscript, setDemoTranscript] = useState<string | null>(null);
@@ -74,8 +75,19 @@ export function VoiceModal({ visible, onClose }: Props) {
     if (!visible) {
       setPhase('panel');
       resetSession();
+      return;
     }
-  }, [visible, resetSession]);
+
+    if (!startListening) return;
+
+    resetTransition();
+    setShowAdvice(false);
+    setShowReportAdvice(false);
+    setAwaitingCancel(false);
+    setDemoTranscript(null);
+    setPhase('animating');
+    setIsListening(true);
+  }, [visible, startListening, resetSession, resetTransition]);
 
   const showTranscript = phase === 'animating' && !!displayTranscript;
   const showPotholeReport =

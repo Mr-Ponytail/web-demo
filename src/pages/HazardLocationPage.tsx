@@ -25,6 +25,7 @@ import {
   HAZARD_MAP_PADDING_EXTRA,
   HAZARD_MAP_RESET_DURATION_MS,
 } from '../hazard/constants';
+import { useBottomSheetDragDismiss } from '../hooks/useBottomSheetDragDismiss';
 import { useReportToDot } from '../hazard/useReportToDot';
 import './HazardLocationPage.css';
 
@@ -173,6 +174,20 @@ export function HazardLocationPage() {
     resetMapView(mapRef.current, mapCenter, HAZARD_INITIAL_MAP_PADDING_BOTTOM);
   }, [isBottomPanelClosing, mapCenter]);
 
+  const bottomPanelOpen =
+    bottomPanelVisible && !markerSheetVisible && !isBottomPanelClosing;
+  const {
+    panelStyle: bottomPanelDragStyle,
+    dragBindings,
+    stopScrollDragPropagation,
+  } = useBottomSheetDragDismiss({
+    enabled: bottomPanelOpen,
+    onClose: handleDismissBottomPanel,
+    dismissDistance: 80,
+    openTransition: 'none',
+    closeTransition: `transform ${HAZARD_BOTTOM_PANEL_DISMISS_DURATION_MS}ms ${BOTTOM_PANEL_DISMISS_EASING}`,
+  });
+
   const handleBottomPanelTransitionEnd = useCallback(
     (event: TransitionEvent<HTMLDivElement>) => {
       if (
@@ -247,10 +262,13 @@ export function HazardLocationPage() {
           ref={bottomPanelRef}
           className="hazard-location__bottom"
           style={{
-            transform: isBottomPanelClosing ? 'translateY(100%)' : 'translateY(0)',
-            transition: `transform ${HAZARD_BOTTOM_PANEL_DISMISS_DURATION_MS}ms ${BOTTOM_PANEL_DISMISS_EASING}`,
+            transform: isBottomPanelClosing
+              ? 'translateY(100%)'
+              : bottomPanelDragStyle.transform,
+            transition: bottomPanelDragStyle.transition,
           }}
           onTransitionEnd={handleBottomPanelTransitionEnd}
+          {...dragBindings}
         >
           <div className="hazard-location__bottom-gradient" aria-hidden />
           <div className="hazard-location__gauge-track">
@@ -270,6 +288,7 @@ export function HazardLocationPage() {
             ref={cardListRef}
             className="hazard-location__cards"
             onScroll={handleCardsScroll}
+            onPointerDown={stopScrollDragPropagation}
           >
             {summaryCards.map(card => (
               <HazardSummaryCard

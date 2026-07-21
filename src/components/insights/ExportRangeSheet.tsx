@@ -8,6 +8,7 @@ import {
   prepareDemoCsvExport,
 } from '../../data/exportCsvMocks';
 import { formatCsvByteSize } from '../../data/readingExportCsv';
+import { useBottomSheetDragDismiss } from '../../hooks/useBottomSheetDragDismiss';
 import './ExportRangeSheet.css';
 
 const SAVE_SUCCESS_MESSAGE = 'CSV saved to Downloads';
@@ -272,6 +273,13 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
     onClose();
   };
 
+  const { panelStyle, dragBindings, stopScrollDragPropagation } =
+    useBottomSheetDragDismiss({
+      enabled: entered,
+      onClose: handleClose,
+      openTransition: 'transform 280ms cubic-bezier(0.33, 1, 0.68, 1)',
+    });
+
   const hasFullRange =
     startDate != null &&
     endDate != null &&
@@ -294,10 +302,14 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
         className={
           entered ? 'export-sheet export-sheet--open' : 'export-sheet'
         }
+        style={panelStyle}
         role="dialog"
         aria-modal="true"
         aria-labelledby="export-sheet-title"
+        {...dragBindings}
       >
+        <div className="export-sheet__handle" aria-hidden />
+
         <div className="export-sheet__header">
           <h2 id="export-sheet-title" className="export-sheet__title">
             {step === 'range' ? 'Export range' : 'Export CSV'}
@@ -312,6 +324,10 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
           </button>
         </div>
 
+        <div
+          className="export-sheet__body"
+          onPointerDown={stopScrollDragPropagation}
+        >
         {step === 'range' ? (
           <>
             <div className="export-sheet__quick">
@@ -624,6 +640,7 @@ export function ExportRangeSheet({ visible, onClose, wheelPosition }: Props) {
           </button>
         </div>
       ) : null}
+      </div>
     </div>
   );
 }

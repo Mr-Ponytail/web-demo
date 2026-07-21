@@ -3,6 +3,7 @@ import { IMG } from '../../assets';
 import type { BleDevice } from '../../data/bleMocks';
 import { TIRE_SLOT_POSITION_LABELS } from '../../data/bleMocks';
 import type { TireKey } from '../../data/tireMocks';
+import { useBottomSheetDragDismiss } from '../../hooks/useBottomSheetDragDismiss';
 import './SensorConnectionSheet.css';
 
 type Props = {
@@ -49,6 +50,11 @@ export function SensorConnectionSheet({
   onRefresh,
 }: Props) {
   const [entered, setEntered] = useState(false);
+  const { panelStyle, dragBindings, stopScrollDragPropagation } =
+    useBottomSheetDragDismiss({
+      enabled: entered,
+      onClose,
+    });
 
   useEffect(() => {
     if (visible) {
@@ -68,10 +74,12 @@ export function SensorConnectionSheet({
     >
       <div
         className={`ble-sheet ${entered ? 'ble-sheet--open' : ''}`}
+        style={panelStyle}
         role="dialog"
         aria-modal="true"
         aria-labelledby="ble-sheet-title"
         onClick={event => event.stopPropagation()}
+        {...dragBindings}
       >
         <div className="ble-sheet__handle" aria-hidden />
 
@@ -148,7 +156,10 @@ export function SensorConnectionSheet({
           </button>
         </div>
 
-        <div className="ble-sheet__list">
+        <div
+          className="ble-sheet__list"
+          onPointerDown={stopScrollDragPropagation}
+        >
           {availableDevices.length === 0 ? (
             <p className="ble-sheet__empty">
               {isScanning

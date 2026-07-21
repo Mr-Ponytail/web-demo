@@ -707,12 +707,12 @@ export function InsightsPage() {
                     : 'insights__life-sub-card insights__life-sub-card--locked'
                 }
               >
-                <p>Next Replace (Est.)</p>
+                <p>Next Replacement (Est.)</p>
                 <strong>{nextReplaceLabel}</strong>
                 {!isNextReplaceUnlocked ? (
                   <div className="insights__life-lock-overlay" aria-hidden>
                     <div className="insights__life-lock-content">
-                      <p>Next Replace (Est.)</p>
+                      <p>Next Replacement (Est.)</p>
                       <img src={IMG.lock} alt="" width={32} height={32} />
                     </div>
                   </div>

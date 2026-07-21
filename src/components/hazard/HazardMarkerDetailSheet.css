@@ -44,6 +44,7 @@
   overflow: hidden;
   pointer-events: auto;
   will-change: transform;
+  touch-action: none;
 }
 
 .hazard-detail-sheet__top-accent {
@@ -90,9 +91,9 @@
 }
 
 .hazard-detail-sheet__section-title {
-  margin: 0 0 12px;
+  margin: 0 0 16px;
   font-size: 14px;
-  font-weight: 500;
+  font-weight: 600;
   color: var(--text-50);
 }
 
@@ -100,6 +101,7 @@
   max-height: calc(68vh - 160px);
   overflow-y: auto;
   padding-bottom: 8px;
+  touch-action: pan-y;
 }
 
 .hazard-detail-sheet__event {
@@ -139,10 +141,6 @@
   overflow: hidden;
 }
 
-.hazard-detail-sheet__event-card--with-tire {
-  padding-right: 78px;
-}
-
 .hazard-detail-sheet__event-card-top {
   padding-top: 12px;
   margin-bottom: 2px;
@@ -170,6 +168,10 @@
   padding: 0 16px 12px;
 }
 
+.hazard-detail-sheet__event-card-content--with-tire {
+  padding-right: 78px;
+}
+
 .hazard-detail-sheet__event-title {
   margin: 0;
   font-size: 18px;
@@ -181,15 +183,16 @@
 .hazard-detail-sheet__event-position {
   position: absolute;
   right: 0;
-  bottom: -6px;
+  bottom: 0px;
+  display: block;
   width: 78px;
   height: 78px;
   line-height: 78px;
-  text-align: center;
   font-size: 16px;
   font-weight: 500;
-  color: var(--text-80);
+  color: #5a5c63;
   z-index: 1;
+  text-align: center;
 }
 
 .hazard-detail-sheet__impact-tire {

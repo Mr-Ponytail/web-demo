@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type PointerEvent } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { IMG, TIRE_IMPACT_IMG } from '../../assets';
 import {
   formatDetailDateFromKey,
@@ -9,6 +9,7 @@ import {
   HAZARD_MARKER_SHEET_CLOSE_DURATION_MS,
   HAZARD_MARKER_SHEET_OPEN_DURATION_MS,
 } from '../../hazard/constants';
+import { useBottomSheetDragDismiss } from '../../hooks/useBottomSheetDragDismiss';
 import './HazardMarkerDetailSheet.css';
 
 const DETAIL_TAG_COLOR: Record<HazardDetailEvent['severity'], string> = {
@@ -39,13 +40,7 @@ function DetailEventRow({ event }: { event: HazardDetailEvent }) {
         <div className="hazard-detail-sheet__rail-column">
           <div className="hazard-detail-sheet__rail-line" />
         </div>
-        <div
-          className={
-            impactTireImage
-              ? 'hazard-detail-sheet__event-card hazard-detail-sheet__event-card--with-tire'
-              : 'hazard-detail-sheet__event-card'
-          }
-        >
+        <div className="hazard-detail-sheet__event-card">
           <div className="hazard-detail-sheet__event-card-top">
             <div className="hazard-detail-sheet__tag-row">
               <span
@@ -60,7 +55,13 @@ function DetailEventRow({ event }: { event: HazardDetailEvent }) {
               </span>
             </div>
           </div>
-          <div className="hazard-detail-sheet__event-card-content">
+          <div
+            className={
+              impactTireImage
+                ? 'hazard-detail-sheet__event-card-content hazard-detail-sheet__event-card-content--with-tire'
+                : 'hazard-detail-sheet__event-card-content'
+            }
+          >
             <p className="hazard-detail-sheet__event-title">{event.title}</p>
           </div>
           <span className="hazard-detail-sheet__event-position">{event.position}</span>
@@ -93,17 +94,18 @@ export function HazardMarkerDetailSheet({
   const [renderedContent, setRenderedContent] =
     useState<HazardDetailSheetContent | null>(null);
   const [isPanelOpen, setIsPanelOpen] = useState(false);
-  const [isDragging, setIsDragging] = useState(false);
-  const dragStartY = useRef(0);
-  const dragOffset = useRef(0);
-  const [dragY, setDragY] = useState(0);
   const openFrameRef = useRef<number | null>(null);
+  const { panelStyle, dragBindings, stopScrollDragPropagation } =
+    useBottomSheetDragDismiss({
+      enabled: isPanelOpen,
+      onClose,
+      openTransition: `transform ${HAZARD_MARKER_SHEET_OPEN_DURATION_MS}ms ${SHEET_OPEN_EASING}`,
+      closeTransition: `transform ${HAZARD_MARKER_SHEET_CLOSE_DURATION_MS}ms ${SHEET_CLOSE_EASING}`,
+    });
 
   useEffect(() => {
     if (visible && content) {
       setRenderedContent(content);
-      setDragY(0);
-      setIsDragging(false);
       setIsPanelOpen(false);
 
       openFrameRef.current = requestAnimationFrame(() => {
@@ -125,11 +127,9 @@ export function HazardMarkerDetailSheet({
   useEffect(() => {
     if (!visible && renderedContent) {
       setIsPanelOpen(false);
-      setIsDragging(false);
 
       const timer = window.setTimeout(() => {
         setRenderedContent(null);
-        setDragY(0);
       }, HAZARD_MARKER_SHEET_CLOSE_DURATION_MS);
 
       return () => window.clearTimeout(timer);
@@ -139,45 +139,6 @@ export function HazardMarkerDetailSheet({
   if (!renderedContent) {
     return null;
   }
-
-  const panelTransform = isPanelOpen
-    ? `translateY(${dragY}px)`
-    : 'translateY(100%)';
-
-  const panelTransition = isDragging
-    ? 'none'
-    : isPanelOpen
-      ? `transform ${HAZARD_MARKER_SHEET_OPEN_DURATION_MS}ms ${SHEET_OPEN_EASING}`
-      : `transform ${HAZARD_MARKER_SHEET_CLOSE_DURATION_MS}ms ${SHEET_CLOSE_EASING}`;
-
-  const handlePointerDown = (event: PointerEvent<HTMLDivElement>) => {
-    setIsDragging(true);
-    dragStartY.current = event.clientY;
-    dragOffset.current = dragY;
-    event.currentTarget.setPointerCapture(event.pointerId);
-  };
-
-  const handlePointerMove = (event: PointerEvent<HTMLDivElement>) => {
-    if (!event.currentTarget.hasPointerCapture(event.pointerId)) {
-      return;
-    }
-    const next = Math.max(0, event.clientY - dragStartY.current + dragOffset.current);
-    setDragY(next);
-  };
-
-  const finishDrag = (event: PointerEvent<HTMLDivElement>) => {
-    if (event.currentTarget.hasPointerCapture(event.pointerId)) {
-      event.currentTarget.releasePointerCapture(event.pointerId);
-    }
-    setIsDragging(false);
-
-    if (dragY > 80) {
-      onClose();
-      return;
-    }
-
-    setDragY(0);
-  };
 
   const rootClassName = [
     'hazard-detail-sheet',
@@ -202,22 +163,17 @@ export function HazardMarkerDetailSheet({
       <div
         className="hazard-detail-sheet__panel"
         style={{
-          transform: panelTransform,
-          transition: panelTransition,
+          transform: isPanelOpen ? panelStyle.transform : 'translateY(100%)',
+          transition: panelStyle.transition,
         }}
+        {...dragBindings}
       >
         <div
           className="hazard-detail-sheet__top-accent"
           style={{ backgroundColor: renderedContent.accentColor }}
         />
 
-        <div
-          className="hazard-detail-sheet__drag-area"
-          onPointerDown={handlePointerDown}
-          onPointerMove={handlePointerMove}
-          onPointerUp={finishDrag}
-          onPointerCancel={finishDrag}
-        >
+        <div className="hazard-detail-sheet__drag-area">
           <div className="hazard-detail-sheet__title-row">
             <h2 className="hazard-detail-sheet__date-title">
               {formatDetailDateFromKey(renderedContent.date)}
@@ -233,7 +189,10 @@ export function HazardMarkerDetailSheet({
           <p className="hazard-detail-sheet__section-title">Tire Events</p>
         </div>
 
-        <div className="hazard-detail-sheet__scroll">
+        <div
+          className="hazard-detail-sheet__scroll"
+          onPointerDown={stopScrollDragPropagation}
+        >
           {renderedContent.events.map(event => (
             <DetailEventRow key={event.id} event={event} />
           ))}
