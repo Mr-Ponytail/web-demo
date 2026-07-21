@@ -6,7 +6,6 @@ import {
   ALERT_PREFERENCE_OPTIONS,
   type AlertPreferenceLevel,
 } from '../data/settingsMocks';
-import { playTestAlert } from '../notifications/playTestAlert';
 import './SettingsPage.css';
 
 type SettingsView = 'main' | 'help' | 'alert-preferences';
