@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 import { IMG } from '../../assets';
+import { useInModalSpeech } from '../../hooks/useInModalSpeech';
 import { AIAdviceFooter } from './AIAdviceFooter';
 import { AIAnswerCard } from './AIAnswerCard';
 import { AIReportCard } from './AIReportCard';
@@ -133,6 +134,25 @@ export function VoiceModal({
     const timer = window.setTimeout(() => setShowReportAdvice(true), 650);
     return () => window.clearTimeout(timer);
   }, [showPotholeReport]);
+
+  const handleInModalTranscript = useCallback(
+    (text: string) => {
+      resetTransition();
+      setShowAdvice(false);
+      setShowReportAdvice(false);
+      setAwaitingCancel(false);
+      setIsListening(false);
+      setDemoTranscript(text);
+      setInsightKey(k => k + 1);
+      setPhase('animating');
+    },
+    [resetTransition],
+  );
+
+  useInModalSpeech({
+    enabled: isListening,
+    onTranscript: handleInModalTranscript,
+  });
 
   const handleMicPress = () => {
     if (phase === 'animating') {
