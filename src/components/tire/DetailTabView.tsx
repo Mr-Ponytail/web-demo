@@ -1,6 +1,7 @@
 import type { CSSProperties } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { MOCK_BY_TIRE, type TireKey } from '../../data/tireMocks';
+import { useLiveSensorReading } from '../../hooks/useLiveSensorReading';
 import {
   TIRE_DETAIL_BODY_MIN_HEIGHT,
   TIRE_DETAIL_CARD_CONFIGS,
@@ -38,11 +39,32 @@ function positionStyle(
     : { right: TIRE_DETAIL_CARD_INSET, top };
 }
 
+const TEMP_PHASE: Partial<Record<TireKey, number>> = {
+  LO: 1.2,
+  RO: 2.7,
+};
+
 export function DetailTabView({ connected }: Props) {
   const navigate = useNavigate();
   const screenW = usePhoneWidth();
   const cardW = detailCardWidth(screenW);
   const gaugeW = detailGaugeWidth(screenW);
+
+  const liveLoTemp = useLiveSensorReading(
+    MOCK_BY_TIRE.LO.temp,
+    connected.has('LO'),
+    { phase: TEMP_PHASE.LO, amplitude: 1.1 },
+  );
+  const liveRoTemp = useLiveSensorReading(
+    MOCK_BY_TIRE.RO.temp,
+    connected.has('RO'),
+    { phase: TEMP_PHASE.RO, amplitude: 1.1 },
+  );
+
+  const liveTempByKey: Partial<Record<TireKey, number>> = {
+    LO: liveLoTemp,
+    RO: liveRoTemp,
+  };
 
   return (
     <div className="detail-tab">
@@ -67,7 +89,10 @@ export function DetailTabView({ connected }: Props) {
         {TIRE_DETAIL_CARD_CONFIGS.map(({ key, metric, row, side }) => {
           const tire = MOCK_BY_TIRE[key as TireKey];
           const isConnected = connected.has(key as TireKey);
-          const value = metric === 'pressure' ? tire.pressure : tire.temp;
+          const value =
+            metric === 'temp'
+              ? (liveTempByKey[key as TireKey] ?? tire.temp)
+              : tire.pressure;
           return (
             <DetailMetricCard
               key={`${key}-${metric}`}

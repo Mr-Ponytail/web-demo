@@ -60,6 +60,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  transition: left 0.85s ease-in-out;
 }
 
 .td-pressure-card__pin img {

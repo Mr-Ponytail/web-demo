@@ -20,6 +20,7 @@ import {
   SPARK_ICON_SIZE,
   TRANSCRIPT_BASE_MARGIN,
 } from './constants';
+import { matchesTireOkayPrompt } from './tireOkayMatch';
 import {
   useVoiceModalTransition,
   type VoicePhase,
@@ -117,6 +118,7 @@ export function VoiceModal({
     showTranscript &&
     isHistoryTranscript &&
     isPullOverPrompt(displayTranscript);
+  const pullOverLocale = matchesTireOkayPrompt(displayTranscript) ? 'ko' : 'en';
   const showGenericInsight =
     showTranscript &&
     isHistoryTranscript &&
@@ -272,9 +274,11 @@ export function VoiceModal({
                       style={{ marginTop: INSIGHT_CARD_GAP }}
                     >
                       <AIAnswerCard
+                        locale={pullOverLocale}
                         onGraphComplete={() => setShowAdvice(true)}
                       />
                       <AIAdviceFooter
+                        locale={pullOverLocale}
                         visible={showAdvice}
                         onGotIt={handleClose}
                       />

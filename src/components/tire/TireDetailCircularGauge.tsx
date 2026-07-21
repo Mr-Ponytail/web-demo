@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   TIRE_DETAIL_GAUGE_C,
   TIRE_DETAIL_GAUGE_R,
@@ -25,8 +25,22 @@ export function TireDetailCircularGauge({
   const target = Math.min(1, Math.max(0, progress));
   const [displayProgress, setDisplayProgress] = useState(0);
   const [transitionEnabled, setTransitionEnabled] = useState(false);
+  const prevKeyRef = useRef(animationKey);
+  const hasMountedRef = useRef(false);
 
   useEffect(() => {
+    const keyChanged = prevKeyRef.current !== animationKey;
+    const shouldIntro = !hasMountedRef.current || keyChanged;
+    prevKeyRef.current = animationKey;
+    hasMountedRef.current = true;
+
+    if (!shouldIntro) {
+      setTransitionEnabled(true);
+      setDisplayProgress(target);
+      return;
+    }
+
+    // Tire switch / first mount: fill from empty once.
     setTransitionEnabled(false);
     setDisplayProgress(0);
 

@@ -8,6 +8,8 @@
   font-weight: 400;
   color: var(--text-50);
   flex-shrink: 0;
+  font-variant-numeric: tabular-nums;
+  transition: background-color 0.4s ease;
 }
 
 .signal-badge--good {

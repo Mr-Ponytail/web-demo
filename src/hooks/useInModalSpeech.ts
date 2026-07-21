@@ -37,6 +37,7 @@ export function useInModalSpeech({ enabled, onTranscript }: Options) {
 
     let stopped = false;
     let fired = false;
+    let readyAt = 0;
     let restartTimer: number | undefined;
 
     const clearTimer = () => {
@@ -59,8 +60,14 @@ export function useInModalSpeech({ enabled, onTranscript }: Options) {
       }, delayMs);
     };
 
+    recognition.onstart = () => {
+      readyAt = Date.now();
+    };
+
     recognition.onresult = event => {
       if (fired) return;
+      if (Date.now() - readyAt < 350) return;
+
       let text = '';
       for (let i = 0; i < event.results.length; i += 1) {
         text += event.results[i][0]?.transcript ?? '';
@@ -102,6 +109,7 @@ export function useInModalSpeech({ enabled, onTranscript }: Options) {
       recognition.onresult = null;
       recognition.onerror = null;
       recognition.onend = null;
+      recognition.onstart = null;
       try {
         recognition.abort();
       } catch {

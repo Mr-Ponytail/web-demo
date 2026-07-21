@@ -15,6 +15,7 @@
   position: absolute;
   object-fit: contain;
   display: block;
+  transition: left 0.85s ease-in-out;
 }
 
 .detail-gauge .is-offline {

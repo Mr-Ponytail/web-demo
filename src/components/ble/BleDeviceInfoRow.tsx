@@ -1,5 +1,5 @@
 import type { BleDevice } from '../../data/bleMocks';
-import { SignalBadge } from './SignalBadge';
+import { phaseFromDeviceId, SignalBadge } from './SignalBadge';
 import './BleDeviceInfoRow.css';
 
 type Props = {
@@ -19,7 +19,7 @@ export function BleDeviceInfoRow({ device, rssi }: Props) {
         </div>
         <span className="ble-device-info-row__id">{device.id}</span>
       </div>
-      <SignalBadge rssi={rssi} />
+      <SignalBadge rssi={rssi} phase={phaseFromDeviceId(device.id)} />
     </div>
   );
 }

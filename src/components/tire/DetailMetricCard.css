@@ -80,6 +80,8 @@
   font-size: 20px;
   font-weight: 700;
   line-height: 28px;
+  font-variant-numeric: tabular-nums;
+  transition: color 0.3s ease;
 }
 
 .detail-metric-card__unit {

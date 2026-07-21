@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { IMG } from '../../assets';
+import { PULL_OVER_COPY, type PullOverLocale } from './pullOverCopy';
 import './AIAnswerCard.css';
 
 const CHART_WIDTH = 310;
@@ -21,9 +22,13 @@ const GRAPH_DELAY_MS = 380;
 const GRAPH_DRAW_MS = 1200;
 const LABEL_FADE_MS = 220;
 
-type Props = { onGraphComplete?: () => void };
+type Props = {
+  onGraphComplete?: () => void;
+  locale?: PullOverLocale;
+};
 
-export function AIAnswerCard({ onGraphComplete }: Props) {
+export function AIAnswerCard({ onGraphComplete, locale = 'en' }: Props) {
+  const copy = PULL_OVER_COPY[locale];
   const pathRef = useRef<SVGPathElement>(null);
   const [impactOn, setImpactOn] = useState(false);
   const [nowOn, setNowOn] = useState(false);
@@ -79,12 +84,12 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
       <div className="ai-answer__glow" />
       <div className="ai-answer__header">
         <img src={IMG.statusLog.danger} alt="" width={32} height={28} />
-        <h3>Pull Over - Check RLO Wheel</h3>
+        <h3>{copy.title}</h3>
       </div>
       <hr className="ai-answer__divider" />
       <div className="ai-answer__metric">
         <img src={IMG.insightsMetric.nut} alt="" width={18} height={18} />
-        <span className="ai-answer__metric-label">Nut torque</span>
+        <span className="ai-answer__metric-label">{copy.metricLabel}</span>
         <span className="ai-answer__metric-delta">-44%</span>
       </div>
 
@@ -142,7 +147,7 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
             top: `${((IMPACT_Y + 10) / CHART_HEIGHT) * 100}%`,
           }}
         >
-          <span>At Impact</span>
+          <span>{copy.impactLabel}</span>
           <strong>98%</strong>
         </div>
 
@@ -160,7 +165,7 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
             top: `${((NOW_Y + 12) / CHART_HEIGHT) * 100}%`,
           }}
         >
-          Now
+          {copy.nowLabel}
         </div>
         <div
           className={nowOn ? 'ai-answer__now-val is-on' : 'ai-answer__now-val'}

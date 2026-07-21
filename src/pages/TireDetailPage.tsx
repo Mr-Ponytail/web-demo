@@ -14,6 +14,7 @@ import { TireDetailSelector } from '../components/tire/TireDetailSelector';
 import { TireDetailStatusChip } from '../components/tire/TireDetailStatusChip';
 import { TireDetailVehicleScene } from '../components/tire/TireDetailVehicleScene';
 import { useSensorConnectionDemo } from '../hooks/useSensorConnectionDemo';
+import { useLiveSensorReading } from '../hooks/useLiveSensorReading';
 import { usePhoneWidth } from '../tire/usePhoneWidth';
 import {
   buildDetailLayout,
@@ -123,9 +124,25 @@ export function TireDetailPage() {
   };
 
   const { pressure, heat, load, align, nut } = tireData;
+  const liveHeat = useLiveSensorReading(heat.value, !showBluetoothBlur, {
+    phase: selectedKey.charCodeAt(0) * 0.17,
+    amplitude: 1.1,
+  });
+  const livePressure = useLiveSensorReading(
+    pressure.value,
+    !showBluetoothBlur,
+    {
+      phase: selectedKey.charCodeAt(0) * 0.31,
+      amplitude: 2.8,
+    },
+  );
   const metricRows = [
     [
-      { title: 'Heat', m: heat, iconType: 'temperature' as const },
+      {
+        title: 'Heat',
+        m: { ...heat, value: liveHeat },
+        iconType: 'temperature' as const,
+      },
       { title: 'Load', m: load, iconType: 'weight' as const },
     ],
     [
@@ -206,7 +223,7 @@ export function TireDetailPage() {
               style={{ width: TIRE_DETAIL_PRESSURE_CARD_W }}
             >
               <TireDetailPressureCard
-                value={pressure.value}
+                value={livePressure}
                 gaugeMin={pressure.min}
                 gaugeMax={pressure.max}
                 unit={pressure.unit}

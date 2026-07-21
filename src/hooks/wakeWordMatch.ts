@@ -163,7 +163,34 @@ export function containsWakePhrase(text: string): boolean {
 }
 
 export function extractWakeCommand(text: string): string | null {
-  return normalizeTireOkayPrompt(text);
+  const afterWake = getTextAfterLastWakePhrase(text);
+  if (!afterWake.trim()) return null;
+  return normalizeTireOkayPrompt(afterWake);
+}
+
+function getTextAfterLastWakePhrase(text: string): string {
+  const normalized = normalizeForMatch(text);
+  const compactText = compact(text);
+  let lastEnd = -1;
+
+  for (const phrase of EXACT_PHRASES) {
+    const idx = normalized.lastIndexOf(phrase);
+    if (idx >= 0) {
+      lastEnd = Math.max(lastEnd, idx + phrase.length);
+    }
+
+    const compactPhrase = compact(phrase);
+    const compactIdx = compactText.lastIndexOf(compactPhrase);
+    if (compactIdx >= 0) {
+      lastEnd = Math.max(lastEnd, compactIdx + compactPhrase.length);
+    }
+  }
+
+  if (lastEnd < 0) return '';
+
+  if (lastEnd >= normalized.length) return '';
+
+  return normalized.slice(lastEnd).trim();
 }
 
 export function collectFullTranscript(event: SpeechRecognitionEvent): string {

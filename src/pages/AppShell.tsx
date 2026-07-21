@@ -11,16 +11,19 @@ export function AppShell() {
   const [voiceInitialTranscript, setVoiceInitialTranscript] = useState<
     string | null
   >(null);
+  const [voiceSessionKey, setVoiceSessionKey] = useState(0);
 
   const openVoicePanel = useCallback(() => {
     setVoiceInitialTranscript(null);
     setVoiceStartListening(false);
+    setVoiceSessionKey(k => k + 1);
     setVoiceOpen(true);
   }, []);
 
   const openVoiceFromWakeWord = useCallback((command: string | null) => {
     setVoiceInitialTranscript(command);
     setVoiceStartListening(!command);
+    setVoiceSessionKey(k => k + 1);
     setVoiceOpen(true);
   }, []);
 
@@ -44,6 +47,7 @@ export function AppShell() {
         <TabBar onAiPress={openVoicePanel} />
       ) : null}
       <VoiceModal
+        key={voiceSessionKey}
         visible={voiceOpen}
         initialTranscript={voiceInitialTranscript}
         startListening={voiceStartListening}

@@ -55,7 +55,7 @@ export function TireDetailMetricCard({
         />
       </div>
       <div className="td-metric-card__value">
-        {Math.round(value)}
+        {unit === '°C' ? value.toFixed(1) : Math.round(value)}
         {unit}
       </div>
     </div>

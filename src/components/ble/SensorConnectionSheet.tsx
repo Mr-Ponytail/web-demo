@@ -4,6 +4,7 @@ import type { BleDevice } from '../../data/bleMocks';
 import { TIRE_SLOT_POSITION_LABELS } from '../../data/bleMocks';
 import type { TireKey } from '../../data/tireMocks';
 import { useBottomSheetDragDismiss } from '../../hooks/useBottomSheetDragDismiss';
+import { phaseFromDeviceId, SignalBadge } from './SignalBadge';
 import './SensorConnectionSheet.css';
 
 type Props = {
@@ -20,20 +21,6 @@ type Props = {
   onDisconnect: (deviceId: string) => void;
   onRefresh: () => void;
 };
-
-function rssiBadgeClass(rssi: number | undefined): string {
-  if (rssi === undefined) return 'ble-sheet__signal--caution';
-  if (rssi >= -65) return 'ble-sheet__signal--good';
-  if (rssi >= -80) return 'ble-sheet__signal--caution';
-  return 'ble-sheet__signal--danger';
-}
-
-function rssiWifiIcon(rssi: number | undefined): string {
-  if (rssi === undefined) return '/assets/icons/wifi-caution.svg';
-  if (rssi >= -65) return '/assets/icons/wifi-good.svg';
-  if (rssi >= -80) return '/assets/icons/wifi-caution.svg';
-  return '/assets/icons/wifi-danger.svg';
-}
 
 export function SensorConnectionSheet({
   visible,
@@ -107,21 +94,10 @@ export function SensorConnectionSheet({
                     <span className="ble-sheet__device-id">{connectedDevice.id}</span>
                   </div>
                 </div>
-                <div
-                  className={`ble-sheet__signal ${rssiBadgeClass(connectedDevice.rssi)}`}
-                >
-                  <img
-                    src={rssiWifiIcon(connectedDevice.rssi)}
-                    alt=""
-                    width={12}
-                    height={12}
-                  />
-                  <span>
-                    {connectedDevice.rssi !== undefined
-                      ? `${connectedDevice.rssi} dBm`
-                      : '--'}
-                  </span>
-                </div>
+                <SignalBadge
+                  rssi={connectedDevice.rssi}
+                  phase={phaseFromDeviceId(connectedDevice.id)}
+                />
               </div>
               <div className="ble-sheet__connected-actions">
                 <button type="button" className="ble-sheet__refresh-outline">

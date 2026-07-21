@@ -1,21 +1,25 @@
 import { useEffect, useState } from 'react';
 import { IMG } from '../../assets';
+import { PULL_OVER_COPY, type PullOverLocale } from './pullOverCopy';
 import { useAiTypewriter } from './useAiTypewriter';
 import './AICards.css';
-
-const ADVICE_TEXT =
-  'Nut torque is down to 54% and still falling. Pull over now to prevent damage. You should check your navigation app for the nearest service center.';
 
 type Props = {
   visible: boolean;
   onGotIt?: () => void;
+  locale?: PullOverLocale;
 };
 
-export function AIAdviceFooter({ visible, onGotIt }: Props) {
+export function AIAdviceFooter({
+  visible,
+  onGotIt,
+  locale = 'en',
+}: Props) {
+  const copy = PULL_OVER_COPY[locale];
   const [showButtons, setShowButtons] = useState(false);
   const { typedText, sparkOpacity, isComplete } = useAiTypewriter({
     visible,
-    text: ADVICE_TEXT,
+    text: copy.advice,
     intervalMs: 16,
   });
 
@@ -42,10 +46,10 @@ export function AIAdviceFooter({ visible, onGotIt }: Props) {
       {showButtons ? (
         <div className="ai-advice__btns">
           <button type="button" className="ai-advice__map">
-            Open Map
+            {copy.openMap}
           </button>
           <button type="button" className="ai-advice__got" onClick={onGotIt}>
-            Got it
+            {copy.gotIt}
           </button>
         </div>
       ) : null}
