@@ -1,0 +1,26 @@
+.tire-pos-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 14px;
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.tire-pos-badge--list {
+  background: var(--blue5);
+  color: var(--brand-70);
+}
+
+.tire-pos-badge--management {
+  background: var(--brand-70);
+  color: var(--grey0);
+}
+
+.tire-pos-badge--unconnected {
+  background: var(--border-10);
+  color: var(--text-80);
+}

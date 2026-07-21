@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { SensorConnectionSheet } from '../components/ble/SensorConnectionSheet';
 import { ScreenHeader } from '../components/ScreenHeader';
 import { AxleView } from '../components/tire/AxleView';
@@ -9,6 +10,7 @@ import { useSensorConnectionDemo } from '../hooks/useSensorConnectionDemo';
 import './HomePage.css';
 
 export function HomePage() {
+  const navigate = useNavigate();
   const [mode, setMode] = useState<'axle' | 'detail'>('axle');
   const sensorConnection = useSensorConnectionDemo();
   const vehicleName =
@@ -19,7 +21,10 @@ export function HomePage() {
     <div className="screen home-screen">
       <div className="home-fixed-top">
         <div className="home-header-pad">
-          <ScreenHeader title={vehicleName} />
+          <ScreenHeader
+            title={vehicleName}
+            onBluetooth={() => navigate('/app/connect-sensors')}
+          />
         </div>
         <div className="view-tabs">
           <button

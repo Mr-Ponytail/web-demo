@@ -1,0 +1,23 @@
+.signal-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border-radius: 4px;
+  padding: 6px 8px;
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-50);
+  flex-shrink: 0;
+}
+
+.signal-badge--good {
+  background: var(--good-bg);
+}
+
+.signal-badge--caution {
+  background: var(--caution-bg);
+}
+
+.signal-badge--danger {
+  background: var(--danger-bg);
+}

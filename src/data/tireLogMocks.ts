@@ -208,6 +208,18 @@ export function formatMonthYear(year: number, month: number) {
   return `${MONTH_SHORT[month]} ${year}`;
 }
 
+/** 0-based month indexes that have tire-log events for the given year (demo). */
+export function getEventMonthsForYear(year: number): number[] {
+  const months = new Set<number>();
+  for (const group of TIRE_LOG_DAY_GROUPS) {
+    const date = new Date(`${group.date}T00:00:00`);
+    if (date.getFullYear() === year) {
+      months.add(date.getMonth());
+    }
+  }
+  return [...months].sort((a, b) => a - b);
+}
+
 export function formatDateBadge(dateKey: string) {
   const date = new Date(`${dateKey}T00:00:00`);
   return `${date.getDate()} ${DAY_NAMES[date.getDay()]}`;

@@ -1,0 +1,34 @@
+.ble-device-info-row {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.ble-device-info-row__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.ble-device-info-row__name-row {
+  display: flex;
+  align-items: center;
+  gap: 0;
+}
+
+.ble-device-info-row__name {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-95);
+}
+
+.ble-device-info-row__id {
+  font-size: 12px;
+  font-weight: 400;
+  color: var(--text-50);
+  word-break: break-all;
+}

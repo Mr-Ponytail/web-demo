@@ -2,10 +2,12 @@ import { useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { IMG } from '../assets';
 import { HazardMarkerDetailSheet } from '../components/hazard/HazardMarkerDetailSheet';
+import { MonthPickerModal } from '../components/tirelog/MonthPickerModal';
 import {
   buildSessionDetailSheetContent,
   formatDateBadge,
   formatMonthYear,
+  getEventMonthsForYear,
   HAZARD_BANNER_DESCRIPTION,
   MONTH_FULL,
   SEVERITY_TAG_COLORS,
@@ -159,6 +161,7 @@ function TimelineDay({
 export function TireLogPage() {
   const navigate = useNavigate();
   const scrollRef = useRef<HTMLDivElement>(null);
+  const monthLabelRef = useRef<HTMLButtonElement>(null);
   const [dateFilter, setDateFilter] = useState<DateFilter>({
     year: 2026,
     month: 6, // July
@@ -172,8 +175,15 @@ export function TireLogPage() {
   const [detailSheetVisible, setDetailSheetVisible] = useState(false);
   const [detailSheetContent, setDetailSheetContent] =
     useState<HazardDetailSheetContent | null>(null);
+  const [pickerVisible, setPickerVisible] = useState(false);
+  const [pickerYear, setPickerYear] = useState(2026);
+  const [pickerAnchorTop, setPickerAnchorTop] = useState(140);
 
   const prevMonth = prevMonthOf(dateFilter);
+  const markedMonths = useMemo(
+    () => getEventMonthsForYear(pickerYear),
+    [pickerYear],
+  );
 
   const visibleDays = useMemo(() => {
     let groups = TIRE_LOG_DAY_GROUPS;
@@ -206,6 +216,21 @@ export function TireLogPage() {
     scrollRef.current?.scrollTo({ top: 0 });
   };
 
+  const openPicker = () => {
+    setPickerYear(dateFilter.year);
+    const label = monthLabelRef.current;
+    if (label) {
+      const rect = label.getBoundingClientRect();
+      setPickerAnchorTop(rect.bottom);
+    }
+    setPickerVisible(true);
+  };
+
+  const selectMonth = (month: number) => {
+    changeMonth({ year: pickerYear, month });
+    setPickerVisible(false);
+  };
+
   const handleSessionPress = (session: TireLogSession, dayDate: string) => {
     setDetailSheetContent(buildSessionDetailSheetContent(session, dayDate));
     setDetailSheetVisible(true);
@@ -221,7 +246,11 @@ export function TireLogPage() {
         <header className="tirelog__header">
           <h1>Tire Log</h1>
           <div className="tirelog__header-actions">
-            <button type="button" aria-label="Bluetooth">
+            <button
+              type="button"
+              aria-label="Bluetooth"
+              onClick={() => navigate('/app/connect-sensors')}
+            >
               <img src={IMG.bluetooth} alt="" width={30} height={30} />
             </button>
             <button type="button" aria-label="Notifications">
@@ -245,7 +274,14 @@ export function TireLogPage() {
               height={20}
             />
           </button>
-          <button type="button" className="tirelog__month-label">
+          <button
+            type="button"
+            className="tirelog__month-label"
+            ref={monthLabelRef}
+            onClick={openPicker}
+            aria-haspopup="dialog"
+            aria-expanded={pickerVisible}
+          >
             <strong>{formatMonthYear(dateFilter.year, dateFilter.month)}</strong>
             <i className="tirelog__caret" />
           </button>
@@ -403,6 +439,17 @@ export function TireLogPage() {
         content={detailSheetContent}
         onClose={handleCloseDetailSheet}
         overlayTabBar
+      />
+
+      <MonthPickerModal
+        visible={pickerVisible}
+        year={pickerYear}
+        dateFilter={dateFilter}
+        anchorTop={pickerAnchorTop}
+        markedMonths={markedMonths}
+        onChangeYear={setPickerYear}
+        onSelectMonth={selectMonth}
+        onClose={() => setPickerVisible(false)}
       />
     </div>
   );

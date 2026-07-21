@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from './pages/AppShell';
+import { ConnectSensorsPage } from './pages/ConnectSensorsPage';
 import { EnterDotDateCodePage } from './pages/EnterDotDateCodePage';
 import { HomePage } from './pages/HomePage';
 import { InsightsPage } from './pages/InsightsPage';
@@ -34,6 +35,7 @@ export default function App() {
               path="/app/manage-tire/dot/:tireKey"
               element={<EnterDotDateCodePage />}
             />
+            <Route path="/app/connect-sensors" element={<ConnectSensorsPage />} />
             <Route path="/app" element={<AppShell />}>
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<HomePage />} />

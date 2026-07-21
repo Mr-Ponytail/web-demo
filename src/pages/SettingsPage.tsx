@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { AlertPreferenceCard } from '../components/settings/AlertPreferenceCard';
 import { SettingsSubNavBar } from '../components/settings/SettingsSubNavBar';
 import { IMG } from '../assets';
@@ -15,10 +16,6 @@ type MenuItem = {
   label: string;
   onPress?: () => void;
 };
-
-function showDemoMessage(title: string, body: string) {
-  window.alert(`${title}\n\n${body}`);
-}
 
 function SettingsSection({
   title,
@@ -106,18 +103,14 @@ function AlertPreferencesSubScreen({ onBack }: { onBack: () => void }) {
 }
 
 export function SettingsPage() {
+  const navigate = useNavigate();
   const [view, setView] = useState<SettingsView>('main');
 
   const preferenceItems: MenuItem[] = [
     {
       icon: IMG.btSetting,
       label: 'Bluetooth Sensor Connection',
-      onPress: () => {
-        showDemoMessage(
-          'Bluetooth Sensor Connection',
-          'Connect sensors from the mobile app.',
-        );
-      },
+      onPress: () => navigate('/app/connect-sensors'),
     },
     {
       icon: IMG.notifSetting,

@@ -10,7 +10,7 @@ import './TirePositionGrid.css';
 const GRID_HEIGHT = 153;
 
 type TirePositionGridProps = {
-  selectedKey: TireSlotKey;
+  selectedKey: TireSlotKey | null;
   onSelect: (key: TireSlotKey) => void;
   className?: string;
 };

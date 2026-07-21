@@ -155,7 +155,7 @@ export function TireDetailPage() {
           <div className="td-bt-blur" aria-hidden />
           <div className="td-bt-prompt-layer">
             <TireDetailBluetoothPrompt
-              onConnectPress={() => sensorConnection.openSheet(selectedKey)}
+              onConnectPress={() => navigate('/app/connect-sensors')}
             />
           </div>
         </>
@@ -172,9 +172,14 @@ export function TireDetailPage() {
             <img src="/assets/icons/back.svg" alt="" width={42} height={42} />
           </button>
           <div className="td-header__right">
-            <span className="td-header__btn">
+            <button
+              type="button"
+              className="td-header__btn"
+              aria-label="Bluetooth"
+              onClick={() => navigate('/app/connect-sensors')}
+            >
               <img src={IMG.bluetooth} alt="" width={30} height={30} />
-            </span>
+            </button>
             <span className="td-header__btn">
               <img src={IMG.notification} alt="" width={30} height={30} />
             </span>

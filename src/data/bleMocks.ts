@@ -6,6 +6,30 @@ export type BleDevice = {
   rssi: number;
 };
 
+export const MAX_CONNECTED_DEVICES = 4;
+
+export function getDeviceForSlot(
+  tireKey: TireKey,
+  tireDeviceMap: Partial<Record<TireKey, string>>,
+  connectedDeviceIds: string[],
+  scannedDevices: BleDevice[],
+): { device: BleDevice; rssi: number | undefined } | null {
+  const deviceId = tireDeviceMap[tireKey];
+  if (!deviceId || !connectedDeviceIds.includes(deviceId)) {
+    return null;
+  }
+
+  const scanned = scannedDevices.find(device => device.id === deviceId);
+  return {
+    device: scanned ?? {
+      id: deviceId,
+      name: 'iSensor',
+      rssi: 0,
+    },
+    rssi: scanned?.rssi,
+  };
+}
+
 export const TIRE_SLOT_POSITION_LABELS: Record<TireKey, string> = {
   FL: 'FRONT LEFT',
   FR: 'FRONT RIGHT',

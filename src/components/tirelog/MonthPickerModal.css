@@ -1,0 +1,110 @@
+.month-picker-root {
+  position: fixed;
+  inset: 0;
+  left: 50%;
+  width: min(100vw, var(--phone-max));
+  transform: translateX(-50%);
+  z-index: 90;
+  pointer-events: none;
+}
+
+.month-picker__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  padding: 0;
+  background: transparent;
+  cursor: default;
+  pointer-events: auto;
+}
+
+.month-picker__card {
+  position: absolute;
+  background: var(--grey0);
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: 0 4px 16px rgba(15, 15, 16, 0.12);
+  pointer-events: auto;
+  z-index: 1;
+}
+
+.month-picker__year-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.month-picker__year-btn {
+  width: 32px;
+  height: 32px;
+  display: grid;
+  place-items: center;
+}
+
+.month-picker__chevron-left {
+  transform: rotate(180deg);
+}
+
+.month-picker__year {
+  font-size: 15px;
+  font-weight: 500;
+  color: var(--text-95);
+}
+
+.month-picker__grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 252px;
+  margin-inline: auto;
+}
+
+.month-picker__cell {
+  width: 84px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  padding: 0;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.month-picker__pill {
+  width: 84px;
+  height: 52px;
+  border-radius: 8px;
+  display: grid;
+  place-items: center;
+}
+
+.month-picker__pill--on {
+  background: var(--brand-70);
+}
+
+.month-picker__pill-inner {
+  position: relative;
+  display: grid;
+  place-items: center;
+}
+
+.month-picker__label {
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-95);
+}
+
+.month-picker__label--on {
+  color: var(--grey0);
+  font-weight: 600;
+}
+
+.month-picker__dot {
+  position: absolute;
+  top: -2px;
+  right: -8px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--danger);
+}

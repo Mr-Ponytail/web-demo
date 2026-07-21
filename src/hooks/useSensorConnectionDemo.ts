@@ -199,7 +199,20 @@ export function useSensorConnectionDemo() {
     d => !connectedDeviceIds.includes(d.id),
   );
 
+  const disconnectTire = useCallback(
+    (tireKey: TireKey) => {
+      const deviceId = tireDeviceMap[tireKey];
+      if (deviceId) {
+        disconnectDevice(deviceId);
+      }
+    },
+    [tireDeviceMap, disconnectDevice],
+  );
+
   return {
+    tireDeviceMap,
+    scannedDevices,
+    connectedDeviceIds,
     connectedTires,
     sheetTireKey,
     openSheet,
@@ -212,6 +225,7 @@ export function useSensorConnectionDemo() {
     availableDevices,
     connectDevice,
     disconnectDevice,
+    disconnectTire,
     handleRefresh,
   };
 }

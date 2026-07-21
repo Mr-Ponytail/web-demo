@@ -1,0 +1,35 @@
+.sensor-list-card--connected {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  height: 74px;
+  border: 1px solid var(--border-10);
+  border-radius: 12px;
+  background: var(--grey0);
+  padding: 0 16px;
+}
+
+.sensor-list-card--dashed {
+  height: 74px;
+  border: 0.5px dashed var(--text-40);
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+}
+
+.sensor-list-card__unconnected-row {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: 74px;
+  gap: 8px;
+}
+
+.sensor-list-card__connect-link {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-50);
+  text-decoration: underline;
+}

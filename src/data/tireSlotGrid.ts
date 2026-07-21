@@ -13,6 +13,7 @@ export const TIRE_SLOT_GRID_LABELS: Record<TireSlotKey, string> = {
 
 export const GRID_TOP_ROW: TireSlotKey[] = ['FR', 'RI', 'RO'];
 export const GRID_BOTTOM_ROW: TireSlotKey[] = ['FL', 'LI', 'LO'];
+export const LIST_ORDER: TireSlotKey[] = ['FR', 'FL', 'RI', 'RO', 'LO', 'LI'];
 
 export const INSIGHTS_CHIP_TO_SLOT: Record<InsightsChipKey, TireSlotKey> = {
   FL: 'FL',
