@@ -1,4 +1,8 @@
-import type { TireKey, TireStatus } from './tireMocks';
+import {
+  MOCK_BY_TIRE,
+  type TireKey,
+  type TireStatus,
+} from './tireMocks';
 
 export type TireMetrics = {
   pressure: { value: number; unit: string; target: number; min: number; max: number };
@@ -36,11 +40,91 @@ export const CAUTION_METRICS: TireMetrics = {
   nut: { value: 65, unit: '%', max: 100 },
 };
 
-export const DETAIL_MOCK_BY_TIRE: Record<TireKey, TireMockEntry> = {
-  FL: { status: 'danger', ...DANGER_METRICS },
-  FR: { status: 'danger', ...DANGER_METRICS },
-  LO: { status: 'danger', ...DANGER_METRICS },
-  LI: { status: 'normal', ...NORMAL_METRICS },
-  RI: { status: 'caution', ...CAUTION_METRICS },
-  RO: { status: 'danger', ...DANGER_METRICS },
+const METRICS_BY_STATUS: Record<
+  Exclude<TireStatus, 'offline'>,
+  TireMetrics
+> = {
+  normal: NORMAL_METRICS,
+  caution: CAUTION_METRICS,
+  danger: DANGER_METRICS,
 };
+
+function metricsForHomeStatus(status: TireStatus): TireMetrics {
+  if (status === 'offline') return NORMAL_METRICS;
+  return METRICS_BY_STATUS[status];
+}
+
+/** Detail metrics/status stay in sync with home-screen `MOCK_BY_TIRE`. */
+export const DETAIL_MOCK_BY_TIRE: Record<TireKey, TireMockEntry> = {
+  FL: {
+    status: MOCK_BY_TIRE.FL.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.FL.status),
+  },
+  FR: {
+    status: MOCK_BY_TIRE.FR.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.FR.status),
+  },
+  LO: {
+    status: MOCK_BY_TIRE.LO.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.LO.status),
+  },
+  LI: {
+    status: MOCK_BY_TIRE.LI.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.LI.status),
+  },
+  RI: {
+    status: MOCK_BY_TIRE.RI.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.RI.status),
+  },
+  RO: {
+    status: MOCK_BY_TIRE.RO.status,
+    ...metricsForHomeStatus(MOCK_BY_TIRE.RO.status),
+  },
+};
+
+/** Disconnected tires show as normal on the detail scene / selector. */
+export function getDisconnectedDetailStatus(_key: TireKey): TireStatus {
+  return 'normal';
+}
+
+export function getDisconnectedDetailEntry(_key: TireKey): TireMockEntry {
+  return {
+    status: 'normal',
+    ...NORMAL_METRICS,
+  };
+}
+
+export function buildDetailStatusMap(
+  connected: ReadonlySet<TireKey>,
+): Record<TireKey, TireStatus> {
+  return {
+    FL: connected.has('FL')
+      ? DETAIL_MOCK_BY_TIRE.FL.status
+      : getDisconnectedDetailStatus('FL'),
+    FR: connected.has('FR')
+      ? DETAIL_MOCK_BY_TIRE.FR.status
+      : getDisconnectedDetailStatus('FR'),
+    LI: connected.has('LI')
+      ? DETAIL_MOCK_BY_TIRE.LI.status
+      : getDisconnectedDetailStatus('LI'),
+    RI: connected.has('RI')
+      ? DETAIL_MOCK_BY_TIRE.RI.status
+      : getDisconnectedDetailStatus('RI'),
+    LO: connected.has('LO')
+      ? DETAIL_MOCK_BY_TIRE.LO.status
+      : getDisconnectedDetailStatus('LO'),
+    RO: connected.has('RO')
+      ? DETAIL_MOCK_BY_TIRE.RO.status
+      : getDisconnectedDetailStatus('RO'),
+  };
+}
+
+export function getDetailEntryForTire(
+  key: TireKey,
+  connected: ReadonlySet<TireKey>,
+): TireMockEntry {
+  if (!connected.has(key)) {
+    return getDisconnectedDetailEntry(key);
+  }
+  return DETAIL_MOCK_BY_TIRE[key];
+}

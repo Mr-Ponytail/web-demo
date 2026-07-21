@@ -1,0 +1,50 @@
+<h2>탭바 Liquid Glass — 어느 정도까지?</h2>
+<p class="subtitle">현재 floating pill 형태는 유지합니다. 유리 효과의 투명도·굴절감만 골라주세요.</p>
+
+<div class="cards">
+  <div class="card" data-choice="subtle" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(160deg, #dfe8f2 0%, #b8c9dc 40%, #8fa8c4 100%); padding: 28px 16px 20px; min-height: 140px; display: flex; align-items: flex-end; justify-content: center;">
+      <div style="width: 100%; max-width: 220px; height: 52px; border-radius: 999px; background: rgba(243,245,247,0.92); border: 1px solid rgba(225,226,228,0.8); box-shadow: 0 8px 28px rgba(0,21,54,0.1); backdrop-filter: blur(16px); display: grid; grid-template-columns: repeat(4,1fr); align-items: center; padding: 3px;">
+        <div style="height: 100%; border-radius: 999px; background: #fff; box-shadow: 0 1px 4px rgba(0,0,0,0.06); display: grid; place-items: center;"><span style="width:8px;height:8px;border-radius:50%;background:#1a5cff;"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.25);"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.25);"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.25);"></span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>A. Subtle (현재에 가까움)</h3>
+      <p>가벼운 blur + 불투명한 배경. 안정적이고 기존 앱과 연속성 높음.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="balanced" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(160deg, #dfe8f2 0%, #b8c9dc 40%, #8fa8c4 100%); padding: 28px 16px 20px; min-height: 140px; display: flex; align-items: flex-end; justify-content: center;">
+      <div style="width: 100%; max-width: 220px; height: 52px; border-radius: 999px; background: linear-gradient(180deg, rgba(255,255,255,0.55) 0%, rgba(255,255,255,0.22) 100%); border: 1px solid rgba(255,255,255,0.65); box-shadow: 0 10px 32px rgba(0,21,54,0.14), inset 0 1px 0 rgba(255,255,255,0.75), inset 0 -1px 0 rgba(255,255,255,0.15); backdrop-filter: blur(28px) saturate(1.4); display: grid; grid-template-columns: repeat(4,1fr); align-items: center; padding: 3px;">
+        <div style="height: 100%; border-radius: 999px; background: rgba(255,255,255,0.72); box-shadow: 0 2px 8px rgba(0,0,0,0.08), inset 0 1px 0 rgba(255,255,255,0.9); display: grid; place-items: center;"><span style="width:8px;height:8px;border-radius:50%;background:#1a5cff;"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.3);"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.3);"></span></div>
+        <div style="display:grid;place-items:center;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.3);"></span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>B. Balanced (추천)</h3>
+      <p>반투명 + 강한 blur + 하이라이트 엣지. iOS Liquid Glass에 가장 가까운 CSS 근사.</p>
+    </div>
+  </div>
+
+  <div class="card" data-choice="maximal" onclick="toggleSelect(this)">
+    <div class="card-image" style="background: linear-gradient(160deg, #dfe8f2 0%, #b8c9dc 40%, #8fa8c4 100%); padding: 28px 16px 20px; min-height: 140px; display: flex; align-items: flex-end; justify-content: center;">
+      <div style="width: 100%; max-width: 220px; height: 52px; border-radius: 999px; background: linear-gradient(135deg, rgba(255,255,255,0.38) 0%, rgba(255,255,255,0.08) 45%, rgba(255,255,255,0.28) 100%); border: 1px solid rgba(255,255,255,0.5); box-shadow: 0 12px 40px rgba(0,21,54,0.18), inset 0 1.5px 0 rgba(255,255,255,0.85), inset 0 -0.5px 0 rgba(255,255,255,0.2), 0 0 0 0.5px rgba(255,255,255,0.2); backdrop-filter: blur(40px) saturate(1.8) brightness(1.05); display: grid; grid-template-columns: repeat(4,1fr); align-items: center; padding: 3px; position: relative; overflow: hidden;">
+        <div style="position:absolute;inset:0;border-radius:999px;background:linear-gradient(115deg, rgba(255,255,255,0.45) 0%, transparent 35%, transparent 65%, rgba(255,255,255,0.2) 100%); pointer-events:none;"></div>
+        <div style="height: 100%; border-radius: 999px; background: rgba(255,255,255,0.55); box-shadow: 0 2px 10px rgba(0,0,0,0.1), inset 0 1px 0 rgba(255,255,255,1); display: grid; place-items: center; position:relative;"><span style="width:8px;height:8px;border-radius:50%;background:#1a5cff;"></span></div>
+        <div style="display:grid;place-items:center;position:relative;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.28);"></span></div>
+        <div style="display:grid;place-items:center;position:relative;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.28);"></span></div>
+        <div style="display:grid;place-items:center;position:relative;"><span style="width:8px;height:8px;border-radius:50%;background:rgba(0,0,0,0.28);"></span></div>
+      </div>
+    </div>
+    <div class="card-body">
+      <h3>C. Maximal</h3>
+      <p>매우 투명 + specular 하이라이트 + 강한 채도. 데모용으로는 화려하지만 가독성·성능 부담이 큼.</p>
+    </div>
+  </div>
+</div>

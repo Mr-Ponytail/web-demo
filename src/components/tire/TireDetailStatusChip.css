@@ -1,0 +1,32 @@
+.td-status-chip {
+  height: 36px;
+  min-width: 44px;
+  border-radius: 11px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 10px;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.td-status-chip:not(.td-status-chip--message) {
+  width: 44px;
+}
+
+.td-status-chip--message {
+  gap: 8px;
+  padding: 0 12px 0 10px;
+}
+
+.td-status-chip img {
+  display: block;
+  flex-shrink: 0;
+}
+
+.td-status-chip__text {
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.2;
+  white-space: nowrap;
+}

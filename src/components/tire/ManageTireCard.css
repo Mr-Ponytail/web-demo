@@ -1,0 +1,75 @@
+.manage-tire-card {
+  position: relative;
+  z-index: 2;
+  box-sizing: border-box;
+  background: rgba(201, 222, 254, 0.15);
+  border: 1px dashed #69a5ff;
+  box-shadow: 0 2px 8px rgba(0, 94, 173, 0.08);
+  overflow: hidden;
+}
+
+.manage-tire-card--registered {
+  border-style: solid;
+  box-shadow: 0 4px 10px rgba(0, 94, 173, 0.16);
+}
+
+.manage-tire-card__label {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 700;
+  color: #005ead;
+  pointer-events: none;
+}
+
+.manage-tire-card__content {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.manage-tire-card__content--center {
+  top: 0;
+  bottom: 8px;
+  align-items: center;
+}
+
+.manage-tire-card__code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 59px;
+  height: 25.5px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: #0e73c8;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.manage-tire-card__cta-wrap {
+  position: absolute;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.manage-tire-card__cta {
+  min-width: 52px;
+  padding: 0 12px;
+  border-radius: 999px;
+  border: 1px solid #0e73c8;
+  background: transparent;
+  color: #0e73c8;
+  font-size: 14px;
+  font-weight: 500;
+}

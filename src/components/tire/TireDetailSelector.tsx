@@ -78,10 +78,12 @@ export function TireDetailSelector({
               className={on ? 'td-selector__cell td-selector__cell--half is-on' : 'td-selector__cell td-selector__cell--half'}
               onClick={() => onSelect(key)}
             >
-              <span>{TIRE_DETAIL_SELECTOR_LABELS[key]}</span>
-              {dot ? (
-                <span className="td-selector__dot" style={{ background: dot }} />
-              ) : null}
+              <span className="td-selector__label">
+                {TIRE_DETAIL_SELECTOR_LABELS[key]}
+                {dot ? (
+                  <span className="td-selector__dot" style={{ background: dot }} />
+                ) : null}
+              </span>
             </button>
           );
         })}
@@ -97,10 +99,12 @@ export function TireDetailSelector({
               className={on ? 'td-selector__cell td-selector__cell--q is-on' : 'td-selector__cell td-selector__cell--q'}
               onClick={() => onSelect(key)}
             >
-              <span>{TIRE_DETAIL_SELECTOR_LABELS[key]}</span>
-              {dot ? (
-                <span className="td-selector__dot" style={{ background: dot }} />
-              ) : null}
+              <span className="td-selector__label">
+                {TIRE_DETAIL_SELECTOR_LABELS[key]}
+                {dot ? (
+                  <span className="td-selector__dot" style={{ background: dot }} />
+                ) : null}
+              </span>
             </button>
           );
         })}

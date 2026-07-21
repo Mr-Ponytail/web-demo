@@ -1,7 +1,9 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from './pages/AppShell';
+import { EnterDotDateCodePage } from './pages/EnterDotDateCodePage';
 import { HomePage } from './pages/HomePage';
 import { InsightsPage } from './pages/InsightsPage';
+import { ManageTireInformationPage } from './pages/ManageTireInformationPage';
 import {
   ConfirmPage,
   NicknamePage,
@@ -27,6 +29,11 @@ export default function App() {
             <Route path="/onboarding/confirm" element={<ConfirmPage />} />
             <Route path="/app/tire/:tireKey" element={<TireDetailPage />} />
             <Route path="/app/tire-log/hazard-map" element={<HazardLocationPage />} />
+            <Route path="/app/manage-tire" element={<ManageTireInformationPage />} />
+            <Route
+              path="/app/manage-tire/dot/:tireKey"
+              element={<EnterDotDateCodePage />}
+            />
             <Route path="/app" element={<AppShell />}>
               <Route index element={<Navigate to="home" replace />} />
               <Route path="home" element={<HomePage />} />

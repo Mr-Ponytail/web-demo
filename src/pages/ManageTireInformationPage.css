@@ -1,0 +1,40 @@
+.manage-tire-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #fff;
+}
+
+.manage-tire-page__scroll {
+  flex: 1;
+  overflow: auto;
+  padding: 0 4px calc(max(var(--safe-b), 16px) + 8px);
+  -webkit-overflow-scrolling: touch;
+}
+
+.manage-tire-page__footer {
+  padding: 20px 20px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.manage-tire-page__helper {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  text-align: center;
+  color: #70737c;
+}
+
+.manage-tire-page__continue {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 12px;
+  background: #005ead;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+  padding: 10px 12px;
+}

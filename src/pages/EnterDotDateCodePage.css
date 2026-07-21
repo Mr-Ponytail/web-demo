@@ -1,0 +1,150 @@
+.dot-code-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: #fff;
+}
+
+.dot-code-page__body {
+  flex: 1;
+  padding: 30px 20px 120px;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.dot-code-page__position {
+  margin: 0 0 8px;
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: #989ba2;
+}
+
+.dot-code-page__heading {
+  margin: 0 0 20px;
+  font-size: 24px;
+  font-weight: 700;
+  color: #0f0f10;
+}
+
+.dot-code-page__digits {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.dot-code-page__digit {
+  flex: 1;
+  height: 50px;
+  border-radius: 8px;
+  border: 2px solid #aeb0b6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.dot-code-page__digit--on {
+  border-color: #0e73c8;
+}
+
+.dot-code-page__digit-input {
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: transparent;
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+  color: #0f0f10;
+  outline: none;
+}
+
+.dot-code-page__guide {
+  height: 240px;
+  border-radius: 16px;
+  background: #f7fbff;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.dot-code-page__guide-header {
+  padding: 16px 16px 10px;
+}
+
+.dot-code-page__pattern {
+  margin: 0 0 10px;
+  font-size: 16px;
+  font-weight: 700;
+  color: #0f0f10;
+}
+
+.dot-code-page__pattern-pill {
+  display: inline-block;
+  background: #3385ff;
+  color: #fff;
+  border-radius: 999px;
+  padding: 3px 8px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.dot-code-page__guide-desc {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #70737c;
+}
+
+.dot-code-page__guide-img {
+  display: block;
+  width: 100%;
+  flex: 1;
+  object-fit: contain;
+  object-position: center bottom;
+}
+
+.dot-code-page__footer {
+  position: sticky;
+  bottom: 0;
+  padding: 0 20px calc(max(var(--safe-b), 16px) + 28px);
+  background: #fff;
+}
+
+.dot-code-page__fade {
+  height: 40px;
+  margin: 0 -20px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0),
+    rgba(255, 255, 255, 1)
+  );
+}
+
+.dot-code-page__error {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #ff4242;
+  text-align: center;
+}
+
+.dot-code-page__save {
+  width: 100%;
+  min-height: 52px;
+  border-radius: 8px;
+  background: #aeb0b6;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.dot-code-page__save--on {
+  background: #005ead;
+}
+
+.dot-code-page__save:disabled {
+  cursor: default;
+}

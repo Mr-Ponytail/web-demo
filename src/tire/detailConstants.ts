@@ -13,7 +13,7 @@ export function buildDetailLayout(sw: number) {
   const tireH = 204;
   const tireStartRight = 50;
   /** Web demo: lift vehicle scene ~30px vs native defaults. */
-  const tireStartTop = 210;
+  const tireStartTop = 200;
   const focusCenterX = sw - tireStartRight - tireW / 2;
   const focusCenterY = tireStartTop + tireH / 2;
 
@@ -25,23 +25,23 @@ export function buildDetailLayout(sw: number) {
   const rightInset = 0;
 
   const viewHorizontalPan = 595;
-  const verticalPanDelta = 420;
+  const verticalPanDelta = 500;
   const innerPanX = 90;
 
   const sceneExtraW = 600;
   const sceneW = sw + sceneExtraW;
   const carLeft = sceneW - 253 - carW;
-  const carTop = 40;
+  const carTop = 20;
 
   const leftLightW = 380;
   const leftLightH = 370;
-  const leftLightOffsetX = -20;
-  const leftLightOffsetY = 100;
+  const leftLightOffsetX = -16;
+  const leftLightOffsetY = 95;
 
   const rightLightW = 380;
   const rightLightH = 370;
-  const rightLightOffsetX = 17;
-  const rightLightOffsetY = 100;
+  const rightLightOffsetX = 13;
+  const rightLightOffsetY = 95;
 
   const sceneTireAnchors: Record<TireKey, { x: number; y: number }> = {
     FL: {
@@ -175,8 +175,8 @@ export function getLightImageKey(
 }
 
 export function getTireStatusDotColor(status: TireStatus): string | null {
-  if (status === 'danger') return '#E52222';
-  if (status === 'caution') return '#F48200';
+  if (status === 'danger') return '#F66570';
+  if (status === 'caution') return '#FF8E62';
   return null;
 }
 

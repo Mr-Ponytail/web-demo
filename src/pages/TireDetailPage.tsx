@@ -1,12 +1,19 @@
 import { useEffect, useMemo, useRef, useState, type TouchEvent } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { SensorConnectionSheet } from '../components/ble/SensorConnectionSheet';
 import { IMG } from '../assets';
-import { DETAIL_MOCK_BY_TIRE } from '../data/tireDetailMocks';
+import {
+  buildDetailStatusMap,
+  getDetailEntryForTire,
+} from '../data/tireDetailMocks';
 import type { TireKey, TireStatus } from '../data/tireMocks';
+import { TireDetailBluetoothPrompt } from '../components/tire/TireDetailBluetoothPrompt';
 import { TireDetailMetricCard } from '../components/tire/TireDetailMetricCard';
 import { TireDetailPressureCard } from '../components/tire/TireDetailPressureCard';
 import { TireDetailSelector } from '../components/tire/TireDetailSelector';
+import { TireDetailStatusChip } from '../components/tire/TireDetailStatusChip';
 import { TireDetailVehicleScene } from '../components/tire/TireDetailVehicleScene';
+import { useSensorConnectionDemo } from '../hooks/useSensorConnectionDemo';
 import { usePhoneWidth } from '../tire/usePhoneWidth';
 import {
   buildDetailLayout,
@@ -25,13 +32,6 @@ const STATUS_GRADIENT: Record<TireStatus, string> = {
   offline: 'rgba(152, 155, 162, 0.12)',
 };
 
-const STATUS_CHIP: Record<TireStatus, { label: string; color: string }> = {
-  normal: { label: 'Good', color: '#1ED45A' },
-  caution: { label: 'Warning', color: '#FF9F0A' },
-  danger: { label: 'Critical', color: '#FF6363' },
-  offline: { label: 'Offline', color: '#878A93' },
-};
-
 function isTireKey(v: string | undefined): v is TireKey {
   return !!v && (TIRE_DETAIL_ALL_KEYS as string[]).includes(v);
 }
@@ -41,6 +41,7 @@ export function TireDetailPage() {
   const { tireKey: paramKey } = useParams();
   const sw = usePhoneWidth();
   const layout = useMemo(() => buildDetailLayout(sw), [sw]);
+  const sensorConnection = useSensorConnectionDemo();
 
   const initKey: TireKey = isTireKey(paramKey) ? paramKey : 'FL';
   const [focusedKey, setFocusedKey] = useState<TireKey>(initKey);
@@ -57,19 +58,19 @@ export function TireDetailPage() {
     cardTimer.current = null;
   };
 
-  const tireStatusByKey = useMemo(() => {
-    const map = {} as Record<TireKey, TireStatus>;
-    for (const key of TIRE_DETAIL_ALL_KEYS) {
-      map[key] = DETAIL_MOCK_BY_TIRE[key].status;
-    }
-    return map;
-  }, []);
+  const tireStatusByKey = useMemo(
+    () => buildDetailStatusMap(sensorConnection.connectedTires),
+    [sensorConnection.connectedTires],
+  );
 
-  const tireData = DETAIL_MOCK_BY_TIRE[selectedKey];
+  const tireData = getDetailEntryForTire(
+    selectedKey,
+    sensorConnection.connectedTires,
+  );
+  const showBluetoothBlur = !sensorConnection.connectedTires.has(selectedKey);
   const pan = layout.viewportPan[focusedKey];
   const pos = TIRE_DETAIL_POSITION_LABELS[selectedKey];
   const left = isLeftTire(selectedKey);
-  const chip = STATUS_CHIP[tireData.status];
 
   useEffect(() => {
     if (isTireKey(paramKey) && paramKey !== focusedKey) {
@@ -111,10 +112,12 @@ export function TireDetailPage() {
     const dx = (e.changedTouches[0]?.clientX ?? start) - start;
     const idx = TIRE_DETAIL_ALL_KEYS.indexOf(focusedKey);
     if (dx <= -48) {
-      handleSelectTire(TIRE_DETAIL_ALL_KEYS[(idx + 1) % TIRE_DETAIL_ALL_KEYS.length]);
+      handleSelectTire(TIRE_DETAIL_ALL_KEYS[(idx + 1) % TIRE_DETAIL_ALL_KEYS.length]!);
     } else if (dx >= 48) {
       handleSelectTire(
-        TIRE_DETAIL_ALL_KEYS[(idx - 1 + TIRE_DETAIL_ALL_KEYS.length) % TIRE_DETAIL_ALL_KEYS.length],
+        TIRE_DETAIL_ALL_KEYS[
+          (idx - 1 + TIRE_DETAIL_ALL_KEYS.length) % TIRE_DETAIL_ALL_KEYS.length
+        ]!,
       );
     }
   };
@@ -126,7 +129,7 @@ export function TireDetailPage() {
       { title: 'Load', m: load, iconType: 'weight' as const },
     ],
     [
-      { title: 'Align', m: align, iconType: 'align' as const },
+      { title: 'Toe', m: align, iconType: 'align' as const },
       { title: 'Nut', m: nut, iconType: 'nut' as const },
     ],
   ];
@@ -146,6 +149,17 @@ export function TireDetailPage() {
         pan={pan}
         tireStatusByKey={tireStatusByKey}
       />
+
+      {showBluetoothBlur ? (
+        <>
+          <div className="td-bt-blur" aria-hidden />
+          <div className="td-bt-prompt-layer">
+            <TireDetailBluetoothPrompt
+              onConnectPress={() => sensorConnection.openSheet(selectedKey)}
+            />
+          </div>
+        </>
+      ) : null}
 
       <div className="td-foreground">
         <header className="td-header">
@@ -175,16 +189,13 @@ export function TireDetailPage() {
               <p className="td-axle">{pos.axle}</p>
               <h1 className="td-side">{pos.side}</h1>
 
-              <div
-                className="td-chip"
-                style={{ color: chip.color, borderColor: `${chip.color}55` }}
-              >
-                {chip.label}
-              </div>
+              {!showBluetoothBlur ? (
+                <TireDetailStatusChip status={tireData.status} />
+              ) : null}
             </>
           ) : null}
 
-          {showCards ? (
+          {showCards && !showBluetoothBlur ? (
             <div
               className="td-cards"
               style={{ width: TIRE_DETAIL_PRESSURE_CARD_W }}
@@ -245,6 +256,21 @@ export function TireDetailPage() {
           />
         </div>
       </div>
+
+      <SensorConnectionSheet
+        visible={sensorConnection.sheetTireKey !== null}
+        tireKey={sensorConnection.sheetTireKey}
+        isScanning={sensorConnection.isScanning}
+        isRefreshing={sensorConnection.isRefreshing}
+        connectingDeviceId={sensorConnection.connectingDeviceId}
+        connectedDevice={sensorConnection.sheetConnectedDevice}
+        connectedDeviceId={sensorConnection.sheetConnectedDeviceId}
+        availableDevices={sensorConnection.availableDevices}
+        onClose={sensorConnection.closeSheet}
+        onConnect={deviceId => void sensorConnection.connectDevice(deviceId)}
+        onDisconnect={sensorConnection.disconnectDevice}
+        onRefresh={sensorConnection.handleRefresh}
+      />
     </div>
   );
 }

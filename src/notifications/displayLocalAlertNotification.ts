@@ -14,8 +14,8 @@ const DEFAULTS: Record<LocalAlertImageKey, { title: string; body: string }> = {
 };
 
 const ICONS: Record<LocalAlertImageKey, string> = {
-  caution: IMG.statusInsights.caution,
-  danger: IMG.statusInsights.danger,
+  caution: IMG.statusLog.caution,
+  danger: IMG.statusLog.danger,
 };
 
 export function isNotificationSupported(): boolean {

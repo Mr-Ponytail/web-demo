@@ -125,28 +125,6 @@ export function SettingsPage() {
       label: 'Alert Preferences',
       onPress: () => setView('alert-preferences'),
     },
-    {
-      icon: IMG.notifSetting,
-      label: 'Test Caution Notification',
-      onPress: () => {
-        playTestAlert(
-          'caution',
-          'FR Pressure Low',
-          'Dropping to 99 psi. Still driveable, add air soon.',
-        );
-      },
-    },
-    {
-      icon: IMG.notifSetting,
-      label: 'Test Danger Notification',
-      onPress: () => {
-        playTestAlert(
-          'danger',
-          'FR Nut Loose',
-          "High detachment risk. Stop now, don't keep driving.",
-        );
-      },
-    },
   ];
 
   const supportItems: MenuItem[] = [

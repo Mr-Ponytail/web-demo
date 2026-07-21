@@ -1,0 +1,11 @@
+.manage-axle {
+  padding: 4px 16px 0;
+  position: relative;
+  z-index: 1;
+}
+
+.manage-axle__rear-chip {
+  display: flex;
+  justify-content: center;
+  margin-top: 8px;
+}

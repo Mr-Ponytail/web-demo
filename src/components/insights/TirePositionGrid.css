@@ -78,9 +78,8 @@
 }
 
 .tire-pos-grid__cell--selected {
-  background: rgba(0, 94, 173, 0.4);
+  background: rgba(218, 233, 254, 0.8);
   color: #005ead;
-  font-weight: 600;
 }
 
 .tire-pos-grid__col-div,

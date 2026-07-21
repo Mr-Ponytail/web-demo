@@ -89,6 +89,21 @@ a {
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.06), 0 20px 60px rgba(0, 21, 54, 0.12);
 }
 
+/* Real devices: fill viewport; desktop keeps centered phone frame */
+@media (max-width: 480px) {
+  :root {
+    --phone-max: 100%;
+  }
+
+  .app-root {
+    background: var(--grey0);
+  }
+
+  .phone {
+    box-shadow: none;
+  }
+}
+
 .screen {
   flex: 1;
   display: flex;

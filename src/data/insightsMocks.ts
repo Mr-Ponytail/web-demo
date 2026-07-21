@@ -25,6 +25,7 @@ export type TireLifeThresholds = {
 };
 
 export type InsightsTireView = {
+  hasData: boolean;
   damageLevel: number;
   damageLevelDeltaPct: number;
   cumulativeKm: number;
@@ -33,6 +34,7 @@ export type InsightsTireView = {
 } & TireLifeThresholds;
 
 export const DEFAULT_INSIGHTS_TIRE_VIEW: InsightsTireView = {
+  hasData: true,
   damageLevel: 30,
   damageLevelDeltaPct: 4.2,
   cumulativeKm: 52000,
@@ -43,13 +45,26 @@ export const DEFAULT_INSIGHTS_TIRE_VIEW: InsightsTireView = {
   recommendedReplaceDate: null,
 };
 
+export const EMPTY_INSIGHTS_TIRE_VIEW: InsightsTireView = {
+  hasData: false,
+  damageLevel: 0,
+  damageLevelDeltaPct: 0,
+  cumulativeKm: 0,
+  expectedTireLifeKm: 100000,
+  runningLowKm: 56000,
+  nearLimitKm: 72000,
+  alertCount: 0,
+  recommendedReplaceDate: null,
+};
+
 export type WatchWeekCardData = {
   title: string;
   iconKey: 'pressure' | 'temperature' | 'load' | 'nut' | 'align';
   valueLabel: string;
   unit: string;
+  noData?: boolean;
   trendDirection: 'up' | 'down';
-  trendLabel: string;
+  trendLabel: string | null;
   alert?: 'caution' | 'danger';
   series: number[];
   baseline: number[];

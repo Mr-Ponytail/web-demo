@@ -338,7 +338,7 @@
 
 .insights__headline h2 {
   margin: 0;
-  flex: 1;
+  flex-shrink: 1;
   font-size: 24px;
   font-weight: 700;
   color: #fff;
@@ -424,6 +424,10 @@
   color: #e52222;
 }
 
+.insights__damage-compare-value--empty {
+  color: #878a93;
+}
+
 .insights__damage-compare small {
   font-size: 14px;
   font-weight: 500;
@@ -443,16 +447,32 @@
   position: absolute;
   top: 0;
   left: 0;
-  right: 0;
-  height: 30%;
-  background: linear-gradient(180deg, #c9defe, transparent);
+  height: 55%;
+  background: linear-gradient(
+    180deg,
+    #c9defe 0%,
+    rgba(201, 222, 254, 0.1) 32%,
+    rgba(234, 243, 255, 0.05) 72%,
+    #eaf3ff 100%
+  );
   pointer-events: none;
+}
+
+.insights__life-wash--soft {
+  right: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(201, 222, 254, 0.6) 0%,
+    rgba(234, 243, 255, 0.3) 55%,
+    #eaf3ff 100%
+  );
 }
 
 .insights__life-header {
   display: flex;
   align-items: center;
   gap: 6px;
+  z-index: 1;
 }
 
 .insights__life-header h3,
@@ -485,10 +505,10 @@
 }
 
 .insights__life-est {
-  margin: 0 0 2px;
+  margin: 0 0 6px;
   font-size: 14px;
   font-weight: 600;
-  color: #878a93;
+  color: #AEB0B6;
 }
 
 .insights__life-km {
@@ -497,9 +517,13 @@
   font-weight: 700;
 }
 
+.insights__life-km-unit {
+  font-size: 18px;
+}
+
 .insights__life-progress {
   position: relative;
-  padding-top: 48px;
+  padding-top: 12px;
 }
 
 .insights__life-badge-wrap {
@@ -515,17 +539,11 @@
 .insights__life-badge {
   display: inline-flex;
   align-items: center;
-  gap: 4px;
   border-radius: 12px;
   padding: 4px 10px;
   font-size: 12px;
   font-weight: 400;
   white-space: nowrap;
-}
-
-.insights__life-badge img {
-  width: 18px;
-  height: 18px;
 }
 
 .insights__life-badge-tail {
@@ -535,6 +553,12 @@
   border-left: 6px solid transparent;
   border-right: 6px solid transparent;
   border-top: 10px solid #fef4e6;
+}
+
+.insights__life-truck {
+  display: block;
+  width: 32px;
+  height: 32px;
 }
 
 .insights__life-track {
@@ -567,7 +591,7 @@
   align-items: center;
   font-size: 12px;
   font-weight: 500;
-  color: #c2c4c8;
+  color: #aeb0b6;
 }
 
 .insights__life-scale span {
@@ -589,9 +613,10 @@
 
 .insights__life-sub-card {
   flex: 1;
+  position: relative;
   background: #fff;
   border-radius: 16px;
-  padding: 16px 10px;
+  padding: 12px 10px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -603,7 +628,7 @@
   margin: 0;
   font-size: 13px;
   font-weight: 500;
-  color: #5a5c63;
+  color: #70737C;
   text-align: center;
 }
 
@@ -614,35 +639,63 @@
 }
 
 .insights__life-sub-card--locked {
-  position: relative;
   overflow: hidden;
-  min-height: 84px;
-  background: linear-gradient(135deg, #005ead, #003e9c);
 }
 
-.insights__life-lock {
+.insights__life-lock-overlay {
+  position: absolute;
+  inset: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(90, 101, 112, 0.6) 60%,
+      rgba(135, 247, 255, 0.95) 110%
+    ),
+    rgba(135, 247, 255, 0.35);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.insights__life-lock-content {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 8px;
-  height: 100%;
+  padding: 12px;
 }
 
-.insights__life-lock p {
+.insights__life-lock-content p {
   color: #fff;
+}
+
+.insights__life-lock-content img {
+  margin-top: 8px;
+  display: block;
 }
 
 .insights__unlock {
   align-self: flex-end;
   width: min(270px, 100%);
+  margin-top: 2px;
   display: flex;
   align-items: center;
   gap: 12px;
   padding: 10px 16px;
+  border: 0;
   border-radius: 12px 0 12px 12px;
   background: #f3f5f7;
   box-shadow: 0 2px 8px rgba(0, 94, 173, 0.1);
+  text-align: left;
+  cursor: pointer;
+}
+
+.insights__unlock-text {
+  flex: 1;
+  min-width: 0;
 }
 
 .insights__unlock p {
@@ -759,6 +812,10 @@
   border-radius: 10px;
   background: #f3f5f7;
   overflow: hidden;
+}
+
+.iw-chart--dimmed {
+  opacity: 0.5;
 }
 
 .iw-chart__label {
