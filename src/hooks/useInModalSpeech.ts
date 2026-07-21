@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { extractWakeCommand } from './wakeWordMatch';
+import { normalizeTireOkayPrompt } from '../components/voice/tireOkayMatch';
 
 type Options = {
   enabled: boolean;
@@ -14,7 +14,7 @@ function getSpeechRecognitionCtor():
 }
 
 function classifyTranscript(text: string): string {
-  const command = extractWakeCommand(text);
+  const command = normalizeTireOkayPrompt(text);
   if (command) return command;
   return text.trim();
 }

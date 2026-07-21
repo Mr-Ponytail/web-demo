@@ -1,3 +1,5 @@
+import { normalizeTireOkayPrompt } from '../components/voice/tireOkayMatch';
+
 const EXACT_PHRASES = [
   'hey track',
   'hay track',
@@ -35,11 +37,6 @@ const TRACK_VARIANTS = [
 ];
 
 const WAKE_COMPACT_TARGETS = ['heytrack', 'heytrak', 'heytruk', '헤이트랙', '해이트랙'];
-const TIRE_OKAY_PATTERNS = [
-  /(타이어|tire).*(괜찮|괜찬|okay|ok|fine|safe)/i,
-  /(괜찮|괜찬|okay|ok|fine|safe).*(타이어|tire)/i,
-  /(wheel|tire).*(safe|okay|ok|fine)/i,
-] as const;
 
 function normalizeForMatch(text: string): string {
   return text
@@ -166,13 +163,7 @@ export function containsWakePhrase(text: string): boolean {
 }
 
 export function extractWakeCommand(text: string): string | null {
-  if (!text.trim()) return null;
-
-  if (TIRE_OKAY_PATTERNS.some(pattern => pattern.test(text))) {
-    return '타이어 괜찮아?';
-  }
-
-  return null;
+  return normalizeTireOkayPrompt(text);
 }
 
 export function collectFullTranscript(event: SpeechRecognitionEvent): string {

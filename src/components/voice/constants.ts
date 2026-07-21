@@ -1,3 +1,5 @@
+import { matchesTireOkayPrompt } from './tireOkayMatch';
+
 export const CONTENT_HORIZONTAL_PADDING = 24;
 export const AI_BUTTON_SIZE = 80;
 export const CANCEL_BUTTON_SIZE = 36;
@@ -26,11 +28,7 @@ export const GUIDE_PROMPTS = [
 ] as const;
 
 export function isPullOverPrompt(text: string): boolean {
-  return (
-    /pull\s*over/i.test(text) ||
-    /(타이어|tire).*(괜찮|okay|ok|fine|safe)/i.test(text) ||
-    /(괜찮|okay|ok|fine|safe).*(타이어|tire)/i.test(text)
-  );
+  return /pull\s*over/i.test(text) || matchesTireOkayPrompt(text);
 }
 
 export function isPotholePrompt(text: string): boolean {
