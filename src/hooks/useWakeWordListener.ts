@@ -1,6 +1,5 @@
 import { useEffect, useRef } from 'react';
-
-const WAKE_PHRASES = ['hey track', '헤이 트랙', '헤이트랙', 'heytrack'] as const;
+import { collectFullTranscript, containsWakePhrase } from './wakeWordMatch';
 
 type Options = {
   enabled: boolean;
@@ -12,38 +11,6 @@ function getSpeechRecognitionCtor():
   | undefined {
   if (typeof window === 'undefined') return undefined;
   return window.SpeechRecognition ?? window.webkitSpeechRecognition;
-}
-
-function normalizeTranscript(text: string): string {
-  return text.toLowerCase().replace(/\s+/g, ' ').trim();
-}
-
-function containsWakePhrase(text: string): boolean {
-  const normalized = normalizeTranscript(text);
-  const compact = normalized.replace(/[\s,.!?]/g, '');
-
-  if (
-    WAKE_PHRASES.some(
-      phrase =>
-        normalized.includes(phrase) ||
-        compact.includes(phrase.replace(/\s/g, '')),
-    )
-  ) {
-    return true;
-  }
-
-  const hasHey = normalized.includes('hey') || normalized.includes('헤이');
-  const hasTrack = normalized.includes('track') || normalized.includes('트랙');
-
-  return hasHey && hasTrack;
-}
-
-function collectTranscript(event: SpeechRecognitionEvent): string {
-  let text = '';
-  for (let i = event.resultIndex; i < event.results.length; i += 1) {
-    text += event.results[i][0]?.transcript ?? '';
-  }
-  return text;
 }
 
 export function useWakeWordListener({ enabled, onWakeWord }: Options) {
@@ -91,7 +58,7 @@ export function useWakeWordListener({ enabled, onWakeWord }: Options) {
     };
 
     recognition.onresult = event => {
-      const transcript = collectTranscript(event);
+      const transcript = collectFullTranscript(event);
       if (!containsWakePhrase(transcript) || triggeredRef.current) return;
 
       triggeredRef.current = true;
