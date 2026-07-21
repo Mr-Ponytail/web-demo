@@ -18,6 +18,7 @@ export const HAZARD_REPORT_UNDO_RING_STROKE = 2.5;
 
 export const PULL_OVER_PROMPT = 'Should I pull over?';
 export const POTHOLE_PROMPT = 'Report the pothole I just hit.';
+export const TIRE_OKAY_PROMPT = '타이어 괜찮아?';
 
 export const GUIDE_PROMPTS = [
   'Which tire needs attention first?',
@@ -26,7 +27,11 @@ export const GUIDE_PROMPTS = [
 ] as const;
 
 export function isPullOverPrompt(text: string): boolean {
-  return /pull\s*over/i.test(text);
+  return (
+    /pull\s*over/i.test(text) ||
+    /(타이어|tire).*(괜찮|okay|ok|fine|safe)/i.test(text) ||
+    /(괜찮|okay|ok|fine|safe).*(타이어|tire)/i.test(text)
+  );
 }
 
 export function isPotholePrompt(text: string): boolean {

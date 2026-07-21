@@ -8,18 +8,24 @@ import './AppShell.css';
 export function AppShell() {
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [voiceStartListening, setVoiceStartListening] = useState(false);
+  const [voiceInitialTranscript, setVoiceInitialTranscript] = useState<
+    string | null
+  >(null);
 
   const openVoicePanel = useCallback(() => {
+    setVoiceInitialTranscript(null);
     setVoiceStartListening(false);
     setVoiceOpen(true);
   }, []);
 
-  const openVoiceFromWakeWord = useCallback(() => {
-    setVoiceStartListening(true);
+  const openVoiceFromWakeWord = useCallback((command: string | null) => {
+    setVoiceInitialTranscript(command);
+    setVoiceStartListening(!command);
     setVoiceOpen(true);
   }, []);
 
   const closeVoice = useCallback(() => {
+    setVoiceInitialTranscript(null);
     setVoiceStartListening(false);
     setVoiceOpen(false);
   }, []);
@@ -39,6 +45,7 @@ export function AppShell() {
       ) : null}
       <VoiceModal
         visible={voiceOpen}
+        initialTranscript={voiceInitialTranscript}
         startListening={voiceStartListening}
         onClose={closeVoice}
       />

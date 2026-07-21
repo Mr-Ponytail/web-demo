@@ -1,9 +1,13 @@
 import { useEffect, useRef } from 'react';
-import { collectFullTranscript, containsWakePhrase } from './wakeWordMatch';
+import {
+  collectFullTranscript,
+  containsWakePhrase,
+  extractWakeCommand,
+} from './wakeWordMatch';
 
 type Options = {
   enabled: boolean;
-  onWakeWord: () => void;
+  onWakeWord: (command: string | null) => void;
 };
 
 function getSpeechRecognitionCtor():
@@ -63,7 +67,7 @@ export function useWakeWordListener({ enabled, onWakeWord }: Options) {
 
       triggeredRef.current = true;
       recognition.stop();
-      onWakeWordRef.current();
+      onWakeWordRef.current(extractWakeCommand(transcript));
     };
 
     recognition.onerror = event => {

@@ -17,6 +17,7 @@ import {
   isPullOverPrompt,
   LIVE_FONT_SIZE,
   SPARK_ICON_SIZE,
+  TIRE_OKAY_PROMPT,
   TRANSCRIPT_BASE_MARGIN,
 } from './constants';
 import {
@@ -29,9 +30,15 @@ type Props = {
   visible: boolean;
   onClose: () => void;
   startListening?: boolean;
+  initialTranscript?: string | null;
 };
 
-export function VoiceModal({ visible, onClose, startListening = false }: Props) {
+export function VoiceModal({
+  visible,
+  onClose,
+  startListening = false,
+  initialTranscript = null,
+}: Props) {
   const [phase, setPhase] = useState<VoicePhase>('panel');
   const [isListening, setIsListening] = useState(false);
   const [demoTranscript, setDemoTranscript] = useState<string | null>(null);
@@ -78,6 +85,18 @@ export function VoiceModal({ visible, onClose, startListening = false }: Props) 
       return;
     }
 
+    if (initialTranscript) {
+      resetTransition();
+      setShowAdvice(false);
+      setShowReportAdvice(false);
+      setAwaitingCancel(false);
+      setIsListening(false);
+      setDemoTranscript(initialTranscript);
+      setInsightKey(k => k + 1);
+      setPhase('animating');
+      return;
+    }
+
     if (!startListening) return;
 
     resetTransition();
@@ -87,7 +106,7 @@ export function VoiceModal({ visible, onClose, startListening = false }: Props) 
     setDemoTranscript(null);
     setPhase('animating');
     setIsListening(true);
-  }, [visible, startListening, resetSession, resetTransition]);
+  }, [visible, initialTranscript, startListening, resetSession, resetTransition]);
 
   const showTranscript = phase === 'animating' && !!displayTranscript;
   const showPotholeReport =
@@ -98,6 +117,7 @@ export function VoiceModal({ visible, onClose, startListening = false }: Props) 
     showTranscript &&
     isHistoryTranscript &&
     isPullOverPrompt(displayTranscript);
+  const showCompactAnswer = displayTranscript === TIRE_OKAY_PROMPT;
   const showGenericInsight =
     showTranscript &&
     isHistoryTranscript &&
@@ -234,6 +254,7 @@ export function VoiceModal({ visible, onClose, startListening = false }: Props) 
                       style={{ marginTop: INSIGHT_CARD_GAP }}
                     >
                       <AIAnswerCard
+                        showChart={!showCompactAnswer}
                         onGraphComplete={() => setShowAdvice(true)}
                       />
                       <AIAdviceFooter

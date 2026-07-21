@@ -21,9 +21,15 @@ const GRAPH_DELAY_MS = 380;
 const GRAPH_DRAW_MS = 1200;
 const LABEL_FADE_MS = 220;
 
-type Props = { onGraphComplete?: () => void };
+type Props = {
+  onGraphComplete?: () => void;
+  showChart?: boolean;
+};
 
-export function AIAnswerCard({ onGraphComplete }: Props) {
+export function AIAnswerCard({
+  onGraphComplete,
+  showChart = true,
+}: Props) {
   const pathRef = useRef<SVGPathElement>(null);
   const [impactOn, setImpactOn] = useState(false);
   const [nowOn, setNowOn] = useState(false);
@@ -31,6 +37,11 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
   const completeRef = useRef(false);
 
   useEffect(() => {
+    if (!showChart) {
+      onGraphComplete?.();
+      return;
+    }
+
     completeRef.current = false;
     setImpactOn(false);
     setNowOn(false);
@@ -72,7 +83,7 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
       window.clearTimeout(doneT);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [onGraphComplete, showChart]);
 
   return (
     <div className="ai-answer">
@@ -88,90 +99,92 @@ export function AIAnswerCard({ onGraphComplete }: Props) {
         <span className="ai-answer__metric-delta">-44%</span>
       </div>
 
-      <div className="ai-answer__chart" style={{ height: CHART_HEIGHT }}>
-        <svg
-          width="100%"
-          height={CHART_HEIGHT}
-          viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
-          preserveAspectRatio="none"
-          aria-hidden
-        >
-          <defs>
-            <linearGradient id="torqueLineGrad" x1="0" y1="0" x2="0" y2="1">
-              <stop offset="0" stopColor="#989BA2" />
-              <stop offset="0.45" stopColor="#FF8C8C" />
-              <stop offset="1" stopColor="#FF6363" />
-            </linearGradient>
-          </defs>
-          <g style={{ opacity: gridOn ? 1 : 0, transition: 'opacity 200ms' }}>
-            {[IMPACT_Y, MID_Y, NOW_Y].map(y => (
-              <line
-                key={y}
-                x1={0}
-                y1={y}
-                x2={CHART_WIDTH}
-                y2={y}
-                stroke="rgba(255,255,255,0.18)"
-                strokeWidth={1}
-                strokeDasharray="4 5"
-              />
-            ))}
-          </g>
-          <path
-            ref={pathRef}
-            d={PATH_D}
-            stroke="url(#torqueLineGrad)"
-            strokeWidth={3}
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            fill="none"
+      {showChart ? (
+        <div className="ai-answer__chart" style={{ height: CHART_HEIGHT }}>
+          <svg
+            width="100%"
+            height={CHART_HEIGHT}
+            viewBox={`0 0 ${CHART_WIDTH} ${CHART_HEIGHT}`}
+            preserveAspectRatio="none"
+            aria-hidden
+          >
+            <defs>
+              <linearGradient id="torqueLineGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0" stopColor="#989BA2" />
+                <stop offset="0.45" stopColor="#FF8C8C" />
+                <stop offset="1" stopColor="#FF6363" />
+              </linearGradient>
+            </defs>
+            <g style={{ opacity: gridOn ? 1 : 0, transition: 'opacity 200ms' }}>
+              {[IMPACT_Y, MID_Y, NOW_Y].map(y => (
+                <line
+                  key={y}
+                  x1={0}
+                  y1={y}
+                  x2={CHART_WIDTH}
+                  y2={y}
+                  stroke="rgba(255,255,255,0.18)"
+                  strokeWidth={1}
+                  strokeDasharray="4 5"
+                />
+              ))}
+            </g>
+            <path
+              ref={pathRef}
+              d={PATH_D}
+              stroke="url(#torqueLineGrad)"
+              strokeWidth={3}
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              fill="none"
+            />
+          </svg>
+
+          <span
+            className={impactOn ? 'ai-answer__dot ai-answer__dot--impact is-on' : 'ai-answer__dot ai-answer__dot--impact'}
+            style={{
+              left: `${(IMPACT_X / CHART_WIDTH) * 100}%`,
+              top: `${(IMPACT_Y / CHART_HEIGHT) * 100}%`,
+            }}
           />
-        </svg>
+          <div
+            className={impactOn ? 'ai-answer__impact-labels is-on' : 'ai-answer__impact-labels'}
+            style={{
+              left: `${(((LINE_PAD + IMPACT_X) / 2) / CHART_WIDTH) * 100}%`,
+              top: `${((IMPACT_Y + 10) / CHART_HEIGHT) * 100}%`,
+            }}
+          >
+            <span>At Impact</span>
+            <strong>98%</strong>
+          </div>
 
-        <span
-          className={impactOn ? 'ai-answer__dot ai-answer__dot--impact is-on' : 'ai-answer__dot ai-answer__dot--impact'}
-          style={{
-            left: `${(IMPACT_X / CHART_WIDTH) * 100}%`,
-            top: `${(IMPACT_Y / CHART_HEIGHT) * 100}%`,
-          }}
-        />
-        <div
-          className={impactOn ? 'ai-answer__impact-labels is-on' : 'ai-answer__impact-labels'}
-          style={{
-            left: `${(((LINE_PAD + IMPACT_X) / 2) / CHART_WIDTH) * 100}%`,
-            top: `${((IMPACT_Y + 10) / CHART_HEIGHT) * 100}%`,
-          }}
-        >
-          <span>At Impact</span>
-          <strong>98%</strong>
+          <span
+            className={nowOn ? 'ai-answer__dot ai-answer__dot--now is-on' : 'ai-answer__dot ai-answer__dot--now'}
+            style={{
+              left: `${(NOW_X / CHART_WIDTH) * 100}%`,
+              top: `${(NOW_Y / CHART_HEIGHT) * 100}%`,
+            }}
+          />
+          <div
+            className={nowOn ? 'ai-answer__now-cap is-on' : 'ai-answer__now-cap'}
+            style={{
+              left: `${(NOW_X / CHART_WIDTH) * 100}%`,
+              top: `${((NOW_Y + 12) / CHART_HEIGHT) * 100}%`,
+            }}
+          >
+            Now
+          </div>
+          <div
+            className={nowOn ? 'ai-answer__now-val is-on' : 'ai-answer__now-val'}
+            style={{
+              left: `${(((NOW_X + CHART_WIDTH - LINE_PAD) / 2) / CHART_WIDTH) * 100}%`,
+              top: `${((NOW_Y - 50) / CHART_HEIGHT) * 100}%`,
+            }}
+          >
+            54%
+          </div>
         </div>
-
-        <span
-          className={nowOn ? 'ai-answer__dot ai-answer__dot--now is-on' : 'ai-answer__dot ai-answer__dot--now'}
-          style={{
-            left: `${(NOW_X / CHART_WIDTH) * 100}%`,
-            top: `${(NOW_Y / CHART_HEIGHT) * 100}%`,
-          }}
-        />
-        <div
-          className={nowOn ? 'ai-answer__now-cap is-on' : 'ai-answer__now-cap'}
-          style={{
-            left: `${(NOW_X / CHART_WIDTH) * 100}%`,
-            top: `${((NOW_Y + 12) / CHART_HEIGHT) * 100}%`,
-          }}
-        >
-          Now
-        </div>
-        <div
-          className={nowOn ? 'ai-answer__now-val is-on' : 'ai-answer__now-val'}
-          style={{
-            left: `${(((NOW_X + CHART_WIDTH - LINE_PAD) / 2) / CHART_WIDTH) * 100}%`,
-            top: `${((NOW_Y - 50) / CHART_HEIGHT) * 100}%`,
-          }}
-        >
-          54%
-        </div>
-      </div>
+      ) : null}
     </div>
   );
 }
