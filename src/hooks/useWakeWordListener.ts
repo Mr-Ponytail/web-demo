@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import {
   collectFullTranscript,
+  collectRecentTranscript,
   containsWakePhrase,
   extractWakeCommand,
 } from './wakeWordMatch';
@@ -48,7 +49,7 @@ export function useWakeWordListener({ enabled, onWakeWord }: Options) {
       }
     };
 
-    const scheduleRestart = (delayMs = 250) => {
+    const scheduleRestart = (delayMs = 150) => {
       if (stopped || !enabled) return;
       clearRestartTimer();
       restartTimer = window.setTimeout(() => {
@@ -62,12 +63,17 @@ export function useWakeWordListener({ enabled, onWakeWord }: Options) {
     };
 
     recognition.onresult = event => {
-      const transcript = collectFullTranscript(event);
+      const fullTranscript = collectFullTranscript(event);
+      const recentTranscript = collectRecentTranscript(event);
+      const transcript = containsWakePhrase(recentTranscript)
+        ? recentTranscript
+        : fullTranscript;
+
       if (!containsWakePhrase(transcript) || triggeredRef.current) return;
 
       triggeredRef.current = true;
       recognition.stop();
-      onWakeWordRef.current(extractWakeCommand(transcript));
+      onWakeWordRef.current(extractWakeCommand(fullTranscript));
     };
 
     recognition.onerror = event => {
@@ -76,7 +82,7 @@ export function useWakeWordListener({ enabled, onWakeWord }: Options) {
         clearRestartTimer();
         return;
       }
-      scheduleRestart(event.error === 'no-speech' ? 100 : 400);
+      scheduleRestart(event.error === 'no-speech' ? 80 : 250);
     };
 
     recognition.onend = () => {
