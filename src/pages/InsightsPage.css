@@ -193,6 +193,50 @@
   touch-action: none;
 }
 
+.insights__pager {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  background: #eaf3ff;
+  scrollbar-width: none;
+}
+
+.insights__pager::-webkit-scrollbar {
+  display: none;
+}
+
+.insights__pager--locked {
+  overflow: hidden;
+  touch-action: none;
+}
+
+.insights__page {
+  position: relative;
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: auto;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  overscroll-behavior: none;
+  -webkit-overflow-scrolling: touch;
+  background: #eaf3ff;
+}
+
+.insights__page--locked {
+  overflow: hidden;
+  touch-action: none;
+}
+
 .insights__chip-grid-backdrop {
   position: absolute;
   left: 0;

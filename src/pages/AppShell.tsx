@@ -1,11 +1,17 @@
 import { useCallback, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { TabBar } from '../components/TabBar';
 import { VoiceModal } from '../components/voice/VoiceModal';
 import { useWakeWordListener } from '../hooks/useWakeWordListener';
 import './AppShell.css';
 
+const HOME_PATH = '/app/home';
+
 export function AppShell() {
+  const location = useLocation();
+  const isHomeScreen =
+    location.pathname === HOME_PATH ||
+    location.pathname === `${HOME_PATH}/`;
   const [voiceOpen, setVoiceOpen] = useState(false);
   const [voiceStartListening, setVoiceStartListening] = useState(false);
   const [voiceInitialTranscript, setVoiceInitialTranscript] = useState<
@@ -34,7 +40,7 @@ export function AppShell() {
   }, []);
 
   useWakeWordListener({
-    enabled: !voiceOpen,
+    enabled: isHomeScreen && !voiceOpen,
     onWakeWord: openVoiceFromWakeWord,
   });
 

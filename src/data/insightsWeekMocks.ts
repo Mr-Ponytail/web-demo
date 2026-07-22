@@ -1,7 +1,9 @@
 import {
   DEFAULT_INSIGHTS_TIRE_VIEW,
   EMPTY_INSIGHTS_TIRE_VIEW,
+  INSIGHTS_CHIP_KEYS,
   WATCH_WEEK_CARDS,
+  type InsightsChipKey,
   type InsightsTireView,
   type WatchWeekCardData,
 } from './insightsMocks';
@@ -15,15 +17,21 @@ function clamp(n: number, min: number, max: number) {
   return Math.min(max, Math.max(min, n));
 }
 
+function chipSeed(chip?: InsightsChipKey) {
+  if (!chip) return 0;
+  return INSIGHTS_CHIP_KEYS.indexOf(chip) + 1;
+}
+
 /** Lightly vary mock Insights metrics by selected week (deterministic). */
 export function getInsightsTireViewForWeek(
   week: InsightsWeekRange,
+  chip?: InsightsChipKey,
 ): InsightsTireView {
   if (isFutureInsightsWeek(week)) {
     return EMPTY_INSIGHTS_TIRE_VIEW;
   }
 
-  const seed = weekSeed(week);
+  const seed = weekSeed(week) + chipSeed(chip) * 17;
   const wobble = (seed % 11) - 5;
   const base = DEFAULT_INSIGHTS_TIRE_VIEW;
   return {
@@ -40,6 +48,7 @@ export function getInsightsTireViewForWeek(
 
 export function getWatchWeekCardsForWeek(
   week: InsightsWeekRange,
+  chip?: InsightsChipKey,
 ): WatchWeekCardData[] {
   if (isFutureInsightsWeek(week)) {
     return WATCH_WEEK_CARDS.map(card => ({
@@ -51,7 +60,7 @@ export function getWatchWeekCardsForWeek(
     }));
   }
 
-  const seed = weekSeed(week);
+  const seed = weekSeed(week) + chipSeed(chip) * 17;
   const factor = 1 + ((seed % 7) - 3) * 0.015;
   return WATCH_WEEK_CARDS.map((card, index) => {
     const offset = ((seed + index * 13) % 9) - 4;

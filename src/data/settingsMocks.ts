@@ -21,9 +21,9 @@ export const ALERT_PREFERENCE_OPTIONS: AlertPreferenceOption[] = [
     badge: { label: 'Safety-first', tone: 'green' },
     thresholds: [
       { label: 'Pressure', value: '≤ 105 psi' },
-      { label: 'Load', value: '≥ 4,200 lbs' },
+      { label: 'Load', value: '≥ 1,900 kg' },
       { label: 'Align', value: '≥ 0.15°' },
-      { label: 'Temperature', value: '≥ 140 °F' },
+      { label: 'Temperature', value: '≥ 60 °C' },
       { label: 'Nut torque', value: '≤ 85%' },
     ],
     footerNote: {
@@ -39,9 +39,9 @@ export const ALERT_PREFERENCE_OPTIONS: AlertPreferenceOption[] = [
     badge: { label: 'Balanced', tone: 'blue' },
     thresholds: [
       { label: 'Pressure', value: '≤ 100 psi' },
-      { label: 'Load', value: '≥ 4,500 lbs' },
+      { label: 'Load', value: '≥ 2,000 kg' },
       { label: 'Align', value: '≥ 0.20°' },
-      { label: 'Temperature', value: '≥ 150 °F' },
+      { label: 'Temperature', value: '≥ 65 °C' },
       { label: 'Nut torque', value: '≤ 80%' },
     ],
   },
@@ -52,9 +52,9 @@ export const ALERT_PREFERENCE_OPTIONS: AlertPreferenceOption[] = [
     badge: { label: 'Least protective', tone: 'red' },
     thresholds: [
       { label: 'Pressure', value: '≤ 90 psi' },
-      { label: 'Load', value: '≥ 5,000 lbs' },
+      { label: 'Load', value: '≥ 2,300 kg' },
       { label: 'Align', value: '≥ 0.30°' },
-      { label: 'Temperature', value: '≥ 160 °F' },
+      { label: 'Temperature', value: '≥ 70 °C' },
       { label: 'Nut torque', value: '≤ 70%' },
     ],
     footerNote: {
