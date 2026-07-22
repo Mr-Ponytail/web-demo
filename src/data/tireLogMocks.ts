@@ -2,16 +2,24 @@ import type {
   HazardDetailEvent,
   HazardDetailSheetContent,
 } from './hazardLocationMocks';
+import {
+  SHINHAN_HAZARD_BANNER,
+  SHINHAN_TIRE_LOG_DAY_GROUPS,
+} from './mapShinhanSessions';
+import type {
+  EventCategory,
+  EventSeverity,
+  TireLogDayGroup,
+  TireLogSession,
+} from './tireLogTypes';
 
-export type EventSeverity = 'danger' | 'caution' | 'good';
-export type EventCategory =
-  | 'Impact'
-  | 'Pressure'
-  | 'Leak'
-  | 'Nut'
-  | 'Wear'
-  | 'Temp'
-  | 'Load';
+export type {
+  EventCategory,
+  EventSeverity,
+  TireLogDayGroup,
+  TireLogSession,
+  TireLogTag,
+} from './tireLogTypes';
 
 const DETAIL_TAG_LABEL: Record<EventCategory, string> = {
   Impact: 'Impact',
@@ -25,15 +33,15 @@ const DETAIL_TAG_LABEL: Record<EventCategory, string> = {
 
 const DETAIL_TITLE: Record<EventCategory, string> = {
   Impact: 'Unexpected Shock',
-  Pressure: '50.2 PSI',
+  Pressure: 'Low Pressure',
   Leak: 'Slow Leak Detected',
   Nut: 'Loose Nut',
   Wear: 'Uneven Wear',
-  Temp: '49.2 PSI',
+  Temp: 'Temperature rise',
   Load: 'Overload',
 };
 
-const DETAIL_POSITIONS = ['RLO', 'FR', 'RRI', 'FL', 'RRO', 'RLI'] as const;
+const DETAIL_POSITIONS = ['FL', 'FR', 'RL', 'RR', 'RL', 'FR'] as const;
 
 const SESSION_ACCENT_COLOR: Record<EventSeverity, string> = {
   danger: '#FF6363',
@@ -51,117 +59,10 @@ export const TIRELOG_CATEGORY_FILTERS: EventCategory[] = [
   'Load',
 ];
 
-export type TireLogTag = {
-  category: EventCategory;
-  severity: EventSeverity;
-};
+/** Shinhan seeded drive sessions (Jun–Jul 2026), newest days first. */
+export const TIRE_LOG_DAY_GROUPS: TireLogDayGroup[] = SHINHAN_TIRE_LOG_DAY_GROUPS;
 
-export type TireLogSession = {
-  id: string;
-  time: string;
-  location: string;
-  severity: EventSeverity;
-  tags: TireLogTag[];
-  hazardSummary?: string;
-  detailEvents?: HazardDetailEvent[];
-  accentColor?: string;
-};
-
-export type TireLogDayGroup = {
-  date: string;
-  sessions: TireLogSession[];
-};
-
-export const TIRE_LOG_DAY_GROUPS: TireLogDayGroup[] = [
-  {
-    date: '2026-07-19',
-    sessions: [
-      {
-        id: 's1',
-        time: 'AM 08:24',
-        location: 'Gangnam-daero',
-        severity: 'danger',
-        hazardSummary: 'Same impact zone detected 3 times this month',
-        accentColor: '#28D6B9',
-        detailEvents: [
-          {
-            id: 's1-detail-0',
-            time: 'AM 08:24',
-            tagLabel: 'Impact',
-            severity: 'danger',
-            title: 'Sharp impact detected',
-            position: 'FL',
-          },
-          {
-            id: 's1-detail-1',
-            time: 'AM 08:24',
-            tagLabel: 'Pressure',
-            severity: 'caution',
-            title: 'Pressure drop after impact',
-            position: 'FL',
-          },
-        ],
-        tags: [
-          { category: 'Impact', severity: 'danger' },
-          { category: 'Pressure', severity: 'caution' },
-        ],
-      },
-      {
-        id: 's2',
-        time: 'PM 06:10',
-        location: 'Olympic Expressway',
-        severity: 'caution',
-        tags: [{ category: 'Temp', severity: 'caution' }],
-      },
-    ],
-  },
-  {
-    date: '2026-07-18',
-    sessions: [
-      {
-        id: 's3',
-        time: 'PM 02:05',
-        location: 'Dongjak Bridge',
-        severity: 'good',
-        tags: [{ category: 'Wear', severity: 'good' }],
-      },
-    ],
-  },
-  {
-    date: '2026-07-17',
-    sessions: [
-      {
-        id: 's4',
-        time: 'AM 07:40',
-        location: 'Nambu Beltway',
-        severity: 'caution',
-        tags: [{ category: 'Load', severity: 'caution' }],
-      },
-      {
-        id: 's5',
-        time: 'PM 09:12',
-        location: 'Parking lot',
-        severity: 'danger',
-        tags: [{ category: 'Nut', severity: 'danger' }],
-      },
-    ],
-  },
-  {
-    date: '2026-07-15',
-    sessions: [
-      {
-        id: 's6',
-        time: 'AM 09:05',
-        location: 'Seongsu Bridge',
-        severity: 'good',
-        tags: [],
-      },
-    ],
-  },
-];
-
-export const HAZARD_BANNER_DESCRIPTION =
-  'Same impact zone detected 3 times this month';
+export const HAZARD_BANNER_DESCRIPTION = SHINHAN_HAZARD_BANNER;
 
 export const SEVERITY_TAG_COLORS: Record<
   EventSeverity,

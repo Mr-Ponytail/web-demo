@@ -18,6 +18,7 @@ import {
   type TireLogDayGroup,
   type TireLogSession,
 } from '../data/tireLogMocks';
+import { buildHazardMapPath, buildRichestDayHazardMapPath } from '../data/hazardMapQuery';
 import type { HazardDetailSheetContent } from '../data/hazardLocationMocks';
 import './TireLogPage.css';
 
@@ -104,7 +105,7 @@ function TimelineDay({
 }: {
   group: TireLogDayGroup;
   isLastDay: boolean;
-  onHazardChipPress: () => void;
+  onHazardChipPress: (session: TireLogSession, dayDate: string) => void;
   onSessionPress: (session: TireLogSession) => void;
 }) {
   const lastIdx = group.sessions.length - 1;
@@ -139,7 +140,7 @@ function TimelineDay({
                 <button
                   type="button"
                   className="tl-hazard-chip"
-                  onClick={onHazardChipPress}
+                  onClick={() => onHazardChipPress(session, group.date)}
                 >
                   <span>{session.hazardSummary}</span>
                   <img src={IMG.chevron} alt="" width={20} height={20} />
@@ -186,7 +187,13 @@ export function TireLogPage() {
   );
 
   const visibleDays = useMemo(() => {
-    let groups = TIRE_LOG_DAY_GROUPS;
+    let groups = TIRE_LOG_DAY_GROUPS.filter(day => {
+      const date = new Date(`${day.date}T00:00:00`);
+      return (
+        date.getFullYear() === dateFilter.year &&
+        date.getMonth() === dateFilter.month
+      );
+    });
     if (issuesEnabled) {
       groups = groups
         .map(day => ({
@@ -208,7 +215,7 @@ export function TireLogPage() {
         .filter(day => day.sessions.length > 0);
     }
     return groups;
-  }, [issuesEnabled, categoryFilter]);
+  }, [dateFilter, issuesEnabled, categoryFilter]);
 
   const changeMonth = (next: DateFilter) => {
     setDateFilter(next);
@@ -229,6 +236,22 @@ export function TireLogPage() {
   const selectMonth = (month: number) => {
     changeMonth({ year: pickerYear, month });
     setPickerVisible(false);
+  };
+
+  const monthKey = `${dateFilter.year}-${String(dateFilter.month + 1).padStart(2, '0')}`;
+
+  const openMonthHazardMap = () => {
+    navigate(buildRichestDayHazardMapPath(monthKey));
+  };
+
+  const openDayHazardMap = (session: TireLogSession, dayDate: string) => {
+    navigate(
+      buildHazardMapPath({
+        date: dayDate,
+        sessionId: session.id,
+        month: monthKey,
+      }),
+    );
   };
 
   const handleSessionPress = (session: TireLogSession, dayDate: string) => {
@@ -315,7 +338,7 @@ export function TireLogPage() {
                     <button
                       type="button"
                       className="tirelog__map-btn"
-                      onClick={() => navigate('/app/tire-log/hazard-map')}
+                      onClick={openMonthHazardMap}
                     >
                       View on map
                     </button>
@@ -402,7 +425,7 @@ export function TireLogPage() {
                 key={group.date}
                 group={group}
                 isLastDay={index === visibleDays.length - 1}
-                onHazardChipPress={() => navigate('/app/tire-log/hazard-map')}
+                onHazardChipPress={openDayHazardMap}
                 onSessionPress={session => handleSessionPress(session, group.date)}
               />
             ))}

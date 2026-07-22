@@ -1,4 +1,5 @@
 import { HAZARD_DEMO_GEO_OFFSET } from '../hazard/constants';
+import { ELKTON_REPEATED_GROUP } from './shinhan/sessionsPayload';
 
 export type HazardMarkerIconKey =
   | 'marker-1'
@@ -74,87 +75,49 @@ export const HAZARD_MARKER_COLORS = [
   '#77DF00',
 ] as const;
 
-/** Tight cluster around one intersection — keeps hazard zone circle small like RN. */
+const MARKER_ICON_KEYS: HazardMarkerIconKey[] = [
+  'marker-1',
+  'marker-2',
+  'marker-3',
+  'marker-4',
+  'marker-5',
+];
+
+function formatAmPmFromIso(iso: string): string {
+  const date = new Date(iso);
+  let hours = date.getUTCHours();
+  const minutes = date.getUTCMinutes();
+  const suffix = hours < 12 ? 'AM' : 'PM';
+  hours = hours % 12 || 12;
+  return `${suffix} ${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
+}
+
+/** I-95 Elkton (MD) repeated-impact cluster from Shinhan seed. */
 export const HAZARD_DEMO_CENTER: [number, number] = [
-  127.0286 + HAZARD_DEMO_GEO_OFFSET[0],
-  37.4979 + HAZARD_DEMO_GEO_OFFSET[1],
+  ELKTON_REPEATED_GROUP.location.lng + HAZARD_DEMO_GEO_OFFSET[0],
+  ELKTON_REPEATED_GROUP.location.lat + HAZARD_DEMO_GEO_OFFSET[1],
 ];
 
-const DEMO_HAZARD_MARKERS_BASE: HazardMapMarker[] = [
-  {
-    id: 'hazard-event-0',
-    iconKey: 'marker-1',
-    pinNumber: 1,
-    longitude: 127.02858,
-    latitude: 37.49793,
-    color: HAZARD_MARKER_COLORS[0],
-    date: '2026-07-19',
+export const DEMO_HAZARD_MARKERS: HazardMapMarker[] =
+  ELKTON_REPEATED_GROUP.events.map((event, index) => ({
+    id: `elkton-impact-${index}`,
+    iconKey: MARKER_ICON_KEYS[index % MARKER_ICON_KEYS.length],
+    pinNumber: index + 1,
+    longitude: event.location.lng + HAZARD_DEMO_GEO_OFFSET[0],
+    latitude: event.location.lat + HAZARD_DEMO_GEO_OFFSET[1],
+    color: HAZARD_MARKER_COLORS[index % HAZARD_MARKER_COLORS.length],
+    date: event.ts.slice(0, 10),
     events: [
       {
-        id: 'hazard-event-0-0',
-        time: 'AM 08:24',
+        id: `elkton-impact-${index}-0`,
+        time: formatAmPmFromIso(event.ts),
         tagLabel: 'Impact',
-        severity: 'danger',
-        title: 'Sharp impact detected',
-        position: 'FL',
-      },
-      {
-        id: 'hazard-event-0-1',
-        time: 'AM 08:24',
-        tagLabel: 'Pressure',
-        severity: 'caution',
-        title: 'Pressure drop after impact',
-        position: 'FL',
+        severity: event.severity,
+        title: `${event.value.toFixed(1)}G impact`,
+        position: event.wheelPosition,
       },
     ],
-  },
-  {
-    id: 'hazard-event-1',
-    iconKey: 'marker-2',
-    pinNumber: 2,
-    longitude: 127.02863,
-    latitude: 37.49788,
-    color: HAZARD_MARKER_COLORS[1],
-    date: '2026-07-12',
-    events: [
-      {
-        id: 'hazard-event-1-0',
-        time: 'PM 06:10',
-        tagLabel: 'Impact',
-        severity: 'danger',
-        title: 'Repeated impact in same zone',
-        position: 'FR',
-      },
-    ],
-  },
-  {
-    id: 'hazard-event-2',
-    iconKey: 'marker-3',
-    pinNumber: 3,
-    longitude: 127.02855,
-    latitude: 37.49786,
-    color: HAZARD_MARKER_COLORS[2],
-    date: '2026-07-05',
-    events: [
-      {
-        id: 'hazard-event-2-0',
-        time: 'AM 07:40',
-        tagLabel: 'Impact',
-        severity: 'caution',
-        title: 'Moderate road impact',
-        position: 'LO',
-      },
-    ],
-  },
-];
-
-export const DEMO_HAZARD_MARKERS: HazardMapMarker[] = DEMO_HAZARD_MARKERS_BASE.map(
-  marker => ({
-    ...marker,
-    longitude: marker.longitude + HAZARD_DEMO_GEO_OFFSET[0],
-    latitude: marker.latitude + HAZARD_DEMO_GEO_OFFSET[1],
-  }),
-);
+  }));
 
 export type HazardSummaryCardData = {
   id: string;

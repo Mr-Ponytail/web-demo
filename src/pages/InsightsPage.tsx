@@ -139,17 +139,22 @@ function WatchWeekSparkline({
   const padX = 10;
   const padTop = 14;
   const padBottom = 22;
-  const allValues = [...series, ...baseline];
-  const min = Math.min(...allValues);
-  const max = Math.max(...allValues);
-  const range = Math.max(max - min, 0.0001);
+  const allValues = [...series, ...baseline].filter(v => Number.isFinite(v));
+  const min = allValues.length ? Math.min(...allValues) : 0;
+  const max = allValues.length ? Math.max(...allValues) : 1;
+  // Pad flat weeks so a constant 7-day line still sits visibly mid-chart.
+  const pad = max === min ? Math.max(Math.abs(min) * 0.02, 1) : 0;
+  const range = Math.max(max - min + pad * 2, 0.0001);
+  const plotMin = min - pad;
   const plotW = CHART_W - padX * 2;
   const plotH = CHART_H - padTop - padBottom;
   const lastIndex = Math.max(series.length - 1, 1);
 
   const toPoint = (values: number[], index: number) => {
+    const raw = values[index];
+    const value = Number.isFinite(raw) ? raw! : plotMin + range / 2;
     const x = padX + (index / lastIndex) * plotW;
-    const y = padTop + (1 - (values[index]! - min) / range) * plotH;
+    const y = padTop + (1 - (value - plotMin) / range) * plotH;
     return { x, y };
   };
 

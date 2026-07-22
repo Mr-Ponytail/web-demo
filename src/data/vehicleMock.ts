@@ -1,15 +1,16 @@
 export const DEMO_VEHICLE = {
-  vin: '1HGCM82633A004352',
-  nickname: 'Demo Truck',
+  id: '6a45ef1da3ddbd4f721b4186',
+  vin: '1FDUF5GY0KDA00001',
+  nickname: '신한',
   make: 'Ford',
-  model: '650',
-  displayModel: 'Ford-650',
+  model: 'F-650',
+  displayModel: 'Ford F-650',
   wheelCount: 6,
   axle: '6-wheel dual rear',
 };
 
 /** Pre-filled nickname on the onboarding name step. */
-export const DEMO_DEFAULT_NICKNAME = 'Trak';
+export const DEMO_DEFAULT_NICKNAME = '신한';
 
 export const DEMO_STORAGE_KEYS = {
   nickname: 'web-demo-nickname',

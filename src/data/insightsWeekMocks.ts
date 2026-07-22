@@ -1,57 +1,75 @@
 import {
-  DEFAULT_INSIGHTS_TIRE_VIEW,
   EMPTY_INSIGHTS_TIRE_VIEW,
   INSIGHTS_CHIP_KEYS,
-  WATCH_WEEK_CARDS,
   type InsightsChipKey,
   type InsightsTireView,
   type WatchWeekCardData,
 } from './insightsMocks';
 import {
+  getWeekRangeForDate,
   isFutureInsightsWeek,
   type InsightsWeekRange,
   weekSeed,
 } from './insightsWeek';
+import { SHINHAN_CHIP_MAPS } from './mapShinhanInsights';
+import { SHINHAN_DEMO_NOW } from './shinhan/insightsPayload';
 
-function clamp(n: number, min: number, max: number) {
-  return Math.min(max, Math.max(min, n));
+/** Week seed for the Shinhan insights window shown as the demo default. */
+export const SHINHAN_DEMO_WEEK_SEED = weekSeed(
+  getWeekRangeForDate(SHINHAN_DEMO_NOW),
+);
+
+function isShinhanDemoWeek(week: InsightsWeekRange) {
+  return weekSeed(week) === SHINHAN_DEMO_WEEK_SEED;
 }
 
-function chipSeed(chip?: InsightsChipKey) {
-  if (!chip) return 0;
-  return INSIGHTS_CHIP_KEYS.indexOf(chip) + 1;
+function quieterTireView(chip: InsightsChipKey): InsightsTireView {
+  const base = SHINHAN_CHIP_MAPS.tireViews[chip];
+  if (!base.hasData) return EMPTY_INSIGHTS_TIRE_VIEW;
+  return {
+    ...base,
+    damageLevel: Math.max(8, Math.round(base.damageLevel * 0.92)),
+    damageLevelDeltaPct: Number((base.damageLevelDeltaPct * 0.4).toFixed(1)),
+    alertCount: Math.max(0, base.alertCount - 1),
+  };
 }
 
-/** Lightly vary mock Insights metrics by selected week (deterministic). */
+function quieterWatchCards(chip: InsightsChipKey): WatchWeekCardData[] {
+  return SHINHAN_CHIP_MAPS.watchCards[chip].map(card => ({
+    ...card,
+    alert: undefined,
+    insightTitle: 'Looking stable',
+    insightBody:
+      'No strong trend this week on this wheel. Check the latest week for the active story.',
+    // Keep API deltaPct + 7-day series/baseline; only soften the insight copy.
+  }));
+}
+
+/** Shinhan-seeded Insights metrics for the demo week; quieter/empty otherwise. */
 export function getInsightsTireViewForWeek(
   week: InsightsWeekRange,
   chip?: InsightsChipKey,
 ): InsightsTireView {
-  if (isFutureInsightsWeek(week)) {
+  if (isFutureInsightsWeek(week, SHINHAN_DEMO_NOW)) {
     return EMPTY_INSIGHTS_TIRE_VIEW;
   }
 
-  const seed = weekSeed(week) + chipSeed(chip) * 17;
-  const wobble = (seed % 11) - 5;
-  const base = DEFAULT_INSIGHTS_TIRE_VIEW;
-  return {
-    ...base,
-    hasData: true,
-    damageLevel: clamp(base.damageLevel + wobble, 8, 92),
-    damageLevelDeltaPct: Number(
-      (base.damageLevelDeltaPct + ((seed % 7) - 3) * 0.3).toFixed(1),
-    ),
-    alertCount: clamp(base.alertCount + (seed % 5) - 2, 0, 12),
-    cumulativeKm: base.cumulativeKm + (seed % 17) * 120,
-  };
+  const key = chip ?? INSIGHTS_CHIP_KEYS[0];
+  if (isShinhanDemoWeek(week)) {
+    return SHINHAN_CHIP_MAPS.tireViews[key];
+  }
+
+  return quieterTireView(key);
 }
 
 export function getWatchWeekCardsForWeek(
   week: InsightsWeekRange,
   chip?: InsightsChipKey,
 ): WatchWeekCardData[] {
-  if (isFutureInsightsWeek(week)) {
-    return WATCH_WEEK_CARDS.map(card => ({
+  const key = chip ?? INSIGHTS_CHIP_KEYS[0];
+
+  if (isFutureInsightsWeek(week, SHINHAN_DEMO_NOW)) {
+    return SHINHAN_CHIP_MAPS.watchCards[key].map(card => ({
       ...card,
       noData: true,
       valueLabel: '-',
@@ -60,27 +78,9 @@ export function getWatchWeekCardsForWeek(
     }));
   }
 
-  const seed = weekSeed(week) + chipSeed(chip) * 17;
-  const factor = 1 + ((seed % 7) - 3) * 0.015;
-  return WATCH_WEEK_CARDS.map((card, index) => {
-    const offset = ((seed + index * 13) % 9) - 4;
-    const series = card.series.map((value, i) =>
-      Number((value * factor + offset * (0.2 + i * 0.05)).toFixed(3)),
-    );
-    const last = series[series.length - 1] ?? 0;
-    let valueLabel: string;
-    if (card.unit === '°') {
-      valueLabel = last.toFixed(2);
-    } else if (card.unit === 'kg' || card.unit === 'PSI') {
-      valueLabel = Math.round(last).toLocaleString('en-US');
-    } else {
-      valueLabel = String(Math.round(last));
-    }
-    return {
-      ...card,
-      noData: false,
-      series,
-      valueLabel,
-    };
-  });
+  if (isShinhanDemoWeek(week)) {
+    return SHINHAN_CHIP_MAPS.watchCards[key];
+  }
+
+  return quieterWatchCards(key);
 }

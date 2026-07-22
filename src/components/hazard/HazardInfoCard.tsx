@@ -13,9 +13,9 @@ import {
 import './HazardInfoCard.css';
 
 const AI_INSIGHT_DETAIL =
-  'Repeated impacts across multiple wheels indicate a structural road hazard ' +
-  'here. Reporting this to the DOT can help secure the route and prevent ' +
-  'future tire damage.';
+  'Seven impacts at the same I-95 Elkton stretch in 24 days point to a ' +
+  'persistent pothole hazard. Reporting this to the DOT can help secure the ' +
+  'corridor and protect front tires on every Newark–DC run.';
 
 const INNER_PADDING_X = 28;
 const INNER_PADDING_Y = 24;

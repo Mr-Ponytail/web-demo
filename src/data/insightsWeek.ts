@@ -89,13 +89,19 @@ export function formatWeekMonthLabel(week: InsightsWeekRange) {
   return `${MONTH_SHORT_LABELS[mid.getMonth()]} ${mid.getFullYear()}`;
 }
 
-/** Demo default: the week containing today (local calendar). */
+/** Fixed demo clock (Shinhan seed as-of date) so the story week stays stable. */
+export const DEMO_CLOCK = new Date(2026, 6, 22);
+
+/** Demo default: the week containing the Shinhan seed "today". */
 export function getDemoInitialWeek(): InsightsWeekRange {
-  return getWeekRangeForDate(new Date());
+  return getWeekRangeForDate(DEMO_CLOCK);
 }
 
 /** True when the week's Monday is after today — no insights data yet. */
-export function isFutureInsightsWeek(week: InsightsWeekRange, now = new Date()) {
+export function isFutureInsightsWeek(
+  week: InsightsWeekRange,
+  now: Date = DEMO_CLOCK,
+) {
   return startOfDay(week.start).getTime() > startOfDay(now).getTime();
 }
 

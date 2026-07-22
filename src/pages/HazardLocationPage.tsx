@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState, type TransitionEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import type maplibregl from 'maplibre-gl';
 import { IMG } from '../assets';
 import { HazardInfoCard } from '../components/hazard/HazardInfoCard';
@@ -12,12 +12,11 @@ import { HazardMarkerDetailSheet } from '../components/hazard/HazardMarkerDetail
 import { ReportToDotToast } from '../components/hazard/ReportToDotToast';
 import { HazardSummaryCard } from '../components/hazard/HazardSummaryCard';
 import {
-  DEMO_HAZARD_MARKERS,
   HAZARD_DEFAULT_MAP_ZOOM,
   buildHazardSummaryCards,
-  computeHazardMapCenter,
   markerToDetailSheetContent,
 } from '../data/hazardLocationMocks';
+import { resolveHazardMapView } from '../data/hazardMapQuery';
 import {
   HAZARD_BOTTOM_PANEL_DISMISS_DURATION_MS,
   HAZARD_INITIAL_MAP_PADDING_BOTTOM,
@@ -34,6 +33,7 @@ const BOTTOM_PANEL_DISMISS_EASING = 'cubic-bezier(0.55, 0.06, 0.68, 0.19)';
 
 export function HazardLocationPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const mapRef = useRef<maplibregl.Map | null>(null);
   const cardListRef = useRef<HTMLDivElement>(null);
   const bottomPanelRef = useRef<HTMLDivElement>(null);
@@ -59,8 +59,26 @@ export function HazardLocationPage() {
     dismissReportToast,
   } = useReportToDot();
 
-  const markers = DEMO_HAZARD_MARKERS;
-  const mapCenter = useMemo(() => computeHazardMapCenter(markers), [markers]);
+  const mapQuery = useMemo(
+    () => ({
+      month: searchParams.get('month'),
+      date: searchParams.get('date'),
+      sessionId: searchParams.get('sessionId'),
+    }),
+    [searchParams],
+  );
+
+  const mapView = useMemo(() => resolveHazardMapView(mapQuery), [mapQuery]);
+  const markers = mapView.markers;
+  const mapCenter = mapView.center;
+  const locationLabel = mapView.locationLabel;
+  const mapInstanceKey = [
+    mapQuery.month ?? '',
+    mapQuery.date ?? '',
+    mapQuery.sessionId ?? '',
+    markers.length,
+  ].join('|');
+
   const summaryCards = useMemo(() => buildHazardSummaryCards(markers), [markers]);
   const selectedMarker = useMemo(
     () => markers.find(marker => marker.id === selectedMarkerId) ?? null,
@@ -69,11 +87,16 @@ export function HazardLocationPage() {
   const selectedSheetContent = useMemo(
     () =>
       selectedMarker
-        ? markerToDetailSheetContent(selectedMarker, 'Gangnam-daero, Seoul')
+        ? markerToDetailSheetContent(selectedMarker, locationLabel)
         : null,
-    [selectedMarker],
+    [selectedMarker, locationLabel],
   );
   const gaugeFillRatio = BASE_GAUGE_RATIO;
+
+  useEffect(() => {
+    setSelectedMarkerId(null);
+    setMarkerSheetVisible(false);
+  }, [mapInstanceKey]);
 
   const handleMapZoomChange = useCallback(
     (zoom: number) => {
@@ -222,6 +245,7 @@ export function HazardLocationPage() {
     <div className="hazard-location screen">
       <div className="hazard-location__map-stage">
         <HazardMap
+          key={mapInstanceKey}
           center={mapCenter}
           markers={markers}
           selectedMarkerId={selectedMarkerId}
@@ -251,7 +275,7 @@ export function HazardLocationPage() {
         <>
           <div className="hazard-location__location-pill">
             <img src={IMG.locationSub} alt="" width={16} height={16} />
-            <span>Gangnam-daero, Seoul</span>
+            <span>{locationLabel}</span>
           </div>
           <HazardInfoCard />
         </>
